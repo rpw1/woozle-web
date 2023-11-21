@@ -2,7 +2,7 @@
   "name": "woozle",
   "version": "0.0.0",
   "engines": {
-    "node": "18.14.1"
+    "node": "18.14.0"
   },
   "scripts": {
     "ng": "ng",
