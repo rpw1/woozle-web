@@ -1,0 +1,32 @@
+@import 'node_modules/bootstrap/scss/bootstrap';
+@import 'node_modules/bootstrap/scss/variables';
+
+.progress-bar {
+  background-color: $gray-800;
+  transition: none;
+}
+
+.progress-container {
+  background-color: $gray-800;
+  border-top: 2px solid white;
+  border-bottom: 2px solid white;
+  height: 30px;
+  transition: none;
+}
+
+.first-segment {
+  border-left: 2px solid white;
+  background-color: $gray-500;
+}
+
+.segment {
+  border-right: 2px solid white;
+}
+
+.active-segment {
+  background-color: $gray-500;
+}
+
+.progress > .progress-container {
+  border-radius: 0%;
+}
