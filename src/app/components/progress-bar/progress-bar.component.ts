@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Subscription, timer } from 'rxjs';
 import { GameCalculationService } from '../../services/game-calculation.service';
 import { PlayerService } from '../../services/player.service';
@@ -11,10 +11,11 @@ import { WoozleTask, WoozleTaskState, WoozleTaskType } from '../../models/woozle
   templateUrl: './progress-bar.component.html',
   styleUrls: ['./progress-bar.component.scss']
 })
-export class ProgressBarComponent implements OnInit {
+export class ProgressBarComponent implements OnInit, OnDestroy {
   readonly TIMER_INTERVAL = 10;
   activeIndex: number = 0;
-  intervalPlayer!: Subscription;
+  private intervalPlayer!: Subscription;
+  private subscriptions: Subscription[] = []; 
   guessPercentArray = this.gameCalculationService.getGamePercentageArray();
   @ViewChildren('playerProgressBar') progressBarSegments!: QueryList<ElementRef<HTMLDivElement>>;
 
@@ -22,7 +23,7 @@ export class ProgressBarComponent implements OnInit {
     ,private playerService: PlayerService, private taskSchedulerService: TaskSchedulerService) {}
 
   ngOnInit(): void {
-    this.playerService.player$.subscribe((isOn: boolean) => {
+    this.subscriptions.push(this.playerService.player$.subscribe((isOn: boolean) => {
       if (isOn) {
         this.taskSchedulerService.queueTask(WoozleTaskType.RUN_PROGRESS_SEGMENT_QUEUE, this.activeIndex);
         if (this.activeIndex >= GameConstants.TOTAL_GUESSES) {
@@ -32,13 +33,19 @@ export class ProgressBarComponent implements OnInit {
         }
         this.activeIndex = this.activeIndex >= GameConstants.TOTAL_GUESSES ? 0 : this.activeIndex + 1;
       }
-    });
+    }));
 
-    this.taskSchedulerService.taskScheduler$.subscribe((task: WoozleTask) => {
+    this.subscriptions.push(this.taskSchedulerService.taskScheduler$.subscribe((task: WoozleTask) => {
       if (task.taskType === WoozleTaskType.RUN_PROGRESS_SEGMENT_QUEUE) {
         this.handleQueuedTask(task);
       }
-    });
+    }));
+  }
+
+  ngOnDestroy(): void {
+    for (let subscription of this.subscriptions) {
+      subscription.unsubscribe();
+    }
   }
 
   private runSegmentQueue(currentTask: WoozleTask): void {
