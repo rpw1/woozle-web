@@ -12,7 +12,6 @@
     "test": "ng test",
     "test-headless": "ng test --watch=false --browsers=ChromeHeadless --code-coverage=true",
     "lint": "ng lint",
-    "e2e": "ng e2e --reporter junit",
     "extract-language": "ng extract-i18n --out-file src/locale/messages.xlf"
   },
   "private": true,
