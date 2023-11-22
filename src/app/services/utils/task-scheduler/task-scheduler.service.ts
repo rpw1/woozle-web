@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { WoozleTask, WoozleTaskState, WoozleTaskType } from '../models/woozle-task';
+import { WoozleTask, WoozleTaskState, WoozleTaskType } from '../../../models/woozle-task';
 import { Subject } from 'rxjs';
 import * as uuid from 'uuid';
 
@@ -24,9 +24,12 @@ export class TaskSchedulerService {
     } as WoozleTask;
     this.queuedTasks.push(task);
     this.taskSchedulerSubject.next(task);
+    if (!this.isTaskCurrentlyRunning) {
+      this.startTask();
+    }
   }
 
-  startTask(): void {
+  private startTask(): void {
     this.isTaskCurrentlyRunning = true;
     const currentTask = this.queuedTasks.shift();
     if (currentTask !== undefined) {
@@ -36,21 +39,32 @@ export class TaskSchedulerService {
   }
 
   endTask(task: WoozleTask): void {
-    this.isTaskCurrentlyRunning = false;
-    task.taskState = WoozleTaskState.ENDED;
-    this.taskSchedulerSubject.next(task);
-  }
-
-  getQueuedTaskCount(): number {
-    return this.queuedTasks.length;
+    console.log(`Queued Tasks Length: ${this.queuedTasks.length}`)
+    if (this.queuedTasks.length > 0) {
+      task.taskState = WoozleTaskState.ENDED;
+      this.taskSchedulerSubject.next(task);
+      this.startTask();
+    } else {
+      this.isTaskCurrentlyRunning = false;
+      task.taskState = WoozleTaskState.ENDED;
+      this.taskSchedulerSubject.next(task);
+    }
   }
 
   hasRunningTask(): boolean {
     return this.isTaskCurrentlyRunning;
   }
 
-  clearAllTasks() {
+  clearAllTasks(taskType: WoozleTaskType) {
     this.isTaskCurrentlyRunning = false;
     this.queuedTasks = [] as WoozleTask[];
+
+    const id = uuid.v4();
+    const task = {
+      id: id,
+      taskState: WoozleTaskState.CLEARED,
+      taskType: taskType,
+    } as WoozleTask;
+    this.taskSchedulerSubject.next(task);
   }
 }

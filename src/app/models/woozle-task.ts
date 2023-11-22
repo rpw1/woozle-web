@@ -12,5 +12,6 @@ export enum WoozleTaskType {
 export enum WoozleTaskState {
   QUEUED,
   STARTED,
-  ENDED
+  ENDED,
+  CLEARED
 }
