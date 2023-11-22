@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Constants, GameConstants } from '../models/constants';
-import { ValidateGameConstantsService } from './validators/validate-game-constants.service';
+import { Constants, GameConstants } from '../../../models/constants';
+import { ValidateGameConstantsService } from '../../validators/validate-game-constants.service';
 import { sum } from 'lodash';
 
 @Injectable({

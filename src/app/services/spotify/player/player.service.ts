@@ -6,12 +6,12 @@ import { Subject } from 'rxjs';
 })
 export class PlayerService {
 
-  private playerSubject = new Subject<boolean>()
+  private playerSubject = new Subject<never>()
   public player$ = this.playerSubject.asObservable();
 
   constructor() { }
 
-  public startPlayer(): void {
-    this.playerSubject.next(true);
+  public togglePlayer(): void {
+    this.playerSubject.next();
   }
 }

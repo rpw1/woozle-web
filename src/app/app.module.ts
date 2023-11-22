@@ -6,21 +6,23 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { GuessListComponent } from './components/guess-list/guess-list.component';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
-import { SearchBoxComponent } from './components/search-box/search-box.component';
+import { GuessComponent } from './components/guess/guess.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     GuessListComponent,
     ProgressBarComponent,
-    SearchBoxComponent
+    GuessComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
     BrowserModule,
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
