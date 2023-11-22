@@ -42,9 +42,6 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "localize": [
-              "en-US"
-            ],
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
