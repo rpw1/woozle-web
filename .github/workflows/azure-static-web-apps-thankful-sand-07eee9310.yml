@@ -15,20 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-    
-    - name: Install Dependencies
-      run: npm install
-
-    - name: Build
-      run: npm run build
-
-    - name: Test
-      run: npm run test
       - uses: actions/checkout@v3
         with:
           submodules: true
           lfs: false
-          
+      
       - name: Install Dependencies
         run: npm install
 
@@ -36,7 +27,8 @@ jobs:
         run: npm run build
 
       - name: Test
-        run: npm run test
+        run: npm run test-headless
+      
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -46,7 +38,7 @@ jobs:
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/src/" # App source code path
+          app_location: "/src" # App source code path
           api_location: "" # Api source code path - optional
           output_location: "" # Built app content directory - optional
           app_build_command: 'npm start'
