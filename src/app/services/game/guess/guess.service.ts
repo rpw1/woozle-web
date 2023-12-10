@@ -12,7 +12,7 @@ export class GuessService {
 
   constructor() { }
 
-  public makeGuess(guessType: Guess): void {
-    this.guessSubject.next(guessType);
+  public makeGuess(guess: Guess): void {
+    this.guessSubject.next(guess);
   }
 }
