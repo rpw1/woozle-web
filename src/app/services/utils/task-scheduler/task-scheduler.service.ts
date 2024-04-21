@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { WoozleTask, WoozleTaskState, WoozleTaskType } from '../../../models/woozle-task';
 import { Subject } from 'rxjs';
 import * as uuid from 'uuid';
+import { WoozleTaskType } from '../../../models/woozle-task/woozle-task-type';
+import { WoozleTaskState } from '../../../models/woozle-task/woozle-task-state';
+import { WoozleTask } from '../../../models/woozle-task/woozle-task';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +41,6 @@ export class TaskSchedulerService {
   }
 
   endTask(task: WoozleTask): void {
-    console.log(`Queued Tasks Length: ${this.queuedTasks.length}`)
     if (this.queuedTasks.length > 0) {
       task.taskState = WoozleTaskState.ENDED;
       this.taskSchedulerSubject.next(task);

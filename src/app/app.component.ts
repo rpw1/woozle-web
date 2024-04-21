@@ -1,13 +1,22 @@
 import { Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { GuessListComponent } from './components/guess-list/guess-list.component';
+import { GuessComponent } from './components/guess/guess.component';
+import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
+import { WoozleTask } from './models/woozle-task/woozle-task';
+import { WoozleTaskState } from './models/woozle-task/woozle-task-state';
+import { GuessService } from './services/game/guess/guess.service';
 import { PlayerService } from './services/spotify/player/player.service';
 import { TaskSchedulerService } from './services/utils/task-scheduler/task-scheduler.service';
-import { Subscription } from 'rxjs';
-import { WoozleTask, WoozleTaskState } from './models/woozle-task';
-import { GuessService } from './services/game/guess/guess.service';
-import { Guess } from './models/guess';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
+  imports: [
+    GuessListComponent, 
+    GuessComponent,
+    ProgressBarComponent
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
@@ -25,7 +34,7 @@ export class AppComponent implements OnDestroy {
       }
     }));
 
-    this.subscriptions.push(this.guessService.guess$.subscribe((guess: Guess) => {
+    this.subscriptions.push(this.guessService.guesses$.subscribe(() => {
       this.isPlaying = true;
     }));
   }

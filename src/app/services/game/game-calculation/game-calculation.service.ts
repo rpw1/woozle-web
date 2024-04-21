@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Constants, GameConstants } from '../../../models/constants';
 import { ValidateGameConstantsService } from '../../validators/validate-game-constants.service';
 import { sum } from 'lodash';
+import { GameConstants } from '../../../models/game-constants';
+import { Constants } from '../../../models/constants';
 
 @Injectable({
   providedIn: 'root'

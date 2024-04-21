@@ -1,4 +1,5 @@
 <ul class="list-group mb-2 form-group">
-  <li #guessListItems *ngFor="let item of guessArray; let i = index" class="list-group-item guessItem form-control p-2 mb-2"></li>
+  <li *ngFor="let guess of guesses$ | async" id="guessItem" class="form-control p-2 mb-2" 
+    [class.disabled]="this.guess?.type === guessType.UNKNOWN">{{guess?.song}}</li>
 </ul>
 

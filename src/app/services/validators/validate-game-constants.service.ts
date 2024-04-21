@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { GameConstants } from '../../models/constants';
 import { sum } from 'lodash';
+import { GameConstants } from '../../models/game-constants';
 
 @Injectable({
   providedIn: 'root'

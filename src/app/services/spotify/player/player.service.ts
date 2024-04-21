@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NEVER, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

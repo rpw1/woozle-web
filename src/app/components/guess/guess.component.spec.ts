@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { GuessComponent } from './guess.component';
-import { GuessType } from '../../models/guess';
-import { GuessService } from '../../services/game/guess/guess.service';
-import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import { GuessType } from '../../models/guess/guess-type';
+import { GuessService } from '../../services/game/guess/guess.service';
+import { GuessComponent } from './guess.component';
 
 describe('GuessComponent', () => {
   let component: GuessComponent;
@@ -14,10 +13,9 @@ describe('GuessComponent', () => {
   beforeEach(async () => {
     guessServiceSpy = jasmine.createSpyObj('GuessService', ['makeGuess']);
     await TestBed.configureTestingModule({
-      imports: [FormsModule],
-      declarations: [ GuessComponent ],
-      providers: [{provide: GuessService, useValue: guessServiceSpy}]
-    })
+    imports: [FormsModule, GuessComponent],
+    providers: [{ provide: GuessService, useValue: guessServiceSpy }]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(GuessComponent);
@@ -78,4 +76,5 @@ describe('GuessComponent', () => {
     component.submitGuess(GuessType.SKIP);
     expect(component.currentGuess).toBe('');
   });
+  
 });
