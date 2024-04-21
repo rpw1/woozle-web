@@ -7,8 +7,8 @@ export const initialState: GameState = {
   isPlayingMusic: false
 }
 
-export const GlobalReducer = createReducer<GameState>(
+export const GameStateReducer = createReducer<GameState>(
   initialState,
-  on(setGameState, (state: GameState) => state),
-  on(resetGameState, () => initialState)
+  on(setGameState, (state: GameState) => ({...state})),
+  on(resetGameState, () => ({...initialState}))
 )

@@ -1,30 +1,32 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as uuid from 'uuid';
 import { WoozleTaskType } from '../models/woozle-task-type';
 import { WoozleTaskState } from '../models/woozle-task-state';
 import { WoozleTask } from '../models/woozle-task';
+import { Store } from '@ngrx/store';
+import { QueueState } from '../state/queue-state.model';
+import { addQueueState } from '../state/queue-state.actions';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QueueService {
-  private queuedTasks: WoozleTask[] = [];
   private isTaskCurrentlyRunning: boolean = false;
   private taskSchedulerSubject = new Subject<WoozleTask>();
   taskScheduler$ = this.taskSchedulerSubject.asObservable();
 
-  constructor() { }
+  private store = inject(Store<QueueState>);
 
   queueTask(taskType: WoozleTaskType, index?: number): void {
     const id = uuid.v4();
-    const task = {
+    const task: WoozleTask = {
       id: id,
       taskState: WoozleTaskState.QUEUED,
       taskType: taskType,
       index: index
-    } as WoozleTask;
-    this.queuedTasks.push(task);
+    };
+    this.store.dispatch(addQueueState({task}));
     this.taskSchedulerSubject.next(task);
     if (!this.isTaskCurrentlyRunning) {
       this.startTask();
@@ -61,7 +63,7 @@ export class QueueService {
     this.queuedTasks = [];
 
     const id = uuid.v4();
-    const task = {
+    const task: WoozleTask = {
       id: id,
       taskState: WoozleTaskState.CLEARED,
       taskType: taskType,
