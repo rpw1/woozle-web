@@ -17,12 +17,12 @@ export class GuessService {
   }, {});
 
 
-  private guessesSubject = new BehaviorSubject<{ [key: number]: Guess }>(this.guesses)
+  private guessesSubject = new BehaviorSubject<Guess[]>(Object.values(this.guesses))
   public guesses$ = this.guessesSubject.asObservable();
 
   public makeGuess(guess: Guess): void {
     this.guesses = {... this.guesses, [this.currentGuessIndex]: guess}
     this.currentGuessIndex++;
-    this.guessesSubject.next(this.guesses);
+    this.guessesSubject.next(Object.values(this.guesses));
   }
 }

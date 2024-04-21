@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { GuessService } from '../../services/game/guess/guess.service';
-import { map } from 'rxjs';
 import { GuessType } from '../../models/guess/guess-type';
 
 @Component({
@@ -18,8 +17,6 @@ export class GuessListComponent {
   guessType = GuessType;
 
   private guessService = inject(GuessService);
-  guesses$ = this.guessService.guesses$.pipe(
-    map(x => Object.values(x))
-  );
+  guesses$ = this.guessService.guesses$;
 
 }

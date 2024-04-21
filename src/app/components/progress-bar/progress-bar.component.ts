@@ -53,8 +53,7 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(this.guessService.guesses$
       .pipe(
-        filter(x => Object.values(x)
-          .some(y => y.type !== GuessType.UNKNOWN))
+        filter(x => x.some(y => y.type !== GuessType.UNKNOWN))
       ).subscribe(() => {
       this.activeIndex = this.activeIndex >= GameConstants.TOTAL_GUESSES ? 0 : this.activeIndex + 1;
       this.taskSchedulerService.queueTask(WoozleTaskType.RUN_PROGRESS_SEGMENT_QUEUE, this.activeIndex);
