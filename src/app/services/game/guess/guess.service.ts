@@ -10,18 +10,17 @@ import { GuessType } from '../../../models/guess/guess-type';
 export class GuessService {
 
   private currentGuessIndex = 0;
-  public guesses: { [key: number]: Guess } = GameConstants.SECONDS_ARRAY.reduce((prev, _, index) => {
-    return {...prev, [index]: {
-      type: GuessType.UNKNOWN,
-    }}
-  }, {});
+  private guesses: Guess[] = GameConstants.SECONDS_ARRAY.map(x => {
+    return {
+      type: GuessType.UNKNOWN
+    }
+  });
 
-
-  private guessesSubject = new BehaviorSubject<Guess[]>(Object.values(this.guesses))
+  private guessesSubject = new BehaviorSubject<Guess[]>(this.guesses);
   public guesses$ = this.guessesSubject.asObservable();
 
   public makeGuess(guess: Guess): void {
-    this.guesses = {... this.guesses, [this.currentGuessIndex]: guess}
+    this.guesses = [...this.guesses.slice(0, this.currentGuessIndex), guess, ...this.guesses.slice(this.currentGuessIndex + 1)];
     this.currentGuessIndex++;
     this.guessesSubject.next(Object.values(this.guesses));
   }
