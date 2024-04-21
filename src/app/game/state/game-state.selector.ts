@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
-import { GameState } from "../models/game-state.model";
+import { GameState } from "./game-state.model";
 
 export const getGlobalState = createFeatureSelector<GameState>('gameState');
 

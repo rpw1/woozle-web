@@ -2,13 +2,13 @@ import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } fro
 import { Subscription, filter, timer } from 'rxjs';
 import { Constants } from '../../models/constants';
 import { GameConstants } from '../../models/game-constants';
-import { WoozleTask } from '../../../task-scheduler/models/woozle-task';
-import { WoozleTaskState } from '../../../task-scheduler/models/woozle-task-state';
-import { WoozleTaskType } from '../../../task-scheduler/models/woozle-task-type';
+import { WoozleTask } from '../../../queue/models/woozle-task';
+import { WoozleTaskState } from '../../../queue/models/woozle-task-state';
+import { WoozleTaskType } from '../../../queue/models/woozle-task-type';
 import { GameCalculationService } from '../../services/game-calculation/game-calculation.service';
 import { GuessService } from '../../services/guess/guess.service';
 import { PlayerService } from '../../services/player/player.service';
-import { TaskSchedulerService } from '../../../task-scheduler/services/task-scheduler.service';
+import { QueueService } from '../../../queue/services/queue.service';
 import { CommonModule } from '@angular/common';
 import { GuessType } from '../../models/guess-type';
 
@@ -29,23 +29,23 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
 
   constructor(private gameCalculationService: GameCalculationService
     ,private playerService: PlayerService
-    ,private taskSchedulerService: TaskSchedulerService
+    ,private queueService: QueueService
     ,private guessService: GuessService) {
       this.guessPercentArray = this.gameCalculationService.getGamePercentageArray();
     }
 
   ngOnInit(): void {
     this.subscriptions.push(this.playerService.player$.subscribe(() => {
-      if (!this.taskSchedulerService.hasRunningTask()) {
-        this.taskSchedulerService.queueTask(WoozleTaskType.RUN_PROGRESS_SEGMENT_QUEUE, this.activeIndex);
+      if (!this.queueService.hasRunningTask()) {
+        this.queueService.queueTask(WoozleTaskType.RUN_PROGRESS_SEGMENT_QUEUE, this.activeIndex);
       } else {
         this.intervalPlayer?.unsubscribe();
-        this.taskSchedulerService.clearAllTasks(WoozleTaskType.RUN_PROGRESS_SEGMENT_QUEUE);
+        this.queueService.clearAllTasks(WoozleTaskType.RUN_PROGRESS_SEGMENT_QUEUE);
         this.resetAllSegments();
       }
     }));
 
-    this.subscriptions.push(this.taskSchedulerService.taskScheduler$.subscribe((task: WoozleTask) => {
+    this.subscriptions.push(this.queueService.taskScheduler$.subscribe((task: WoozleTask) => {
       if (task.taskType === WoozleTaskType.RUN_PROGRESS_SEGMENT_QUEUE) {
         this.handleQueuedTask(task);
       }
@@ -56,7 +56,7 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
         filter(x => x.some(y => y.type !== GuessType.UNKNOWN))
       ).subscribe(() => {
       this.activeIndex = this.activeIndex >= GameConstants.TOTAL_GUESSES ? 0 : this.activeIndex + 1;
-      this.taskSchedulerService.queueTask(WoozleTaskType.RUN_PROGRESS_SEGMENT_QUEUE, this.activeIndex);
+      this.queueService.queueTask(WoozleTaskType.RUN_PROGRESS_SEGMENT_QUEUE, this.activeIndex);
     }));
   }
 
@@ -76,7 +76,7 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
         currentSegment.style.width = currentWidth + '%';
         if (currentWidth >= Constants.PERCENTAGE_CONVERSION) {
           this.intervalPlayer.unsubscribe();
-          this.taskSchedulerService.endTask(currentTask);
+          this.queueService.endTask(currentTask);
         }
       });
     }
@@ -89,17 +89,17 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
   }
 
   private handleQueuedTask(task: WoozleTask) {
-    if (task.taskState === WoozleTaskState.QUEUED && !this.taskSchedulerService.hasRunningTask()) {
+    if (task.taskState === WoozleTaskState.QUEUED && !this.queueService.hasRunningTask()) {
       if (task.index != 0) {
-        this.taskSchedulerService.clearAllTasks(WoozleTaskType.RUN_PROGRESS_SEGMENT_QUEUE);
+        this.queueService.clearAllTasks(WoozleTaskType.RUN_PROGRESS_SEGMENT_QUEUE);
         this.resetAllSegments();
         for (let i = 0; i <= this.activeIndex; i++) {
-          this.taskSchedulerService.queueTask(WoozleTaskType.RUN_PROGRESS_SEGMENT_QUEUE, i);
+          this.queueService.queueTask(WoozleTaskType.RUN_PROGRESS_SEGMENT_QUEUE, i);
         }
       }
     } else if (task.taskState === WoozleTaskState.STARTED) {
       this.runSegmentQueue(task);
-    } else if (task.taskState === WoozleTaskState.ENDED && !this.taskSchedulerService.hasRunningTask()) {
+    } else if (task.taskState === WoozleTaskState.ENDED && !this.queueService.hasRunningTask()) {
       this.resetAllSegments();
     }
   }

@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
-import { resetGameState, setGameState } from "../actions/game-state.actions";
-import { GameState } from "../models/game-state.model";
+import { resetGameState, setGameState } from "./game-state.actions";
+import { GameState } from "./game-state.model";
 
 export const initialState: GameState = {
   guessCount: 0,

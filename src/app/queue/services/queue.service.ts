@@ -8,7 +8,7 @@ import { WoozleTask } from '../models/woozle-task';
 @Injectable({
   providedIn: 'root'
 })
-export class TaskSchedulerService {
+export class QueueService {
   private queuedTasks: WoozleTask[] = [];
   private isTaskCurrentlyRunning: boolean = false;
   private taskSchedulerSubject = new Subject<WoozleTask>();
