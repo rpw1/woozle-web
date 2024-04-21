@@ -5,6 +5,8 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { Routes, provideRouter } from '@angular/router';
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
 
 const routes: Routes = [
   {path: '**', redirectTo: 'AppComponent' }
@@ -12,6 +14,8 @@ const routes: Routes = [
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideRouter(routes)
-  ]
+    provideRouter(routes),
+    provideStore(),
+    provideEffects()
+]
 }).catch(e => console.error(e));

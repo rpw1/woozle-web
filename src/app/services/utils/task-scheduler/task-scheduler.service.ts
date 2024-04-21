@@ -9,7 +9,7 @@ import { WoozleTask } from '../../../models/woozle-task/woozle-task';
   providedIn: 'root'
 })
 export class TaskSchedulerService {
-  private queuedTasks: WoozleTask[] = []
+  private queuedTasks: WoozleTask[] = [];
   private isTaskCurrentlyRunning: boolean = false;
   private taskSchedulerSubject = new Subject<WoozleTask>();
   taskScheduler$ = this.taskSchedulerSubject.asObservable();
@@ -58,14 +58,15 @@ export class TaskSchedulerService {
 
   clearAllTasks(taskType: WoozleTaskType) {
     this.isTaskCurrentlyRunning = false;
-    this.queuedTasks = [] as WoozleTask[];
+    this.queuedTasks = [];
 
     const id = uuid.v4();
     const task = {
       id: id,
       taskState: WoozleTaskState.CLEARED,
       taskType: taskType,
-    } as WoozleTask;
+    };
+
     this.taskSchedulerSubject.next(task);
   }
 }
