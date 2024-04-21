@@ -1,0 +1,7 @@
+@import 'src/styles.scss';
+
+#guessItem {
+  border-radius: var(--bs-border-radius);
+  min-height: 2.5rem;
+  max-height: 2.5rem;
+}

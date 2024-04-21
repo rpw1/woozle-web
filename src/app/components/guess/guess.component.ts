@@ -1,10 +1,16 @@
 import { Component } from '@angular/core';
-import { SongService } from '../../services/spotify/song/song.service';
+import { FormsModule } from '@angular/forms';
+import { Guess } from '../../models/guess/guess';
+import { GuessType } from '../../models/guess/guess-type';
 import { GuessService } from '../../services/game/guess/guess.service';
-import { Guess, GuessType } from '../../models/guess';
+import { SongService } from '../../services/spotify/song/song.service';
 
 @Component({
   selector: 'app-guess',
+  standalone: true,
+  imports: [
+    FormsModule
+  ],
   templateUrl: './guess.component.html',
   styleUrls: ['./guess.component.scss']
 })
@@ -22,7 +28,7 @@ export class GuessComponent {
 
   submitGuess(guessType: GuessType): void {
     let guess: Guess;
-    if (guessType == GuessType.SKIP) {
+    if (guessType === GuessType.SKIP) {
       guess = {
         type: GuessType.SKIP,
         song: this.SKIP_GUESS_TEXT

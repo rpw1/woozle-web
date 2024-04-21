@@ -1,18 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { Guess } from '../../../models/guess';
+import { BehaviorSubject } from 'rxjs';
+import { Guess } from '../../../models/guess/guess';
+import { GameConstants } from '../../../models/game-constants';
+import { GuessType } from '../../../models/guess/guess-type';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GuessService {
 
-  private guessSubject = new Subject<Guess>()
-  public guess$ = this.guessSubject.asObservable();
+  private currentGuessIndex = 0;
+  public guesses: { [key: number]: Guess } = GameConstants.SECONDS_ARRAY.reduce((prev, _, index) => {
+    return {...prev, [index]: {
+      type: GuessType.UNKNOWN,
+    }}
+  }, {});
 
-  constructor() { }
+
+  private guessesSubject = new BehaviorSubject<{ [key: number]: Guess }>(this.guesses)
+  public guesses$ = this.guessesSubject.asObservable();
 
   public makeGuess(guess: Guess): void {
-    this.guessSubject.next(guess);
+    this.guesses = {... this.guesses, [this.currentGuessIndex]: guess}
+    this.currentGuessIndex++;
+    this.guessesSubject.next(this.guesses);
   }
 }
