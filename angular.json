@@ -79,18 +79,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "woozle:build"
+            "buildTarget": "woozle:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "woozle:build:production"
+              "buildTarget": "woozle:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "woozle:build"
+            "buildTarget": "woozle:build"
           }
         },
         "test": {
