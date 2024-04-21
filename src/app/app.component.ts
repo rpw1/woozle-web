@@ -1,13 +1,13 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { GuessListComponent } from './components/guess-list/guess-list.component';
-import { GuessComponent } from './components/guess/guess.component';
-import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
-import { WoozleTask } from './models/woozle-task/woozle-task';
-import { WoozleTaskState } from './models/woozle-task/woozle-task-state';
-import { GuessService } from './services/game/guess/guess.service';
-import { PlayerService } from './services/spotify/player/player.service';
-import { TaskSchedulerService } from './services/utils/task-scheduler/task-scheduler.service';
+import { GuessListComponent } from './game/components/guess-list/guess-list.component';
+import { GuessComponent } from './game/components/guess/guess.component';
+import { ProgressBarComponent } from './game/components/progress-bar/progress-bar.component';
+import { WoozleTask } from './task-scheduler/models/woozle-task';
+import { WoozleTaskState } from './task-scheduler/models/woozle-task-state';
+import { GuessService } from './game/services/guess/guess.service';
+import { PlayerService } from './game/services/player/player.service';
+import { TaskSchedulerService } from './task-scheduler/services/task-scheduler.service';
 
 @Component({
   selector: 'app-root',
