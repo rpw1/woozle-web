@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { NEVER, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlayerService {
 
-  private playerSubject = new Subject<never>()
+  private playerSubject = new Subject<boolean>()
   public player$ = this.playerSubject.asObservable();
 
   constructor() { }
 
   public togglePlayer(): void {
-    this.playerSubject.next();
+    this.playerSubject.next(true);
   }
 }

@@ -2,7 +2,7 @@ import { Component, ElementRef, OnDestroy, QueryList, ViewChildren } from '@angu
 import { GameConstants } from '../../models/constants';
 import { GuessService } from '../../services/game/guess/guess.service';
 import { Subscription } from 'rxjs';
-import { Guess, GuessType } from '../../models/guess';
+import { Guess } from '../../models/guess';
 
 @Component({
   selector: 'app-guess-list',
@@ -11,7 +11,6 @@ import { Guess, GuessType } from '../../models/guess';
 })
 export class GuessListComponent implements OnDestroy {
   guessArray: number[] = GameConstants.SECONDS_ARRAY;
-  private SKIP_GUESS_TEXT = 'SKIPPED';
   private currentIndex = 0;
   private subscriptions: Subscription[] = [];
   @ViewChildren('guessListItems') guessListItems!: QueryList<ElementRef<HTMLDListElement>>;
@@ -19,10 +18,8 @@ export class GuessListComponent implements OnDestroy {
   constructor(private guessService: GuessService) {
     this.subscriptions.push(this.guessService.guess$.subscribe((guess: Guess) => {
       let guessText = '';
-      if (guess.type === GuessType.GUESS && guess.song !== undefined) {
+      if (guess.song !== undefined) {
         guessText = guess.song;
-      } else if (guess.type === GuessType.SKIP) {
-        guessText = this.SKIP_GUESS_TEXT;
       }
       this.setGuessText(guessText);
     }));

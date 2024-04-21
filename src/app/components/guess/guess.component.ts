@@ -11,6 +11,7 @@ import { Guess, GuessType } from '../../models/guess';
 export class GuessComponent {
   GuessType = GuessType;
   currentGuess: string = '';
+  private SKIP_GUESS_TEXT = 'SKIPPED';
 
   constructor(private songService: SongService
     ,private guessService: GuessService) {}
@@ -23,7 +24,8 @@ export class GuessComponent {
     let guess: Guess;
     if (guessType == GuessType.SKIP) {
       guess = {
-        type: GuessType.SKIP
+        type: GuessType.SKIP,
+        song: this.SKIP_GUESS_TEXT
       };
     } else {
       guess = {

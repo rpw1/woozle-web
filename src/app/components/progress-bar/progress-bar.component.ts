@@ -18,13 +18,15 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
   activeIndex: number = 0;
   private intervalPlayer!: Subscription;
   private subscriptions: Subscription[] = []; 
-  guessPercentArray = this.gameCalculationService.getGamePercentageArray();
+  guessPercentArray: number[] = [];
   @ViewChildren('playerProgressBar') progressBarSegments!: QueryList<ElementRef<HTMLDivElement>>;
 
   constructor(private gameCalculationService: GameCalculationService
     ,private playerService: PlayerService
     ,private taskSchedulerService: TaskSchedulerService
-    ,private guessService: GuessService) {}
+    ,private guessService: GuessService) {
+      this.guessPercentArray = this.gameCalculationService.getGamePercentageArray();
+    }
 
   ngOnInit(): void {
     this.subscriptions.push(this.playerService.player$.subscribe(() => {

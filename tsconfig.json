@@ -6,10 +6,8 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
@@ -17,16 +15,15 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "ES2022",
-    "useDefineForClassFields": false,
+    "module": "es2020",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "lib": [
-      "ES2022",
+      "ES2018",
       "dom"
     ]
   },
   "angularCompilerOptions": {
-    "disableTypeScriptVersionCheck": true,
-    "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
