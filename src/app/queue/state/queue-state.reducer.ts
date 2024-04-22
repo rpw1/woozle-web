@@ -1,10 +1,11 @@
 import { createReducer, on } from '@ngrx/store';
-import { QueueState } from './queue-state.model';
-import { addQueueState, removeQueueState, resetQueueState } from './queue-state.actions';
 import { deepClone } from 'fast-json-patch';
+import { addQueueState, resetQueueState, shiftQueueState, updateActiveTask } from './queue-state.actions';
+import { QueueState } from './queue-state.model';
 
 export const initialState: QueueState = {
-  queue: []
+  queue: [],
+  activeTask: undefined
 }
 
 export const QueueStateReducer = createReducer<QueueState>(
@@ -13,9 +14,16 @@ export const QueueStateReducer = createReducer<QueueState>(
     state.queue.push(task);
     return deepClone(state);
   }),
-  on(removeQueueState, (state: QueueState) => {
-    state.queue = state.queue.slice(1); 
-    return state; // slice returns a copy of the array, thus not needing deepClone
+  on(shiftQueueState, (state: QueueState) => {
+    const task = state.queue.shift();
+    state.activeTask = task;
+    return deepClone(state);
   }),
-  on(resetQueueState, () => ({...initialState}))
+  on(resetQueueState, () => (deepClone(initialState))),
+  on(updateActiveTask, (state: QueueState, { taskState }) => {
+    if (state.activeTask) {
+      state.activeTask.taskState = taskState;
+      return deepClone(state);
+    }
+  })
 );

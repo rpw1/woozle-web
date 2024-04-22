@@ -1,12 +1,12 @@
 import { Injectable, inject } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject, filter } from 'rxjs';
 import * as uuid from 'uuid';
 import { WoozleTaskType } from '../models/woozle-task-type';
 import { WoozleTaskState } from '../models/woozle-task-state';
 import { WoozleTask } from '../models/woozle-task';
 import { Store } from '@ngrx/store';
 import { QueueState } from '../state/queue-state.model';
-import { addQueueState } from '../state/queue-state.actions';
+import { addQueueState, shiftQueueState, updateActiveTask } from '../state/queue-state.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,14 @@ export class QueueService {
   private taskSchedulerSubject = new Subject<WoozleTask>();
   taskScheduler$ = this.taskSchedulerSubject.asObservable();
 
-  private store = inject(Store<QueueState>);
+  constructor(private store: Store<QueueState>) {
+    this.store.select('activeTask').pipe(
+      filter(x => x !== undefined)
+    ).subscribe(task => {
+      store.dispatch(updateActiveTask({taskState: WoozleTaskState.STARTED}))
+    });
+  }
+  
 
   queueTask(taskType: WoozleTaskType, index?: number): void {
     const id = uuid.v4();
@@ -26,21 +33,14 @@ export class QueueService {
       taskType: taskType,
       index: index
     };
-    this.store.dispatch(addQueueState({task}));
+    this.store.dispatch(addQueueState({task: task}));
+    
     this.taskSchedulerSubject.next(task);
     if (!this.isTaskCurrentlyRunning) {
-      this.startTask();
+      this.store.dispatch(shiftQueueState());
     }
   }
 
-  private startTask(): void {
-    this.isTaskCurrentlyRunning = true;
-    const currentTask = this.queuedTasks.shift();
-    if (currentTask !== undefined) {
-      currentTask.taskState = WoozleTaskState.STARTED
-      this.taskSchedulerSubject.next(currentTask);
-    }
-  }
 
   endTask(task: WoozleTask): void {
     if (this.queuedTasks.length > 0) {
