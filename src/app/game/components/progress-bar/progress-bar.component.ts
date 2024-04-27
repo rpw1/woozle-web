@@ -1,14 +1,12 @@
-import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Subscription, filter, timer } from 'rxjs';
 import { Constants } from '../../models/constants';
 import { GameConstants } from '../../models/game-constants';
-import { WoozleTask } from '../../../queue/models/woozle-task';
-import { WoozleTaskState } from '../../../queue/models/woozle-task-state';
+import { WoozleTask } from '../../../queue/models/progress-bar-task';
 import { WoozleTaskType } from '../../../queue/models/woozle-task-type';
 import { GameCalculationService } from '../../services/game-calculation/game-calculation.service';
 import { GuessService } from '../../services/guess/guess.service';
 import { PlayerService } from '../../services/player/player.service';
-import { QueueService } from '../../../queue/services/queue.service';
 import { CommonModule } from '@angular/common';
 import { GuessType } from '../../models/guess-type';
 
@@ -19,7 +17,7 @@ import { GuessType } from '../../models/guess-type';
   templateUrl: './progress-bar.component.html',
   styleUrls: ['./progress-bar.component.scss']
 })
-export class ProgressBarComponent implements OnInit, OnDestroy {
+export class ProgressBarComponent implements OnInit {
   readonly TIMER_INTERVAL = 10;
   activeIndex: number = 0;
   private intervalPlayer!: Subscription;
@@ -45,12 +43,6 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
       }
     }));
 
-    this.subscriptions.push(this.queueService.taskScheduler$.subscribe((task: WoozleTask) => {
-      if (task.taskType === WoozleTaskType.RUN_PROGRESS_SEGMENT_QUEUE) {
-        this.handleQueuedTask(task);
-      }
-    }));
-
     this.subscriptions.push(this.guessService.guesses$
       .pipe(
         filter(x => x.some(y => y.type !== GuessType.UNKNOWN))
@@ -58,12 +50,6 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
       this.activeIndex = this.activeIndex >= GameConstants.TOTAL_GUESSES ? 0 : this.activeIndex + 1;
       this.queueService.queueTask(WoozleTaskType.RUN_PROGRESS_SEGMENT_QUEUE, this.activeIndex);
     }));
-  }
-
-  ngOnDestroy(): void {
-    for (let subscription of this.subscriptions) {
-      subscription.unsubscribe();
-    }
   }
 
   private runSegmentQueue(currentTask: WoozleTask): void {
@@ -88,19 +74,4 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
     });
   }
 
-  private handleQueuedTask(task: WoozleTask) {
-    if (task.taskState === WoozleTaskState.QUEUED && !this.queueService.hasRunningTask()) {
-      if (task.index != 0) {
-        this.queueService.clearAllTasks(WoozleTaskType.RUN_PROGRESS_SEGMENT_QUEUE);
-        this.resetAllSegments();
-        for (let i = 0; i <= this.activeIndex; i++) {
-          this.queueService.queueTask(WoozleTaskType.RUN_PROGRESS_SEGMENT_QUEUE, i);
-        }
-      }
-    } else if (task.taskState === WoozleTaskState.STARTED) {
-      this.runSegmentQueue(task);
-    } else if (task.taskState === WoozleTaskState.ENDED && !this.queueService.hasRunningTask()) {
-      this.resetAllSegments();
-    }
-  }
 }

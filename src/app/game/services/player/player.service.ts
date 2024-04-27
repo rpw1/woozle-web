@@ -9,9 +9,12 @@ export class PlayerService {
   private playerSubject = new Subject<boolean>()
   public player$ = this.playerSubject.asObservable();
 
+  private isActive = false;
+
   constructor() { }
 
   public togglePlayer(): void {
-    this.playerSubject.next(true);
+    this.isActive = !this.isActive;
+    this.playerSubject.next(this.isActive);
   }
 }
