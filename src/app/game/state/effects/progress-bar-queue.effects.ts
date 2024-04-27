@@ -1,10 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { ProgressBarQueueActions } from './progress-bar-queue.actions';
+import { ProgressBarQueueActions } from '../actions/progress-bar-queue.actions';
 import { concatMap, lastValueFrom, of } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { ProgressBarQueue } from './progress-bar-queue.model';
-import { selectActiveTask } from './progress-bar-queue.selector';
+import { ProgressBarQueue } from '../models/progress-bar-queue.model';
+import { selectActiveTask } from '../selectors/progress-bar-queue.selector';
 
 @Injectable()
 export class ProgressBarQueueEffects {

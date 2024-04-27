@@ -18,7 +18,6 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  isPlaying = false;
 
   private playerService = inject(PlayerService);
   isPlaying$ = this.playerService.player$;

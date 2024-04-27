@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { ProgressBarQueue } from './progress-bar-queue.model';
+import { ProgressBarQueue } from '../models/progress-bar-queue.model';
 
 export const selectQueueState = createFeatureSelector<ProgressBarQueue>('progressBarQueue');
 

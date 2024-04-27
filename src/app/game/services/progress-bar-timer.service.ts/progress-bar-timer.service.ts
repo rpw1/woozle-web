@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { concat, map, switchMap, timer } from 'rxjs';
-import { ProgressBarQueueActions } from '../../../queue/state/progress-bar-queue.actions';
-import { ProgressBarQueueEffects } from '../../../queue/state/progress-bar-queue.effects';
-import { ProgressBarQueue } from '../../../queue/state/progress-bar-queue.model';
+import { ProgressBarQueueActions } from '../../state/actions/progress-bar-queue.actions';
+import { ProgressBarQueueEffects } from '../../state/effects/progress-bar-queue.effects';
+import { ProgressBarQueue } from '../../state/models/progress-bar-queue.model';
 import { Constants } from '../../models/constants';
 import { GameConstants } from '../../models/game-constants';
 

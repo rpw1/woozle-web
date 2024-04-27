@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { PlayerService } from '../player/player.service';
-import { ProgressBarQueue } from '../../../queue/state/progress-bar-queue.model';
+import { ProgressBarQueue } from '../../state/models/progress-bar-queue.model';
 import { Store } from '@ngrx/store';
-import { ProgressBarQueueActions } from '../../../queue/state/progress-bar-queue.actions';
+import { ProgressBarQueueActions } from '../../state/actions/progress-bar-queue.actions';
 import { GuessService } from '../guess/guess.service';
 
 @Injectable({

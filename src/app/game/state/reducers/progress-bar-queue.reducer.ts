@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { deepClone } from 'fast-json-patch';
-import { ProgressBarQueue } from './progress-bar-queue.model';
-import { ProgressBarQueueActions } from './progress-bar-queue.actions';
+import { ProgressBarQueue } from '../models/progress-bar-queue.model';
+import { ProgressBarQueueActions } from '../actions/progress-bar-queue.actions';
 
 export const initialState: ProgressBarQueue = {
   queuedTasks: 0,

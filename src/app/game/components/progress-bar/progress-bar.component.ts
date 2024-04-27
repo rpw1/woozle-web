@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ProgressBarQueueEffects } from '../../../queue/state/progress-bar-queue.effects';
+import { ProgressBarQueueEffects } from '../../state/effects/progress-bar-queue.effects';
 import { GameCalculationService } from '../../services/game-calculation/game-calculation.service';
 import { ProgressBarTimerService } from '../../services/progress-bar-timer.service.ts/progress-bar-timer.service';
 
