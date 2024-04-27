@@ -7,6 +7,7 @@ import { AppComponent } from './app/app.component';
 import { Routes, provideRouter } from '@angular/router';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
+import { ProgressBarQueueEffects } from './app/queue/state/progress-bar-queue.effects';
 
 const routes: Routes = [
   {path: '**', redirectTo: 'AppComponent' }
@@ -16,6 +17,6 @@ bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
     provideStore(),
-    provideEffects()
+    provideEffects([ProgressBarQueueEffects])
 ]
 }).catch(e => console.error(e));

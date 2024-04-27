@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Guess } from '../../models/guess';
 import { GuessType } from '../../models/guess-type';
 import { GuessService } from '../../services/guess/guess.service';
-import { SongService } from '../../../services/spotify/song/song.service';
 
 @Component({
   selector: 'app-guess',
@@ -19,12 +18,7 @@ export class GuessComponent {
   currentGuess: string = '';
   private SKIP_GUESS_TEXT = 'SKIPPED';
 
-  constructor(private songService: SongService
-    ,private guessService: GuessService) {}
-
-  searchSongs() {
-    console.log(`searching for ${this.currentGuess}`);
-  }
+  private guessService = inject(GuessService);
 
   submitGuess(guessType: GuessType): void {
     let guess: Guess;

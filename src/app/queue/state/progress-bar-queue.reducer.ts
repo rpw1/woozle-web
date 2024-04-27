@@ -10,24 +10,28 @@ export const initialState: ProgressBarQueue = {
 
 export const QueueStateReducer = createReducer<ProgressBarQueue>(
   initialState,
-  on(ProgressBarQueueActions.queue, (state: ProgressBarQueue, { tasks }) => {
+  on(ProgressBarQueueActions.completeTask, (state) => {
+    state.activeTask = false;
+
+    return deepClone(state);
+  }),
+
+  on(ProgressBarQueueActions.queueTask, (state, { tasks }) => {
+    if (tasks <= 0) {
+      return state;
+    }
     state.queuedTasks += tasks;
 
-    if (!state.activeTask) {
-      state.queuedTasks -= 1;
-      state.activeTask = true;
-    }
-
     return deepClone(state);
   }),
-  on(ProgressBarQueueActions.start, (state: ProgressBarQueue) => {
-    if (state.queuedTasks === 0 || state.activeTask) {
-      return;
-    }
 
+  on(ProgressBarQueueActions.resetTasks, () => (deepClone(initialState))
+  ),
+
+  on(ProgressBarQueueActions.startTask, (state) => {
     state.queuedTasks -= 1;
     state.activeTask = true;
+
     return deepClone(state);
   }),
-  on(ProgressBarQueueActions.reset, () => (deepClone(initialState)))
 );
