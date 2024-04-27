@@ -3,7 +3,7 @@ import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren, inje
 import { Subscription } from 'rxjs';
 import { ProgressBarQueueEffects } from '../../state/effects/progress-bar-queue.effects';
 import { GameCalculationService } from '../../services/game-calculation/game-calculation.service';
-import { ProgressBarTimerService } from '../../services/progress-bar-timer.service.ts/progress-bar-timer.service';
+import { ProgressBarTimerService } from '../../services/progress-bar-timer/progress-bar-timer.service';
 
 @Component({
   selector: 'app-progress-bar',
