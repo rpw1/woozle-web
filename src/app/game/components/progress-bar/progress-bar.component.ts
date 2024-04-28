@@ -4,11 +4,16 @@ import { Subscription } from 'rxjs';
 import { ProgressBarQueueEffects } from '../../state/effects/progress-bar-queue.effects';
 import { GameCalculationService } from '../../services/game-calculation/game-calculation.service';
 import { ProgressBarTimerService } from '../../services/progress-bar-timer/progress-bar-timer.service';
+import { ProgressBarService } from '../../services/progress-bar/progress-bar.service';
+import { ProgressSegmentComponent } from '../progress-segment/progress-segment.component';
 
 @Component({
   selector: 'app-progress-bar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    ProgressSegmentComponent
+  ],
   templateUrl: './progress-bar.component.html',
   styleUrls: ['./progress-bar.component.scss']
 })
@@ -23,6 +28,8 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
   progressBarPercentage$ = this.progressBarTimerService.progressBarPercentage$;
 
   private progressBarQueueEffects = inject(ProgressBarQueueEffects);
+
+  private progressBarService = inject(ProgressBarService);
 
   private subscriptions : Subscription[] = [];
 

@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { concat, map, switchMap, timer } from 'rxjs';
+import { EMPTY, concat, map, of, switchMap, timer } from 'rxjs';
 import { ProgressBarQueueActions } from '../../state/actions/progress-bar-queue.actions';
 import { ProgressBarQueueEffects } from '../../state/effects/progress-bar-queue.effects';
 import { ProgressBarQueue } from '../../state/models/progress-bar-queue.model';
@@ -13,20 +13,20 @@ import { GameConstants } from '../../models/game-constants';
 export class ProgressBarTimerService {
 
   private progressBarQueueEffects = inject(ProgressBarQueueEffects);
-  private store = inject(Store<ProgressBarQueue>);
+  private progressBarQueueStore = inject(Store<ProgressBarQueue>);
 
   private timeElapsed = 0;
-  private timer$ = timer(0, 10).pipe(
-    map(_ => this.timeElapsed++),
-    map(interval => interval / (GameConstants.SECONDS_ARRAY[0] * 10) )
-  );
+  private timer$ = of(1) // timer(0, 10).pipe(
+    // map(_ => this.timeElapsed++),
+    // map(interval => interval / (GameConstants.SECONDS_ARRAY[0] * 10) )
+  // );
 
   constructor() {
-    this.timer$.subscribe(width => {
-      if (width > Constants.PERCENTAGE_CONVERSION) {
-        this.store.dispatch(ProgressBarQueueActions.completeTask())
-      }
-    })
+    // this.progressBarPercentage$.subscribe(width => {
+    //   if (width > Constants.PERCENTAGE_CONVERSION) {
+    //     this.progressBarQueueStore.dispatch(ProgressBarQueueActions.completeTask())
+    //   }
+    // })
   }
 
   progressBarPercentage$ = concat(
@@ -42,7 +42,7 @@ export class ProgressBarTimerService {
         case ProgressBarQueueActions.completeTask.type:
         case ProgressBarQueueActions.resetTasks.type: {
           this.timeElapsed = 0;
-          return this.timer$;
+          return EMPTY;
         }
       }
     }))

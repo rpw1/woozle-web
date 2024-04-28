@@ -1,9 +1,11 @@
 import { Injectable, inject } from '@angular/core';
-import { PlayerService } from '../player/player.service';
 import { ProgressBarQueue } from '../../state/models/progress-bar-queue.model';
 import { Store } from '@ngrx/store';
 import { ProgressBarQueueActions } from '../../state/actions/progress-bar-queue.actions';
 import { GuessService } from '../guess/guess.service';
+import { selectGuesses, selectIsPlayingMusic } from '../../state/selectors/game.selector';
+import { lastValueFrom } from 'rxjs';
+import { Game } from '../../state/models/game.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,24 +13,24 @@ import { GuessService } from '../guess/guess.service';
 export class ProgressBarService {
 
   private guessService = inject(GuessService);
-  private playerService = inject(PlayerService);
-  private store = inject(Store<ProgressBarQueue>);
+  private progressBarQueueStore = inject(Store<ProgressBarQueue>);
+  private gameStore = inject(Store<Game>);
 
   constructor() {
-    this.playerService.player$.subscribe((isActive: boolean) => {
+    this.gameStore.select(selectIsPlayingMusic).subscribe(async (isActive: boolean) => {
       if (isActive) {
-        this.store.dispatch(ProgressBarQueueActions.queueTask({
-          tasks: 1 // todo: find something to manage this
+        this.progressBarQueueStore.dispatch(ProgressBarQueueActions.queueTask({
+          tasks: await lastValueFrom(this.gameStore.select(selectGuesses))
         }));
       } else {
-        this.store.dispatch(ProgressBarQueueActions.resetTasks());
+        this.progressBarQueueStore.dispatch(ProgressBarQueueActions.resetTasks());
       }
     });
 
-    this.guessService.guesses$.subscribe(() => {
-      this.store.dispatch(ProgressBarQueueActions.queueTask({
-        tasks: 1
-      }));
-    });
+    // this.guessService.guesses$.subscribe(() => {
+    //   this.progressBarQueueStore.dispatch(ProgressBarQueueActions.queueTask({
+    //     tasks: 1
+    //   }));
+    // });
   }
 }

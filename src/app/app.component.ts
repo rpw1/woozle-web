@@ -2,8 +2,11 @@ import { Component, inject } from '@angular/core';
 import { GuessListComponent } from './game/components/guess-list/guess-list.component';
 import { GuessComponent } from './game/components/guess/guess.component';
 import { ProgressBarComponent } from './game/components/progress-bar/progress-bar.component';
-import { PlayerService } from './game/services/player/player.service';
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { Game } from './game/state/models/game.model';
+import { selectIsPlayingMusic } from './game/state/selectors/game.selector';
+import { GameActions } from './game/state/actions/game.actions';
 
 @Component({
   selector: 'app-root',
@@ -19,10 +22,10 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent {
 
-  private playerService = inject(PlayerService);
-  isPlaying$ = this.playerService.player$;
+  private gameStore = inject(Store<Game>);
+  isPlayingMusic$ = this.gameStore.select(selectIsPlayingMusic);
 
   togglePlayer() {
-    this.playerService.togglePlayer();
+    this.gameStore.dispatch(GameActions.togglePlayer());
   }
 }

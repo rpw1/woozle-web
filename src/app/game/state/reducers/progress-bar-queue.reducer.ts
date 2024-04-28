@@ -1,5 +1,4 @@
 import { createReducer, on } from '@ngrx/store';
-import { deepClone } from 'fast-json-patch';
 import { ProgressBarQueue } from '../models/progress-bar-queue.model';
 import { ProgressBarQueueActions } from '../actions/progress-bar-queue.actions';
 
@@ -10,28 +9,27 @@ export const initialState: ProgressBarQueue = {
 
 export const QueueStateReducer = createReducer<ProgressBarQueue>(
   initialState,
-  on(ProgressBarQueueActions.completeTask, (state) => {
-    state.activeTask = false;
-
-    return deepClone(state);
-  }),
+  on(ProgressBarQueueActions.completeTask, (state) => (
+    { ...state, activeTask: false}
+  )),
 
   on(ProgressBarQueueActions.queueTask, (state, { tasks }) => {
     if (tasks <= 0) {
       return state;
     }
-    state.queuedTasks += tasks;
 
-    return deepClone(state);
+    return { ...state, queuedTasks: state.queuedTasks + tasks,}
   }),
 
-  on(ProgressBarQueueActions.resetTasks, () => (deepClone(initialState))
-  ),
+  on(ProgressBarQueueActions.resetTasks, () => (
+    {...initialState}
+  )),
 
   on(ProgressBarQueueActions.startTask, (state) => {
-    state.queuedTasks -= 1;
-    state.activeTask = true;
-
-    return deepClone(state);
+    return {
+      queuedTasks: state.queuedTasks - 1,
+      activeTask: true
+    }
   }),
+  on(ProgressBarQueueActions.wait, (state) => state)
 );

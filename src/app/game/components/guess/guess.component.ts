@@ -3,6 +3,9 @@ import { FormsModule } from '@angular/forms';
 import { Guess } from '../../models/guess';
 import { GuessType } from '../../models/guess-type';
 import { GuessService } from '../../services/guess/guess.service';
+import { Store } from '@ngrx/store';
+import { Game } from '../../state/models/game.model';
+import { GameActions } from '../../state/actions/game.actions';
 
 @Component({
   selector: 'app-guess',
@@ -19,6 +22,7 @@ export class GuessComponent {
   private SKIP_GUESS_TEXT = 'SKIPPED';
 
   private guessService = inject(GuessService);
+  private gameStore = inject(Store<Game>);
 
   submitGuess(guessType: GuessType): void {
     let guess: Guess;
@@ -33,6 +37,7 @@ export class GuessComponent {
         song: this.currentGuess.trim()
       };
     }
+    this.gameStore.dispatch(GameActions.addGuess())
     this.guessService.makeGuess(guess);
     this.currentGuess = '';
   }
