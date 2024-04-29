@@ -24,8 +24,8 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
   private gameCalculationService = inject(GameCalculationService);
   guessPercentArray: number[] = this.gameCalculationService.getGamePercentageArray();
 
-  private progressBarTimerService = inject(ProgressBarTimerService);
-  progressBarPercentage$ = this.progressBarTimerService.progressBarPercentage$;
+  // private progressBarTimerService = inject(ProgressBarTimerService);
+  // progressBarPercentage$ = this.progressBarTimerService.progressBarPercentage$;
 
   private progressBarQueueEffects = inject(ProgressBarQueueEffects);
 

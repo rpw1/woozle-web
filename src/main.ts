@@ -17,8 +17,8 @@ bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
     provideStore({
-      //game: GameReducer,
-      progressBarQueue: QueueStateReducer,
+      // game: GameReducer,
+      progressBarQueue: QueueStateReducer
     }),
     provideEffects([ProgressBarQueueEffects]),
     provideStoreDevtools({
