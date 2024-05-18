@@ -20,8 +20,10 @@ export class ProgressBarService {
     this.gameStore.select(selectIsPlayingMusic).pipe(skip(1), map(async (isActive: boolean) => {
       console.log('isActive', isActive)
       if (isActive) {
+        const tasks = await lastValueFrom(this.gameStore.select(selectGuesses).pipe(take(1)));
+        console.log('Chosen Tasks', tasks)
         this.progressBarQueueStore.dispatch(ProgressBarQueueActions.queueTask({
-          tasks: await lastValueFrom(this.gameStore.select(selectGuesses).pipe(take(1)))
+          tasks: tasks
         }));
       } else {
         this.progressBarQueueStore.dispatch(ProgressBarQueueActions.resetTasks());
