@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { ProgressBarQueueActions } from '../../state/actions/progress-bar-queue.actions';
 import { GuessService } from '../guess/guess.service';
 import { selectGuesses, selectIsPlayingMusic } from '../../state/selectors/game.selector';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, map, skip, take } from 'rxjs';
 import { Game } from '../../state/models/game.model';
 
 @Injectable({
@@ -17,20 +17,21 @@ export class ProgressBarService {
   private gameStore = inject(Store<Game>);
 
   constructor() {
-    this.gameStore.select(selectIsPlayingMusic).subscribe(async (isActive: boolean) => {
+    this.gameStore.select(selectIsPlayingMusic).pipe(skip(1), map(async (isActive: boolean) => {
+      console.log('isActive', isActive)
       if (isActive) {
         this.progressBarQueueStore.dispatch(ProgressBarQueueActions.queueTask({
-          tasks: await lastValueFrom(this.gameStore.select(selectGuesses))
+          tasks: await lastValueFrom(this.gameStore.select(selectGuesses).pipe(take(1)))
         }));
       } else {
         this.progressBarQueueStore.dispatch(ProgressBarQueueActions.resetTasks());
       }
-    });
+    })).subscribe();
 
-    // this.guessService.guesses$.subscribe(() => {
-    //   this.progressBarQueueStore.dispatch(ProgressBarQueueActions.queueTask({
-    //     tasks: 1
-    //   }));
-    // });
+    this.guessService.guesses$.pipe(skip(1)).subscribe(() => {
+      this.progressBarQueueStore.dispatch(ProgressBarQueueActions.queueTask({
+        tasks: 1
+      }));
+    });
   }
 }

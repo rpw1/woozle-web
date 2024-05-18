@@ -1,5 +1,7 @@
+import { TaskStateType } from './queue-state-type.model';
 
 export interface ProgressBarQueue {
   queuedTasks: number,
-  activeTask: boolean
+  activeItemState: TaskStateType | undefined,
+  activeIndex: number | undefined
 }

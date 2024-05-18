@@ -4,17 +4,26 @@ import { By } from '@angular/platform-browser';
 import { GuessType } from '../../models/guess-type';
 import { GuessService } from '../../services/guess/guess.service';
 import { GuessComponent } from './guess.component';
+import { provideMockStore } from '@ngrx/store/testing'
+import { Game } from '../../state/models/game.model';
 
 describe('GuessComponent', () => {
   let component: GuessComponent;
   let fixture: ComponentFixture<GuessComponent>;
   let guessServiceSpy: jasmine.SpyObj<GuessService>;
+  const initialState: Game = {
+    guesses: 0,
+    isPlayingMusic: false
+  }
 
   beforeEach(async () => {
     guessServiceSpy = jasmine.createSpyObj('GuessService', ['makeGuess']);
     await TestBed.configureTestingModule({
     imports: [FormsModule, GuessComponent],
-    providers: [{ provide: GuessService, useValue: guessServiceSpy }]
+    providers: [
+      { provide: GuessService, useValue: guessServiceSpy },
+      provideMockStore({initialState})
+    ]
 })
     .compileComponents();
 
