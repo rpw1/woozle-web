@@ -30,7 +30,7 @@ export class GameEffects {
         const state = this.gameStore.selectSignal(selectGameState);
           if (!state().isPlayingMusic) {
             return GameActions.togglePlayerOn({
-              tasks: state().numberOfGuesses
+              tasks: state().numberOfGuesses + 1
             });
           }
           return GameActions.togglePlayerOff();

@@ -11,40 +11,30 @@ export const initialState: ProgressBarQueue = {
 
 export const QueueStateReducer = createReducer<ProgressBarQueue>(
   initialState,
-  on(ProgressBarQueueActions.completeTask, (state) => {
-    console.log('Action Completed')
-    return {
-      ...state,
-      activeItemState: TaskStateType.COMPLETED,
-      successiveTasksRan: state.successiveTasksRan + 1
-    }
-  }),
+  on(ProgressBarQueueActions.completeTask, (state) => ({
+    ...state,
+    activeItemState: TaskStateType.COMPLETED,
+    successiveTasksRan: state.successiveTasksRan + 1
+  })),
 
   on(ProgressBarQueueActions.queueTask, (state, { tasks }) => {
-    console.log('Task Queued')
-    if (tasks <= 0) {
-      return state;
-    }
+    tasks = tasks < 0 ? 0 : tasks;
 
-    return { ...state, queuedTasks: state.queuedTasks + tasks,}
-  }),
-
-  on(ProgressBarQueueActions.resetTasks, () => {
-    const resetState = {...initialState, activeItemState: TaskStateType.RESET}
-    console.log('Reset Tasks')
-    return resetState;
-  }),
-
-  on(ProgressBarQueueActions.startTask, (state) => {
-    console.log('Task Started')
     return {
       ...state,
-      queuedTasks: state.queuedTasks - 1,
-      activeItemState: TaskStateType.RUNNING,
-    }
-  }),
-  on(ProgressBarQueueActions.noOperation, (state) => {
-    console.log('No Operation Needed')
-    return state;
-  })
+      queuedTasks: state.queuedTasks + tasks
+  }}),
+
+  on(ProgressBarQueueActions.resetTasks, () => ({
+    ...initialState,
+    activeItemState: TaskStateType.RESET
+  })),
+
+  on(ProgressBarQueueActions.startTask, (state) => ({
+    ...state,
+    queuedTasks: state.queuedTasks - 1,
+    activeItemState: TaskStateType.RUNNING,
+  })),
+
+  on(ProgressBarQueueActions.noOperation, (state) => (state))
 );

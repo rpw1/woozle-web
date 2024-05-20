@@ -18,9 +18,7 @@ export class ProgressBarQueueEffects {
     .pipe(
       ofType(ProgressBarQueueActions.queueTask),
       concatMap(async () => {
-        console.log('Queue Task Effect')
         const state = this.progressBarQueueStore.selectSignal(selectQueueState);
-        console.log('Queue Effect State', state())
 
         if (state().activeItemState === TaskStateType.COMPLETED && state().queuedTasks > 0) {
           return ProgressBarQueueActions.startTask();
@@ -44,13 +42,20 @@ export class ProgressBarQueueEffects {
     )
   );
 
+  resetTasksForPlayer = createEffect(() => this.action$
+    .pipe(
+      ofType(GameActions.togglePlayerOff),
+      exhaustMap(async () => {
+        return ProgressBarQueueActions.resetTasks()
+      })
+    )
+  );
+
   completeTask$ = createEffect(() => this.action$
     .pipe(
       ofType(ProgressBarQueueActions.completeTask),
       concatMap(async () => {
-        console.log('Complete Task Effect')
         const queuedTasks = this.progressBarQueueStore.selectSignal(selectQueuedTasks);
-        console.log('Complete Effect State', queuedTasks())
 
         if(queuedTasks() > 0) {
           return ProgressBarQueueActions.startTask();
