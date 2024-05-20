@@ -15,11 +15,11 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "es2020",
+    "module": "ES2022",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "lib": [
-      "ES2018",
+      "ES2022",
       "dom"
     ]
   },
