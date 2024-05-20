@@ -1,0 +1,4 @@
+<div class="progress woozle-bar">
+  <app-progress-segment *ngFor="let width of guessPercentArray; let i = index"
+    [segmentIndex]="i" [style.width.%]="width"/>
+</div>

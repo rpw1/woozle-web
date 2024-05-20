@@ -1,52 +1,30 @@
-import { Component, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { GuessListComponent } from './components/guess-list/guess-list.component';
-import { GuessComponent } from './components/guess/guess.component';
-import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
-import { WoozleTask } from './models/woozle-task/woozle-task';
-import { WoozleTaskState } from './models/woozle-task/woozle-task-state';
-import { GuessService } from './services/game/guess/guess.service';
-import { PlayerService } from './services/spotify/player/player.service';
-import { TaskSchedulerService } from './services/utils/task-scheduler/task-scheduler.service';
+import { Component, inject } from '@angular/core';
+import { GuessListComponent } from './game/components/guess-list/guess-list.component';
+import { GuessComponent } from './game/components/guess/guess.component';
+import { ProgressBarComponent } from './game/components/progress-bar/progress-bar.component';
+import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { Game } from './game/state/models/game.model';
+import { selectIsPlayingMusic } from './game/state/selectors/game.selector';
+import { GameActions } from './game/state/actions/game.actions';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    GuessListComponent, 
+    GuessListComponent,
     GuessComponent,
-    ProgressBarComponent
+    ProgressBarComponent,
+    CommonModule
   ],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnDestroy {
-  isPlaying = false;
-  private subscriptions: Subscription[] = [];
+export class AppComponent {
 
-  constructor(private playerService: PlayerService
-    ,private taskSchedulerService: TaskSchedulerService
-    ,private guessService: GuessService) {
+  private gameStore = inject(Store<Game>);
+  isPlayingMusic$ = this.gameStore.select(selectIsPlayingMusic);
 
-    this.subscriptions.push(this.taskSchedulerService.taskScheduler$.subscribe((task: WoozleTask) => {
-      if (task.taskState === WoozleTaskState.ENDED && !this.taskSchedulerService.hasRunningTask()) {
-        this.isPlaying = false
-      }
-    }));
-
-    this.subscriptions.push(this.guessService.guesses$.subscribe(() => {
-      this.isPlaying = true;
-    }));
-  }
-
-  ngOnDestroy(): void {
-    for (let subscription of this.subscriptions) {
-      subscription.unsubscribe();
-    }
-  }
-
-  togglePlayer(): void {
-    this.isPlaying = !this.isPlaying;
-    this.playerService.togglePlayer();
+  togglePlayer() {
+    this.gameStore.dispatch(GameActions.togglePlayer());
   }
 }
