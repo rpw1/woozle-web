@@ -13,7 +13,6 @@ import { Game } from '../../state/models/game.model';
     FormsModule
   ],
   templateUrl: './guess.component.html',
-  styleUrls: ['./guess.component.scss']
 })
 export class GuessComponent {
   GuessType = GuessType;

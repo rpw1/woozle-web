@@ -31,7 +31,6 @@ export class ProgressSegmentComponent {
     this.progressBarSegmentPercentage$
     ]).pipe(
       map(([state, percent]) => {
-        console.log('Successive Tasks Ran', state.successiveTasksRan, this.segmentIndex)
         if (state.activeItemState === TaskStateType.RESET) {
           return 0;
         }

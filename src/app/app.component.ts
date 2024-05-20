@@ -12,13 +12,12 @@ import { GameActions } from './game/state/actions/game.actions';
   selector: 'app-root',
   standalone: true,
   imports: [
-    GuessListComponent, 
+    GuessListComponent,
     GuessComponent,
     ProgressBarComponent,
     CommonModule
   ],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
 
