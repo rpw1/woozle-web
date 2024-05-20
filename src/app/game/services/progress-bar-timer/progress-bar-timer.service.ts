@@ -39,7 +39,6 @@ export class ProgressBarTimerService {
     .select(selectActiveItemState)
     .pipe(
       concatMap(task => {
-        console.log('Task', task)
         if (task === undefined) {
           return EMPTY;
         }
