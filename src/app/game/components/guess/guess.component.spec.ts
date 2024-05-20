@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { GuessType } from '../../models/guess-type';
-import { GuessService } from '../../services/guess/guess.service';
 import { GuessComponent } from './guess.component';
 import { provideMockStore } from '@ngrx/store/testing'
 import { Game } from '../../state/models/game.model';
@@ -85,5 +84,5 @@ describe('GuessComponent', () => {
     component.submitGuess(GuessType.SKIP);
     expect(component.currentGuess).toBe('');
   });
-  
+
 });

@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { lastValueFrom, map, take } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 import { ProgressBarTimerService } from '../../services/progress-bar-timer/progress-bar-timer.service';
 import { Game } from '../../state/models/game.model';
-import { selectGuesses } from '../../state/selectors/game.selector';
 import { ProgressBarQueue } from '../../state/models/progress-bar-queue.model';
-import { selectActiveIndex } from '../../state/selectors/progress-bar-queue.selector';
+import { TaskStateType } from '../../state/models/queue-state-type.model';
+import { selectNumberOfGuesses } from '../../state/selectors/game.selector';
+import { selectQueueState } from '../../state/selectors/progress-bar-queue.selector';
 
 @Component({
   selector: 'app-progress-segment',
@@ -21,19 +22,27 @@ export class ProgressSegmentComponent {
   private gameStore = inject(Store<Game>);
   private progressBarQueueStore = inject(Store<ProgressBarQueue>);
   private progressBarTimerService = inject(ProgressBarTimerService);
-  $guesses = this.gameStore.select(selectGuesses);
-  $activeIndex = this.progressBarQueueStore.select(selectActiveIndex);
+  numberOfGuesses$ = this.gameStore.select(selectNumberOfGuesses);
+  private readonly progressBarQueueState$ = this.progressBarQueueStore.select(selectQueueState);
+  private readonly progressBarSegmentPercentage$ = this.progressBarTimerService.progressBarSegmentPercentage$
 
-  progressWidth$ = this.progressBarTimerService.progressBarPercentage$.pipe(
-    map(async (percent) => {;
-      const activeIndex = await lastValueFrom(this.$activeIndex.pipe(take(1)));
-      if (this.segmentIndex === activeIndex) {
-        return percent
-      } else if (this.segmentIndex < (activeIndex ?? 0)) {
-        return 100;
-      } else {
-        return 0;
-      }
-    }
-  ));
+  progressWidth$ = combineLatest([
+    this.progressBarQueueState$,
+    this.progressBarSegmentPercentage$
+    ]).pipe(
+      map(([state, percent]) => {
+        console.log('Successive Tasks Ran', state.successiveTasksRan, this.segmentIndex)
+        if (state.activeItemState === TaskStateType.RESET) {
+          return 0;
+        }
+
+        if (this.segmentIndex === state.successiveTasksRan) {
+          return percent;
+        } else if (this.segmentIndex < state.successiveTasksRan) {
+          return 100;
+        } else {
+          return 0;
+        }
+      })
+    )
 }

@@ -1,12 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { EMPTY, concatMap, filter, lastValueFrom, map, of, take, takeUntil, timer } from 'rxjs';
+import { EMPTY, concatMap, filter, map, takeUntil, timer } from 'rxjs';
 import { Constants } from '../../models/constants';
 import { GameConstants } from '../../models/game-constants';
 import { ProgressBarQueueActions } from '../../state/actions/progress-bar-queue.actions';
 import { ProgressBarQueue } from '../../state/models/progress-bar-queue.model';
 import { TaskStateType } from '../../state/models/queue-state-type.model';
-import { selectActiveIndex, selectActiveItemState } from '../../state/selectors/progress-bar-queue.selector';
+import { selectSuccessiveTasksRan, selectActiveItemState } from '../../state/selectors/progress-bar-queue.selector';
 
 @Injectable({
   providedIn: 'root'
@@ -21,12 +21,12 @@ export class ProgressBarTimerService {
       this.timeElapsed = this.timeElapsed + 1;
       return this.timeElapsed;
     }),
-    map(async (interval) => {
-      const activeIndex = await lastValueFrom(this.progressBarQueueStore.select(selectActiveIndex).pipe(take(1))) ?? 0;
-      return interval / (GameConstants.SECONDS_ARRAY[activeIndex - 1] * 10)
+    map((interval) => {
+      const successiveTasksRan = this.progressBarQueueStore.selectSignal(selectSuccessiveTasksRan);
+      return interval / (GameConstants.SECONDS_ARRAY[successiveTasksRan()] * 10)
     }),
-    map(async percent => {
-      if (await percent > Constants.PERCENTAGE_CONVERSION) {
+    map(percent => {
+      if (percent > Constants.PERCENTAGE_CONVERSION) {
         this.progressBarQueueStore.dispatch(ProgressBarQueueActions.completeTask())
       }
       return percent
@@ -35,7 +35,7 @@ export class ProgressBarTimerService {
       .select(selectActiveItemState).pipe(filter(state => state === TaskStateType.COMPLETED)))
   );
 
-  progressBarPercentage$ = this.progressBarQueueStore
+  progressBarSegmentPercentage$ = this.progressBarQueueStore
     .select(selectActiveItemState)
     .pipe(
       concatMap(task => {
@@ -44,7 +44,7 @@ export class ProgressBarTimerService {
           return EMPTY;
         }
         switch (task) {
-          case TaskStateType.STARTED: {
+          case TaskStateType.RUNNING: {
             return this.timer$;
           }
           case TaskStateType.COMPLETED:

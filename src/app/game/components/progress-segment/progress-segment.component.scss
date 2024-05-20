@@ -5,17 +5,10 @@
 }
 
 .progress-container {
-  border-radius: 0%;
   background-color: $gray-600;
-  border-top: 2px solid white;
-  border-bottom: 2px solid white;
+  border-radius: 0%;
   height: 30px;
   transition: none;
-}
-
-.first-segment {
-  border-left: 2px solid white;
-  background-color: $gray-400;
 }
 
 .segment {

@@ -13,7 +13,7 @@ export const selectQueuedTasks = createSelector(
   (queueState: ProgressBarQueue) => queueState.queuedTasks
 );
 
-export const selectActiveIndex = createSelector(
+export const selectSuccessiveTasksRan = createSelector(
   selectQueueState,
-  (queueState: ProgressBarQueue) => queueState.activeIndex
+  (queueState: ProgressBarQueue) => queueState.successiveTasksRan
 );

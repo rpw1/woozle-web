@@ -6,14 +6,18 @@ import { TaskStateType } from '../models/queue-state-type.model';
 export const initialState: ProgressBarQueue = {
   queuedTasks: 0,
   activeItemState: undefined,
-  activeIndex: undefined
+  successiveTasksRan: 0
 }
 
 export const QueueStateReducer = createReducer<ProgressBarQueue>(
   initialState,
   on(ProgressBarQueueActions.completeTask, (state) => {
     console.log('Action Completed')
-    return { ...state, activeItemState: TaskStateType.COMPLETED}
+    return {
+      ...state,
+      activeItemState: TaskStateType.COMPLETED,
+      successiveTasksRan: state.successiveTasksRan + 1
+    }
   }),
 
   on(ProgressBarQueueActions.queueTask, (state, { tasks }) => {
@@ -34,13 +38,13 @@ export const QueueStateReducer = createReducer<ProgressBarQueue>(
   on(ProgressBarQueueActions.startTask, (state) => {
     console.log('Task Started')
     return {
+      ...state,
       queuedTasks: state.queuedTasks - 1,
-      activeItemState: TaskStateType.STARTED,
-      activeIndex: (state.activeIndex ?? 0) + 1
+      activeItemState: TaskStateType.RUNNING,
     }
   }),
-  on(ProgressBarQueueActions.wait, (state) => {
-    console.log('Task Waited')
+  on(ProgressBarQueueActions.noOperation, (state) => {
+    console.log('No Operation Needed')
     return state;
   })
 );
