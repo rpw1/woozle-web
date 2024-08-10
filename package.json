@@ -52,6 +52,7 @@
     "@typescript-eslint/eslint-plugin": "^8.0.1",
     "@typescript-eslint/parser": "^8.0.1",
     "eslint": "^9.9.0",
+    "is-my-node-vulnerable": "^1.4.1",
     "jasmine-core": "^5.1.2",
     "jasmine-reporters": "^2.5.2",
     "jasmine-spec-reporter": "^7.0.0",
