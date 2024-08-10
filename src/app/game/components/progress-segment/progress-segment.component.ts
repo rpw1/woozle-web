@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
-import { lastValueFrom, map, take } from 'rxjs';
+import { map } from 'rxjs';
 import { ProgressBarTimerService } from '../../services/progress-bar-timer/progress-bar-timer.service';
 import { Game } from '../../state/models/game.model';
-import { selectGuesses } from '../../state/selectors/game.selector';
 import { ProgressBarQueue } from '../../state/models/progress-bar-queue.model';
+import { selectGuessIndex } from '../../state/selectors/game.selector';
 import { selectActiveIndex } from '../../state/selectors/progress-bar-queue.selector';
 
 @Component({
@@ -21,14 +22,13 @@ export class ProgressSegmentComponent {
   private gameStore = inject(Store<Game>);
   private progressBarQueueStore = inject(Store<ProgressBarQueue>);
   private progressBarTimerService = inject(ProgressBarTimerService);
-  $guesses = this.gameStore.select(selectGuesses);
-  $activeIndex = this.progressBarQueueStore.select(selectActiveIndex);
+  guesses$ = this.gameStore.select(selectGuessIndex);
 
   progressWidth$ = this.progressBarTimerService.progressBarPercentage$.pipe(
-    map(async (percent) => {;
-      const activeIndex = await lastValueFrom(this.$activeIndex.pipe(take(1)));
+    concatLatestFrom(() => this.progressBarQueueStore.select(selectActiveIndex)),
+    map(async ([percent, activeIndex]) => {;
       if (this.segmentIndex === activeIndex) {
-        return percent
+        return await percent
       } else if (this.segmentIndex < (activeIndex ?? 0)) {
         return 100;
       } else {

@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
-import { EMPTY, concatMap, filter, lastValueFrom, map, of, take, takeUntil, timer } from 'rxjs';
+import { EMPTY, concatMap, filter, map, takeUntil, timer } from 'rxjs';
 import { Constants } from '../../models/constants';
 import { GameConstants } from '../../models/game-constants';
 import { ProgressBarQueueActions } from '../../state/actions/progress-bar-queue.actions';
@@ -21,9 +22,9 @@ export class ProgressBarTimerService {
       this.timeElapsed = this.timeElapsed + 1;
       return this.timeElapsed;
     }),
-    map(async (interval) => {
-      const activeIndex = await lastValueFrom(this.progressBarQueueStore.select(selectActiveIndex).pipe(take(1))) ?? 0;
-      return interval / (GameConstants.SECONDS_ARRAY[activeIndex - 1] * 10)
+    concatLatestFrom(() => this.progressBarQueueStore.select(selectActiveIndex)),
+    map(async ([interval, activeIndex]) => {
+      return interval / (GameConstants.SECONDS_ARRAY[(activeIndex ?? 0) - 1] * 10)
     }),
     map(async percent => {
       if (await percent > Constants.PERCENTAGE_CONVERSION) {

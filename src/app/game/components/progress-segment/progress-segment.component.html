@@ -1,5 +1,5 @@
 <div class="progress progress-container segment">
   <div class="progress-bar bg-info" role="progressbar" [style.width.%]="((progressWidth$ | async) | async)"
-    [ngClass]="{'first-segment': segmentIndex === 1, 'active-segment': segmentIndex <= (($guesses | async) ?? 0)}">
+    [ngClass]="{'first-segment': segmentIndex === 1, 'active-segment': segmentIndex <= ((guesses$ | async) ?? 0)}">
   </div>
 </div>

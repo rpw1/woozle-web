@@ -1,13 +1,14 @@
+import { isDevMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { AppComponent } from './app/app.component';
 import { Routes, provideRouter } from '@angular/router';
-import { StoreModule, provideStore } from '@ngrx/store';
-import { EffectsModule, provideEffects } from '@ngrx/effects';
-import { ProgressBarQueueEffects } from './app/game/state/effects/progress-bar-queue.effects';
-import { QueueStateReducer } from './app/game/state/reducers/progress-bar-queue.reducer';
-import { GameReducer } from './app/game/state/reducers/game.reducer';
+import { provideEffects } from '@ngrx/effects';
+import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { importProvidersFrom, isDevMode } from '@angular/core';
+import { AppComponent } from './app/app.component';
+import { GameEffects } from './app/game/state/effects/game.effects';
+import { ProgressBarQueueEffects } from './app/game/state/effects/progress-bar-queue.effects';
+import { GameReducer } from './app/game/state/reducers/game.reducer';
+import { QueueStateReducer } from './app/game/state/reducers/progress-bar-queue.reducer';
 
 const routes: Routes = [
   {
@@ -23,7 +24,7 @@ bootstrapApplication(AppComponent, {
       game: GameReducer,
       progressBarQueue: QueueStateReducer
     }),
-    provideEffects([ProgressBarQueueEffects]),
+    provideEffects([ProgressBarQueueEffects, GameEffects]),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),

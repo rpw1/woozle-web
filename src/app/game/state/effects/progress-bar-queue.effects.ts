@@ -1,13 +1,14 @@
-import { Injectable, inject } from '@angular/core';
+import { inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
-import { concatMap, lastValueFrom, take } from 'rxjs';
+import { concatMap } from 'rxjs';
+import { GameActions } from '../actions/game.actions';
 import { ProgressBarQueueActions } from '../actions/progress-bar-queue.actions';
 import { ProgressBarQueue } from '../models/progress-bar-queue.model';
 import { TaskStateType } from '../models/queue-state-type.model';
-import { selectActiveItemState, selectQueueState } from '../selectors/progress-bar-queue.selector';
+import { selectQueueState } from '../selectors/progress-bar-queue.selector';
 
-@Injectable()
 export class ProgressBarQueueEffects {
 
   private action$ = inject(Actions);
@@ -16,17 +17,16 @@ export class ProgressBarQueueEffects {
   queueTask$ = createEffect(() => this.action$
     .pipe(
       ofType(ProgressBarQueueActions.queueTask),
-      concatMap(async () => {
+      concatLatestFrom(() => this.progressBarQueueStore.select(selectQueueState)),
+      concatMap(async ([_, queueState]) => {
         console.log('Queue Task Effect')
-        const state = await lastValueFrom(this.progressBarQueueStore.select(selectQueueState));
-        console.log('Queue Effect State', state)
 
-        if (state.activeItemState === TaskStateType.COMPLETED && state.queuedTasks > 0) {
+        if (queueState.activeItemState === TaskStateType.COMPLETED 
+          && queueState.queuedTasks > 0) {
           return ProgressBarQueueActions.startTask();
         }
         
-        
-        if (state.activeItemState !== TaskStateType.STARTED) {
+        if (queueState.activeItemState !== TaskStateType.STARTED) {
           return ProgressBarQueueActions.startTask();
         }
 
@@ -38,16 +38,15 @@ export class ProgressBarQueueEffects {
   completeTask$ = createEffect(() => this.action$
     .pipe(
       ofType(ProgressBarQueueActions.completeTask),
-      concatMap(async () => {
+      concatLatestFrom(() => this.progressBarQueueStore.select(selectQueueState)),
+      concatMap(async ([_, queueState]) => {
         console.log('Complete Task Effect')
-        const state = await lastValueFrom(this.progressBarQueueStore.select(selectQueueState).pipe(take(1)));
-        console.log('Complete Effect State', state)
 
-        if(state.queuedTasks > 0) {
+        if(queueState.queuedTasks > 0) {
           return ProgressBarQueueActions.startTask();
         }
 
-        return ProgressBarQueueActions.wait();
+        return GameActions.togglePlayer();
       })
     )
   );

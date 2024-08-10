@@ -1,5 +1,7 @@
+import { Guess } from '../../models/guess';
 
 export interface Game {
-  guesses: number,
+  guesses: Guess[],
+  guessIndex: number,
   isPlayingMusic: boolean,
 }

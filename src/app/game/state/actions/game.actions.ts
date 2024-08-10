@@ -1,9 +1,10 @@
-import { createActionGroup, emptyProps } from "@ngrx/store";
+import { createActionGroup, emptyProps, props } from "@ngrx/store";
+import { Guess } from '../../models/guess';
 
 export const GameActions = createActionGroup({
   source: 'Game State',
   events: {
-    'Add Guess': emptyProps(),
+    'Add Guess': props<{ guess: Guess}>(),
     'Reset': emptyProps(),
     'Toggle Player': emptyProps()
   }

@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { GuessService } from '../../services/guess/guess.service';
+import { Store } from '@ngrx/store';
 import { GuessType } from '../../models/guess-type';
+import { Game } from '../../state/models/game.model';
+import { selectGuesses } from '../../state/selectors/game.selector';
 
 @Component({
   selector: 'app-guess-list',
@@ -16,7 +18,7 @@ export class GuessListComponent {
 
   guessType = GuessType;
 
-  private guessService = inject(GuessService);
-  guesses$ = this.guessService.guesses$;
+  private gameStore = inject(Store<Game>);
+  guesses$ = this.gameStore.select(selectGuesses);
 
 }
