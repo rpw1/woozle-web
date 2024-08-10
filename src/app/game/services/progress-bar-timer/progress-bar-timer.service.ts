@@ -47,10 +47,13 @@ export class ProgressBarTimerService {
           case TaskStateType.RUNNING: {
             return this.timer$;
           }
-          case TaskStateType.COMPLETED:
-          case TaskStateType.RESET: {
+          case TaskStateType.COMPLETED: {
             this.timeElapsed = 0;
             return EMPTY;
+          }
+          case TaskStateType.RESET: {
+            this.timeElapsed = 0;
+            return this.timer$;
           }
         }
     }))
