@@ -18,7 +18,7 @@ export class ProgressBarQueueEffects {
       ofType(ProgressBarQueueActions.queueTask),
       concatMap(async () => {
         console.log('Queue Task Effect')
-        const state = await lastValueFrom(this.progressBarQueueStore.select(selectQueueState).pipe(take(1)));
+        const state = await lastValueFrom(this.progressBarQueueStore.select(selectQueueState));
         console.log('Queue Effect State', state)
 
         if (state.activeItemState === TaskStateType.COMPLETED && state.queuedTasks > 0) {
