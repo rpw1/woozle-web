@@ -6,6 +6,7 @@ import { GameActions } from '../actions/game.actions';
 import { ProgressBarQueueActions } from '../actions/progress-bar-queue.actions';
 import { Game } from '../models/game.model';
 import { selectGameState } from '../selectors/game.selector';
+import { concatLatestFrom } from '@ngrx/operators';
 
 @Injectable()
 export class GameEffects {
@@ -15,10 +16,10 @@ export class GameEffects {
   addGuess$ = createEffect(() => this.action$
     .pipe(
       ofType(GameActions.addGuess),
-      concatMap(async () => {
-        const state = this.gameStore.selectSignal(selectGameState);
+      concatLatestFrom(() => this.gameStore.select(selectGameState)),
+      concatMap(async ([_, gameState]) => {
         return GameActions.togglePlayerOn({
-          tasks: 1 + (!state().isPlayingMusic ? state().numberOfGuesses : 0)
+          tasks: 1 + (!gameState.isPlayingMusic ? gameState.numberOfGuesses : 0)
         });
       })
     ));
@@ -26,11 +27,11 @@ export class GameEffects {
   togglePlayer$ = createEffect(() => this.action$
     .pipe(
       ofType(GameActions.togglePlayer),
-      exhaustMap(async () => {
-        const state = this.gameStore.selectSignal(selectGameState);
-          if (!state().isPlayingMusic) {
+      concatLatestFrom(() => this.gameStore.select(selectGameState)),
+      exhaustMap(async ([_, gameState]) => {
+          if (!gameState.isPlayingMusic) {
             return GameActions.togglePlayerOn({
-              tasks: state().numberOfGuesses + 1
+              tasks: gameState.numberOfGuesses + 1
             });
           }
           return GameActions.togglePlayerOff();

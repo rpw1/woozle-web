@@ -7,6 +7,7 @@ import { ProgressBarQueueActions } from '../actions/progress-bar-queue.actions';
 import { ProgressBarQueue } from '../models/progress-bar-queue.model';
 import { TaskStateType } from '../models/queue-state-type.model';
 import { selectQueuedTasks, selectQueueState } from '../selectors/progress-bar-queue.selector';
+import { concatLatestFrom } from '@ngrx/operators';
 
 @Injectable()
 export class ProgressBarQueueEffects {
@@ -17,14 +18,14 @@ export class ProgressBarQueueEffects {
   queueTask$ = createEffect(() => this.action$
     .pipe(
       ofType(ProgressBarQueueActions.queueTask),
-      concatMap(async () => {
-        const state = this.progressBarQueueStore.selectSignal(selectQueueState);
-
-        if (state().activeItemState === TaskStateType.COMPLETED && state().queuedTasks > 0) {
+      concatLatestFrom(() => this.progressBarQueueStore.select(selectQueueState)),
+      concatMap(async ([_, queueState]) => {
+        if (queueState.activeItemState === TaskStateType.COMPLETED
+            && queueState.queuedTasks > 0) {
           return ProgressBarQueueActions.startTask();
         }
 
-        if (state().activeItemState !== TaskStateType.RUNNING) {
+        if (queueState.activeItemState !== TaskStateType.RUNNING) {
           return ProgressBarQueueActions.startTask();
         }
 
@@ -54,10 +55,9 @@ export class ProgressBarQueueEffects {
   completeTask$ = createEffect(() => this.action$
     .pipe(
       ofType(ProgressBarQueueActions.completeTask),
-      concatMap(async () => {
-        const queuedTasks = this.progressBarQueueStore.selectSignal(selectQueuedTasks);
-
-        if(queuedTasks() > 0) {
+      concatLatestFrom(() => this.progressBarQueueStore.select(selectQueuedTasks)),
+      concatMap(async ([_, queuedTasks]) => {
+        if(queuedTasks > 0) {
           return ProgressBarQueueActions.startTask();
         }
 
