@@ -22,8 +22,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20.15.1'
+      - name: Audit Node Version
+        run: npx is-my-node-vulnerable
       - name: Install Dependencies
         run: npm install
+      - name: Audit NPM Packages
+        run: npm audit
       - name: Run Build
         run: npm run build --prod
       - name: Run Tests
