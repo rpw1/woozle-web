@@ -20,16 +20,12 @@ export class ProgressBarQueueEffects {
       ofType(ProgressBarQueueActions.queueTask),
       concatLatestFrom(() => this.progressBarQueueStore.select(selectQueueState)),
       concatMap(async ([_, queueState]) => {
-        if (queueState.activeItemState === TaskStateType.COMPLETED
-            && queueState.queuedTasks > 0) {
-          return ProgressBarQueueActions.startTask();
+        if (queueState.queuedTasks === 0
+            || queueState.activeItemState === TaskStateType.RUNNING) {
+          return ProgressBarQueueActions.noOperation();
         }
 
-        if (queueState.activeItemState !== TaskStateType.RUNNING) {
-          return ProgressBarQueueActions.startTask();
-        }
-
-        return ProgressBarQueueActions.noOperation();
+        return ProgressBarQueueActions.startTask();
       })
     )
   );
@@ -74,4 +70,12 @@ export class ProgressBarQueueEffects {
       })
     )
   );
+
+  taskStarted$ = createEffect(() => this.action$
+  .pipe(
+    ofType(ProgressBarQueueActions.startTask),
+    exhaustMap(async () => {
+      return ProgressBarQueueActions.runningTask();
+    })
+  ))
 }

@@ -33,6 +33,11 @@ export const QueueStateReducer = createReducer<ProgressBarQueue>(
   on(ProgressBarQueueActions.startTask, (state) => ({
     ...state,
     queuedTasks: state.queuedTasks - 1,
+    activeItemState: TaskStateType.STARTED,
+  })),
+
+  on(ProgressBarQueueActions.runningTask, (state) => ({
+    ...state,
     activeItemState: TaskStateType.RUNNING,
   })),
 
