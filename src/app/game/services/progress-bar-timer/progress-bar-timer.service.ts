@@ -7,6 +7,7 @@ import { ProgressBarQueueActions } from '../../state/actions/progress-bar-queue.
 import { ProgressBarQueue } from '../../state/models/progress-bar-queue.model';
 import { TaskStateType } from '../../state/models/queue-state-type.model';
 import { selectSuccessiveTasksRan, selectActiveItemState } from '../../state/selectors/progress-bar-queue.selector';
+import { concatLatestFrom } from '@ngrx/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +22,9 @@ export class ProgressBarTimerService {
       this.timeElapsed = this.timeElapsed + 1;
       return this.timeElapsed;
     }),
-    map((interval) => {
-      const successiveTasksRan = this.progressBarQueueStore.selectSignal(selectSuccessiveTasksRan);
-      return interval / (GameConstants.SECONDS_ARRAY[successiveTasksRan()] * 10)
+    concatLatestFrom(() => this.progressBarQueueStore.select(selectSuccessiveTasksRan)),
+    map(([interval, successiveTasksRan]) => {
+      return interval / (GameConstants.SECONDS_ARRAY[successiveTasksRan] * 10)
     }),
     map(percent => {
       if (percent > Constants.PERCENTAGE_CONVERSION) {
@@ -46,10 +47,13 @@ export class ProgressBarTimerService {
           case TaskStateType.RUNNING: {
             return this.timer$;
           }
-          case TaskStateType.COMPLETED:
-          case TaskStateType.RESET: {
+          case TaskStateType.COMPLETED: {
             this.timeElapsed = 0;
             return EMPTY;
+          }
+          case TaskStateType.RESET: {
+            this.timeElapsed = 0;
+            return this.timer$;
           }
         }
     }))
