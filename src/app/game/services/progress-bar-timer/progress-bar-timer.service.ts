@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { EMPTY, concatMap, filter, map, takeUntil, timer } from 'rxjs';
+import { EMPTY, concatMap, filter, map, of, takeUntil, timer } from 'rxjs';
 import { Constants } from '../../models/constants';
 import { GameConstants } from '../../models/game-constants';
 import { ProgressBarQueueActions } from '../../state/actions/progress-bar-queue.actions';
@@ -44,16 +44,18 @@ export class ProgressBarTimerService {
           return EMPTY;
         }
         switch (task) {
+          case TaskStateType.STARTED: {
+            this.timeElapsed = 0;
+            return this.timer$;
+          }
           case TaskStateType.RUNNING: {
             return this.timer$;
           }
           case TaskStateType.COMPLETED: {
-            this.timeElapsed = 0;
             return EMPTY;
           }
           case TaskStateType.RESET: {
-            this.timeElapsed = 0;
-            return this.timer$;
+            return of(0);
           }
         }
     }))

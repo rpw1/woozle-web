@@ -8,6 +8,7 @@ export const ProgressBarQueueActions = createActionGroup({
     'Queue Task': props<{ tasks: number }>(),
     'Reset Tasks': emptyProps(),
     'Start Task': emptyProps(),
+    'Running Task': emptyProps(),
     'No Operation': emptyProps()
   }
 })
