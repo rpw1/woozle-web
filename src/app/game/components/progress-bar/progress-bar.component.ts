@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { GameCalculationService } from '../../services/game-calculation/game-calculation.service';
 import { ProgressSegmentComponent } from '../progress-segment/progress-segment.component';
 
@@ -11,7 +11,8 @@ import { ProgressSegmentComponent } from '../progress-segment/progress-segment.c
     ProgressSegmentComponent
   ],
   templateUrl: './progress-bar.component.html',
-  styleUrls: ['./progress-bar.component.scss']
+  styleUrls: ['./progress-bar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProgressBarComponent {
   private gameCalculationService = inject(GameCalculationService);

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Guess } from '../../models/guess';
@@ -13,6 +13,7 @@ import { Game } from '../../state/models/game.model';
     FormsModule
   ],
   templateUrl: './guess.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GuessComponent {
   GuessType = GuessType;
