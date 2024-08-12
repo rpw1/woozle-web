@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs';
 import { ProgressBarTimerService } from '../../services/progress-bar-timer/progress-bar-timer.service';
@@ -15,7 +15,8 @@ import { concatLatestFrom } from '@ngrx/operators';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './progress-segment.component.html',
-  styleUrl: './progress-segment.component.scss'
+  styleUrl: './progress-segment.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProgressSegmentComponent {
   @Input({required: true}) segmentIndex!: number;
@@ -24,9 +25,8 @@ export class ProgressSegmentComponent {
   private progressBarQueueStore = inject(Store<ProgressBarQueue>);
   private progressBarTimerService = inject(ProgressBarTimerService);
   numberOfGuesses$ = this.gameStore.select(selectNumberOfGuesses);
-  private readonly progressBarSegmentPercentage$ = this.progressBarTimerService.progressBarSegmentPercentage$
 
-  progressWidth$ = this.progressBarSegmentPercentage$.pipe(
+  progressWidth$ = this.progressBarTimerService.progressBarSegmentPercentage$.pipe(
     concatLatestFrom(() => this.progressBarQueueStore.select(selectQueueState)),
     map(([percent, state]) => {
       if (state.activeItemState === TaskStateType.RESET) {

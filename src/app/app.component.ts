@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { GuessListComponent } from './game/components/guess-list/guess-list.component';
 import { GuessComponent } from './game/components/guess/guess.component';
 import { ProgressBarComponent } from './game/components/progress-bar/progress-bar.component';
@@ -18,6 +18,7 @@ import { GameActions } from './game/state/actions/game.actions';
     CommonModule
   ],
   templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
 
