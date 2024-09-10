@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { sum } from 'lodash';
 import { GameConstants } from '../models/game-constants';
 
 @Injectable({
@@ -7,10 +6,9 @@ import { GameConstants } from '../models/game-constants';
 })
 export class ValidateGameConstantsService {
   private validationResults: string[] = [];
+  private readonly secondsArraySum = GameConstants.SECONDS_ARRAY.reduce((prev, curr) => prev + curr)
   readonly entryCountMatchesTotalGuesses = `Entry count (${GameConstants.SECONDS_ARRAY.length}) is not equal to number of total guesses (${GameConstants.TOTAL_GUESSES})`
-  readonly secondsArrayAddsUpToTotalTime = `Listen seconds (${GameConstants.LISTEN_SECONDS} seconds) is not equal to the sum of seconds array (${sum(GameConstants.SECONDS_ARRAY)})`
-
-  constructor() { }
+  readonly secondsArrayAddsUpToTotalTime = `Listen seconds (${GameConstants.LISTEN_SECONDS} seconds) is not equal to the sum of seconds array (${this.secondsArraySum})`
 
   validate(): string[] {
     this.validateTotalGuesses();
@@ -25,7 +23,7 @@ export class ValidateGameConstantsService {
   }
 
   private validateSecondsArray() {
-    if (GameConstants.LISTEN_SECONDS != sum(GameConstants.SECONDS_ARRAY)) {
+    if (GameConstants.LISTEN_SECONDS != this.secondsArraySum) {
       this.validationResults.push(this.secondsArrayAddsUpToTotalTime)
     }
   }
