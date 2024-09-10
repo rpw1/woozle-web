@@ -27,6 +27,7 @@ export class ProgressBarTimerService {
       return interval / (GameConstants.SECONDS_ARRAY[successiveTasksRan] * 10)
     }),
     map(percent => {
+      console.log(percent)
       if (percent > Constants.PERCENTAGE_CONVERSION) {
         this.progressBarQueueStore.dispatch(ProgressBarQueueActions.completeTask())
       }

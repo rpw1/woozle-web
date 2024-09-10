@@ -7,6 +7,7 @@ import { ProgressBarQueueActions } from '../actions/progress-bar-queue.actions';
 import { Game } from '../models/game.model';
 import { selectGameState } from '../selectors/game.selector';
 import { concatLatestFrom } from '@ngrx/operators';
+import { maximumGuesses } from '../reducers/game.reducer';
 
 @Injectable()
 export class GameEffects {
@@ -18,6 +19,9 @@ export class GameEffects {
       ofType(GameActions.addGuess),
       concatLatestFrom(() => this.gameStore.select(selectGameState)),
       concatMap(async ([_, gameState]) => {
+        if (gameState.numberOfGuesses === maximumGuesses) {
+          // this.modalService.showGameEndModal();
+        }
         return GameActions.togglePlayerOn({
           tasks: 1 + (!gameState.isPlayingMusic ? gameState.numberOfGuesses : 0)
         });
@@ -28,7 +32,7 @@ export class GameEffects {
     .pipe(
       ofType(GameActions.togglePlayer),
       concatLatestFrom(() => this.gameStore.select(selectGameState)),
-      exhaustMap(async ([_, gameState]) => {
+      concatMap(async ([_, gameState]) => {
           if (!gameState.isPlayingMusic) {
             return GameActions.togglePlayerOn({
               tasks: gameState.numberOfGuesses + 1
@@ -46,5 +50,3 @@ export class GameEffects {
       })
     ))
 }
-
-

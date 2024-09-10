@@ -34,7 +34,7 @@ export class ProgressBarQueueEffects {
     .pipe(
       ofType(GameActions.togglePlayerOn),
       exhaustMap(async (tasks) => {
-        return ProgressBarQueueActions.queueTask(tasks)
+        return ProgressBarQueueActions.queueTask(tasks);
       })
     )
   );
@@ -43,7 +43,7 @@ export class ProgressBarQueueEffects {
     .pipe(
       ofType(GameActions.togglePlayerOff),
       exhaustMap(async () => {
-        return ProgressBarQueueActions.resetTasks()
+        return ProgressBarQueueActions.resetTasks();
       })
     )
   );
@@ -65,17 +65,17 @@ export class ProgressBarQueueEffects {
   completeAllTasks$ = createEffect(() => this.action$
     .pipe(
       ofType(ProgressBarQueueActions.completeAllTasks),
-      concatMap(async () => {
+      exhaustMap(async () => {
         return ProgressBarQueueActions.resetTasks();
       })
     )
   );
 
   taskStarted$ = createEffect(() => this.action$
-  .pipe(
-    ofType(ProgressBarQueueActions.startTask),
-    exhaustMap(async () => {
-      return ProgressBarQueueActions.runningTask();
-    })
-  ))
+    .pipe(
+      ofType(ProgressBarQueueActions.startTask),
+      exhaustMap(async () => {
+        return ProgressBarQueueActions.runningTask();
+      })
+    ))
 }
