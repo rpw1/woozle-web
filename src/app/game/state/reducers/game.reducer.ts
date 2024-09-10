@@ -26,7 +26,6 @@ export const GameReducer = createReducer<Game>(
     return deepClone(newState);
   }),
   on(GameActions.reset, () => (deepClone(initialState))),
-  //on(GameActions.togglePlayer, (state) => (state)),
   on(GameActions.togglePlayerOn, (state) => (deepClone({...state, isPlayingMusic: true}))),
   on(GameActions.togglePlayerOff, (state) => (deepClone({...state, isPlayingMusic: false})))
 )

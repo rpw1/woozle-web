@@ -1,8 +1,10 @@
 import { GuessType } from '../game/models/guess-type';
 import { Game } from '../game/state/models/game.model'
+import { ProgressBarQueue } from '../game/state/models/progress-bar-queue.model';
+import { TaskStateType } from '../game/state/models/queue-state-type.model';
 
 
-export function getFakeGame() : Game {
+export function getFakeGame(): Game {
   return {
     numberOfGuesses: 4,
     isPlayingMusic: false,
@@ -15,4 +17,12 @@ export function getFakeGame() : Game {
       { type: GuessType.UNKNOWN }
     ]
   };
+}
+
+export function getFakeProgressBarQueue(): ProgressBarQueue {
+  return {
+    queuedTasks: 1,
+    activeItemState: TaskStateType.RUNNING,
+    successiveTasksRan: 1
+  }
 }
