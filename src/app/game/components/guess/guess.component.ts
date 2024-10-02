@@ -5,6 +5,7 @@ import { Guess } from '../../models/guess';
 import { GuessType } from '../../models/guess-type';
 import { GameActions } from '../../state/actions/game.actions';
 import { Game } from '../../state/models/game.model';
+import { v4 } from 'uuid';
 
 @Component({
   selector: 'app-guess',
@@ -16,21 +17,23 @@ import { Game } from '../../state/models/game.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GuessComponent {
-  GuessType = GuessType;
+  readonly GuessType = GuessType;
   currentGuess: string = '';
-  private SKIP_GUESS_TEXT = 'SKIPPED';
+  private readonly SKIP_GUESS_TEXT = 'SKIPPED';
 
-  private gameStore = inject(Store<Game>);
+  private readonly gameStore = inject(Store<Game>);
 
   submitGuess(guessType: GuessType): void {
     let guess: Guess;
     if (guessType === GuessType.SKIP) {
       guess = {
+        id: v4(),
         type: GuessType.SKIP,
         song: this.SKIP_GUESS_TEXT
       };
     } else {
       guess = {
+        id: v4(),
         type: GuessType.GUESS,
         song: this.currentGuess.trim()
       };

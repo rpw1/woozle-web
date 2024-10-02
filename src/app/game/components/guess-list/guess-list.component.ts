@@ -19,6 +19,6 @@ export class GuessListComponent {
 
   guessType = GuessType;
 
-  private gameStore = inject(Store<Game>);
-  guesses$ = this.gameStore.select(selectGuesses);
+  private readonly gameStore = inject(Store<Game>);
+  readonly guesses$ = this.gameStore.select(selectGuesses);
 }

@@ -21,12 +21,12 @@ import { concatLatestFrom } from '@ngrx/operators';
 export class ProgressSegmentComponent {
   @Input({required: true}) segmentIndex!: number;
 
-  private gameStore = inject(Store<Game>);
-  private progressBarQueueStore = inject(Store<ProgressBarQueue>);
-  private progressBarTimerService = inject(ProgressBarTimerService);
-  numberOfGuesses$ = this.gameStore.select(selectNumberOfGuesses);
+  private readonly gameStore = inject(Store<Game>);
+  private readonly progressBarQueueStore = inject(Store<ProgressBarQueue>);
+  private readonly progressBarTimerService = inject(ProgressBarTimerService);
+  readonly numberOfGuesses$ = this.gameStore.select(selectNumberOfGuesses);
 
-  progressWidth$ = this.progressBarTimerService.progressBarSegmentPercentage$.pipe(
+  readonly progressWidth$ = this.progressBarTimerService.progressBarSegmentPercentage$.pipe(
     concatLatestFrom(() => this.progressBarQueueStore.select(selectQueueState)),
     map(([percent, state]) => {
       if (state.activeItemState === TaskStateType.RESET) {

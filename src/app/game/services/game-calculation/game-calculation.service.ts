@@ -8,8 +8,8 @@ import { Constants } from '../../models/constants';
 })
 export class GameCalculationService {
 
-  private validateGameConstants = inject(ValidateGameConstantsService)
-  private guessPercentageArray: number[];
+  private readonly validateGameConstants = inject(ValidateGameConstantsService)
+  private readonly guessPercentageArray: number[];
 
   constructor() {
     const validationErrors = this.validateGameConstants.validate();

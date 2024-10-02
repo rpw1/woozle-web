@@ -7,44 +7,48 @@ import { ProgressBarQueueActions } from '../actions/progress-bar-queue.actions';
 import { Game } from '../models/game.model';
 import { selectGameState } from '../selectors/game.selector';
 import { concatLatestFrom } from '@ngrx/operators';
+import { maximumGuesses } from '../reducers/game.reducer';
 
 @Injectable()
 export class GameEffects {
-  private action$ = inject(Actions);
-  private gameStore = inject(Store<Game>);
+  private readonly action$ = inject(Actions);
+  private readonly gameStore = inject(Store<Game>);
 
-  addGuess$ = createEffect(() => this.action$
+  readonly addGuess$ = createEffect(() => this.action$
     .pipe(
       ofType(GameActions.addGuess),
       concatLatestFrom(() => this.gameStore.select(selectGameState)),
       concatMap(async ([_, gameState]) => {
+        if (gameState.numberOfGuesses === maximumGuesses) {
+          // this.modalService.showGameEndModal();
+        }
         return GameActions.togglePlayerOn({
           tasks: 1 + (!gameState.isPlayingMusic ? gameState.numberOfGuesses : 0)
         });
       })
     ));
 
-  togglePlayer$ = createEffect(() => this.action$
+  readonly togglePlayer$ = createEffect(() => this.action$
     .pipe(
       ofType(GameActions.togglePlayer),
       concatLatestFrom(() => this.gameStore.select(selectGameState)),
-      exhaustMap(async ([_, gameState]) => {
-          if (!gameState.isPlayingMusic) {
-            return GameActions.togglePlayerOn({
-              tasks: gameState.numberOfGuesses + 1
-            });
-          }
-          return GameActions.togglePlayerOff();
+      concatMap(async ([_, gameState]) => {
+        if (!gameState.isPlayingMusic) {
+          return GameActions.togglePlayerOn({
+            tasks: gameState.numberOfGuesses + 1
+          });
+        }
+        return GameActions.togglePlayerOff();
       })
-    ));
+    )
+  );
 
-  turnOffPlayer$ = createEffect(() => this.action$
+  readonly turnOffPlayer$ = createEffect(() => this.action$
     .pipe(
       ofType(ProgressBarQueueActions.completeAllTasks),
       exhaustMap(async () => {
         return GameActions.togglePlayerOff();
       })
-    ))
+    )
+  );
 }
-
-

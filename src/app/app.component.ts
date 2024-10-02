@@ -22,8 +22,8 @@ import { GameActions } from './game/state/actions/game.actions';
 })
 export class AppComponent {
 
-  private gameStore = inject(Store<Game>);
-  isPlayingMusic$ = this.gameStore.select(selectIsPlayingMusic);
+  private readonly gameStore = inject(Store<Game>);
+  readonly isPlayingMusic$ = this.gameStore.select(selectIsPlayingMusic);
 
   togglePlayer() {
     this.gameStore.dispatch(GameActions.togglePlayer());

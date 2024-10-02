@@ -15,6 +15,6 @@ import { ProgressSegmentComponent } from '../progress-segment/progress-segment.c
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProgressBarComponent {
-  private gameCalculationService = inject(GameCalculationService);
-  guessPercentArray: number[] = this.gameCalculationService.getGamePercentageArray();
+  private readonly gameCalculationService = inject(GameCalculationService);
+  readonly guessPercentArray: number[] = this.gameCalculationService.getGamePercentageArray();
 }

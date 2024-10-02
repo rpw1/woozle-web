@@ -9,13 +9,18 @@ export function getFakeGame(): Game {
     numberOfGuesses: 4,
     isPlayingMusic: false,
     guesses: [
-      { song: 'SKIPPED', type: GuessType.SKIP },
-      { song: 'SKIPPED', type: GuessType.SKIP },
-      { song: 'guess 3', type: GuessType.GUESS },
-      { song: 'guess 4', type: GuessType.GUESS },
-      { type: GuessType.UNKNOWN },
-      { type: GuessType.UNKNOWN }
-    ]
+      { id: 'id1', song: 'SKIPPED', type: GuessType.SKIP },
+      { id: 'id2', song: 'SKIPPED', type: GuessType.SKIP },
+      { id: 'id3', song: 'guess 3', type: GuessType.GUESS },
+      { id: 'id4', song: 'guess 4', type: GuessType.GUESS },
+      { id: 'id5', type: GuessType.UNKNOWN },
+      { id: 'id6', type: GuessType.UNKNOWN }
+    ],
+    solution: {
+      song: 'Garden Song',
+      album: 'Punisher',
+      artist: 'Phoebe Bridgers'
+    }
   };
 }
 

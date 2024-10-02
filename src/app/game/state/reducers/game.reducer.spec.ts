@@ -9,13 +9,18 @@ describe('GameReducer', () => {
     numberOfGuesses: 6,
     isPlayingMusic: true,
     guesses: [
-      {song: 'song 1', type: GuessType.GUESS},
-      {song: 'SKIPPED', type: GuessType.SKIP},
-      {song: '', type: GuessType.UNKNOWN},
-      {song: '', type: GuessType.UNKNOWN},
-      {song: '', type: GuessType.UNKNOWN},
-      {song: '', type: GuessType.UNKNOWN},
-    ]
+      {id: 'id1', song: 'song 1', type: GuessType.GUESS},
+      {id: 'id2', song: 'SKIPPED', type: GuessType.SKIP},
+      {id: 'id3', song: '', type: GuessType.UNKNOWN},
+      {id: 'id4', song: '', type: GuessType.UNKNOWN},
+      {id: 'id5', song: '', type: GuessType.UNKNOWN},
+      {id: 'id6', song: '', type: GuessType.UNKNOWN},
+    ],
+    solution: {
+      song: 'Garden Song',
+      album: 'Punisher',
+      artist: 'Phoebe Bridgers'
+    }
   }
 
   describe('addGuess', () => {
@@ -23,9 +28,9 @@ describe('GameReducer', () => {
       const { initialState } = fromReducer;
       const result = fromReducer.GameReducer(
         initialState,
-        GameActions.addGuess({guess:{song: 'song 1', type: GuessType.GUESS}})
+        GameActions.addGuess({guess:{id: 'id1', song: 'song 1', type: GuessType.GUESS}})
       );
-      expect(result.guesses[0]).toEqual({song: 'song 1', type: GuessType.GUESS});
+      expect(result.guesses[0]).toEqual({id: 'id1', song: 'song 1', type: GuessType.GUESS});
       expect(result.numberOfGuesses).toBe(1);
     });
   });

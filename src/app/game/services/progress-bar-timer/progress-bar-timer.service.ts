@@ -14,10 +14,10 @@ import { concatLatestFrom } from '@ngrx/operators';
 })
 export class ProgressBarTimerService {
 
-  private progressBarQueueStore = inject(Store<ProgressBarQueue>);
+  private readonly progressBarQueueStore = inject(Store<ProgressBarQueue>);
 
   private timeElapsed = 0;
-  private timer$ = timer(0, 1).pipe(
+  private readonly timer$ = timer(0, 1).pipe(
     map(_ => {
       this.timeElapsed = this.timeElapsed + 1;
       return this.timeElapsed;
@@ -36,7 +36,7 @@ export class ProgressBarTimerService {
       .select(selectActiveItemState).pipe(filter(state => state === TaskStateType.COMPLETED)))
   );
 
-  progressBarSegmentPercentage$ = this.progressBarQueueStore
+  readonly progressBarSegmentPercentage$ = this.progressBarQueueStore
     .select(selectActiveItemState)
     .pipe(
       concatMap(task => {
