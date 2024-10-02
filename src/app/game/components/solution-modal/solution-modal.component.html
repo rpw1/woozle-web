@@ -1,0 +1,21 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    @if((endingGameState$ | async) === GameState.WON) {
+      You Win
+    }
+    @else {
+      You Lose
+    }
+  </h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+</div>
+<div class="modal-body">
+    <div class="mb-3">
+      @let solution = solution$ | async;
+      @if(solution != null || solution != {}) {
+        <p>Artist: {{ solution?.artist }}</p>
+        <p>Album: {{ solution?.album }}</p>
+        <p>Song: {{ solution?.song }}</p>
+      }
+    </div>
+</div>

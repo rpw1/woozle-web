@@ -17,3 +17,13 @@ export const selectIsPlayingMusic = createSelector(
   selectGameState,
   (state: Game) => state.isPlayingMusic
 );
+
+export const selectCurrentGameState = createSelector(
+  selectGameState,
+  (state: Game) => state.currentGameState
+);
+
+export const selectSolution = createSelector(
+  selectGameState,
+  (state: Game) => state.solution
+);

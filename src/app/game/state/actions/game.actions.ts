@@ -1,5 +1,6 @@
 import { createActionGroup, emptyProps, props } from "@ngrx/store";
 import { Guess } from '../../models/guess';
+import { GameState } from '../models/game-state.model';
 
 export const GameActions = createActionGroup({
   source: 'Game State',
@@ -8,6 +9,7 @@ export const GameActions = createActionGroup({
     'Reset': emptyProps(),
     'Toggle Player': emptyProps(),
     'Toggle Player On': props<{ tasks: number }>(),
-    'Toggle Player Off': emptyProps()
+    'Toggle Player Off': emptyProps(),
+    'Update Game State': props<{ newGameState : GameState }>()
   }
 })
