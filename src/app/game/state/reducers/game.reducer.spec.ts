@@ -3,6 +3,7 @@ import { GuessType } from '../../models/guess-type';
 import { GameActions } from '../actions/game.actions';
 import { Game } from '../models/game.model';
 import * as fromReducer from './game.reducer';
+import { GameState } from '../models/game-state.model';
 
 describe('GameReducer', () => {
   const state : Game = {
@@ -16,6 +17,7 @@ describe('GameReducer', () => {
       {id: 'id5', song: '', type: GuessType.UNKNOWN},
       {id: 'id6', song: '', type: GuessType.UNKNOWN},
     ],
+    currentGameState: GameState.ACTIVE,
     solution: {
       song: 'Garden Song',
       album: 'Punisher',

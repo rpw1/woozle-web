@@ -1,13 +1,31 @@
-<div class="form-group mb-2">
-  <input id="guessInput" type="text" class="form-control" aria-describedby="searchHelp" placeholder="Enter artist" [(ngModel)]="currentGuess">
-</div>
-<div class="mb-2">
-  <div class="row">
-    <div class="col text-center">
-      <button type="button" class="btn btn-secondary p-2 m-3 w-50" (click)="submitGuess(GuessType.SKIP)">Skip</button>
-    </div>
-    <div class="col text-center">
-      <button type="button" class="btn btn-success p-2 m-3 w-50" (click)="submitGuess(GuessType.GUESS)">Guess</button>
+<form [formGroup]="guessForm">
+  <div class="form-group mb-2">
+    <input id="guessInput" type="text" formControlName="currentGuess"
+      class="form-control" placeholder="Enter song" />
+      <div class="invalid-feedback ms-3 d-block">
+        @if (currentGuess?.touched && currentGuess?.hasError('required')) {
+          <p>*Current guess is invalid.</p>
+        }
+        @if (currentGuess?.hasError('maxlength')) {
+          <p>*Current guess too long.</p>
+        }
+      </div>
+  </div>
+  <div class="mb-2">
+    <div class="row">
+      <div class="col text-center">
+        <button type="submit" class="btn btn-secondary p-2 m-3 w-50"
+          (click)="submitGuess(GuessType.SKIP)">
+          Skip
+        </button>
+      </div>
+      <div class="col text-center">
+        <button type="submit" class="btn btn-success p-2 m-3 w-50"
+          [disabled]="isCurrentGuessInvalid$ | async"
+          (click)="submitGuess(GuessType.GUESS)">
+          Guess
+        </button>
+      </div>
     </div>
   </div>
-</div>
+</form>

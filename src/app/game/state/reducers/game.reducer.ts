@@ -5,6 +5,7 @@ import { deepClone } from 'fast-json-patch';
 import { GameConstants } from '../../models/game-constants';
 import { GuessType } from '../../models/guess-type';
 import { v4 } from 'uuid';
+import { GameState } from '../models/game-state.model';
 
 export const maximumGuesses = GameConstants.SECONDS_ARRAY.length;
 export const initialState: Game = {
@@ -12,19 +13,20 @@ export const initialState: Game = {
     id: v4(),
     type: GuessType.UNKNOWN
   })),
+  currentGameState: GameState.ACTIVE,
   numberOfGuesses: 0,
   isPlayingMusic: false,
   solution: {
-    song: 'song',
-    artist: 'artist',
-    album: 'album'
+    song: 'Garden Song',
+    artist: 'Phoebe Bridgers',
+    album: 'Punisher'
   }
 }
 
 export const GameReducer = createReducer<Game>(
   initialState,
   on(GameActions.addGuess, (state, { guess }) => {
-    if (state.numberOfGuesses === maximumGuesses) {
+    if (state.currentGameState !== GameState.ACTIVE) {
       return state;
     }
 
@@ -40,6 +42,12 @@ export const GameReducer = createReducer<Game>(
     return deepClone(newState);
   }),
   on(GameActions.reset, () => (deepClone(initialState))),
-  on(GameActions.togglePlayerOn, (state) => (deepClone({...state, isPlayingMusic: true}))),
-  on(GameActions.togglePlayerOff, (state) => (deepClone({...state, isPlayingMusic: false})))
+  on(GameActions.togglePlayerOn, (state) => ({...state, isPlayingMusic: true})),
+  on(GameActions.togglePlayerOff, (state) => ({...state, isPlayingMusic: false})),
+  on(GameActions.updateGameState, (state, { newGameState }) => {
+    if (newGameState === GameState.WON || newGameState === GameState.LOSS) {
+      return { ...state, currentGameState: newGameState, numberOfGuesses: maximumGuesses };
+    }
+    return { ...state, currentGameState: newGameState };
+  })
 )

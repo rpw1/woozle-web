@@ -1,8 +1,8 @@
 import { GuessType } from '../game/models/guess-type';
+import { GameState } from '../game/state/models/game-state.model';
 import { Game } from '../game/state/models/game.model'
 import { ProgressBarQueue } from '../game/state/models/progress-bar-queue.model';
 import { TaskStateType } from '../game/state/models/queue-state-type.model';
-
 
 export function getFakeGame(): Game {
   return {
@@ -16,6 +16,7 @@ export function getFakeGame(): Game {
       { id: 'id5', type: GuessType.UNKNOWN },
       { id: 'id6', type: GuessType.UNKNOWN }
     ],
+    currentGameState: GameState.ACTIVE,
     solution: {
       song: 'Garden Song',
       album: 'Punisher',
