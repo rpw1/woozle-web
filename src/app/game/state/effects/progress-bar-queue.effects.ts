@@ -12,10 +12,10 @@ import { concatLatestFrom } from '@ngrx/operators';
 @Injectable()
 export class ProgressBarQueueEffects {
 
-  private action$ = inject(Actions);
-  private progressBarQueueStore = inject(Store<ProgressBarQueue>);
+  private readonly  action$ = inject(Actions);
+  private readonly  progressBarQueueStore = inject(Store<ProgressBarQueue>);
 
-  queueTask$ = createEffect(() => this.action$
+  readonly queueTask$ = createEffect(() => this.action$
     .pipe(
       ofType(ProgressBarQueueActions.queueTask),
       concatLatestFrom(() => this.progressBarQueueStore.select(selectQueueState)),
@@ -30,7 +30,7 @@ export class ProgressBarQueueEffects {
     )
   );
 
-  queueGuessTasks$ = createEffect(() => this.action$
+  readonly queueGuessTasks$ = createEffect(() => this.action$
     .pipe(
       ofType(GameActions.togglePlayerOn),
       exhaustMap(async (tasks) => {
@@ -39,7 +39,7 @@ export class ProgressBarQueueEffects {
     )
   );
 
-  resetTasksForPlayer = createEffect(() => this.action$
+  readonly resetTasksForPlayer = createEffect(() => this.action$
     .pipe(
       ofType(GameActions.togglePlayerOff),
       exhaustMap(async () => {
@@ -48,7 +48,7 @@ export class ProgressBarQueueEffects {
     )
   );
 
-  completeTask$ = createEffect(() => this.action$
+  readonly completeTask$ = createEffect(() => this.action$
     .pipe(
       ofType(ProgressBarQueueActions.completeTask),
       concatLatestFrom(() => this.progressBarQueueStore.select(selectQueuedTasks)),
@@ -62,7 +62,7 @@ export class ProgressBarQueueEffects {
     )
   );
 
-  completeAllTasks$ = createEffect(() => this.action$
+  readonly completeAllTasks$ = createEffect(() => this.action$
     .pipe(
       ofType(ProgressBarQueueActions.completeAllTasks),
       exhaustMap(async () => {
@@ -71,11 +71,12 @@ export class ProgressBarQueueEffects {
     )
   );
 
-  taskStarted$ = createEffect(() => this.action$
+  readonly taskStarted$ = createEffect(() => this.action$
     .pipe(
       ofType(ProgressBarQueueActions.startTask),
       exhaustMap(async () => {
         return ProgressBarQueueActions.runningTask();
       })
-    ))
+    )
+  );
 }

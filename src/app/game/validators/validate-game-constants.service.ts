@@ -5,8 +5,8 @@ import { GameConstants } from '../models/game-constants';
   providedIn: 'root'
 })
 export class ValidateGameConstantsService {
-  private validationResults: string[] = [];
-  private readonly secondsArraySum = GameConstants.SECONDS_ARRAY.reduce((prev, curr) => prev + curr)
+  private readonly validationResults: string[] = [];
+  private readonly secondsArraySum = GameConstants.SECONDS_ARRAY.reduce((prev, curr) => prev + curr, 0)
   readonly entryCountMatchesTotalGuesses = `Entry count (${GameConstants.SECONDS_ARRAY.length}) is not equal to number of total guesses (${GameConstants.TOTAL_GUESSES})`
   readonly secondsArrayAddsUpToTotalTime = `Listen seconds (${GameConstants.LISTEN_SECONDS} seconds) is not equal to the sum of seconds array (${this.secondsArraySum})`
 

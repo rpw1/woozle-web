@@ -17,11 +17,11 @@ import { v4 } from 'uuid';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GuessComponent {
-  GuessType = GuessType;
+  readonly GuessType = GuessType;
   currentGuess: string = '';
-  private SKIP_GUESS_TEXT = 'SKIPPED';
+  private readonly SKIP_GUESS_TEXT = 'SKIPPED';
 
-  private gameStore = inject(Store<Game>);
+  private readonly gameStore = inject(Store<Game>);
 
   submitGuess(guessType: GuessType): void {
     let guess: Guess;

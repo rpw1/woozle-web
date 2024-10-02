@@ -11,10 +11,10 @@ import { maximumGuesses } from '../reducers/game.reducer';
 
 @Injectable()
 export class GameEffects {
-  private action$ = inject(Actions);
-  private gameStore = inject(Store<Game>);
+  private readonly action$ = inject(Actions);
+  private readonly gameStore = inject(Store<Game>);
 
-  addGuess$ = createEffect(() => this.action$
+  readonly addGuess$ = createEffect(() => this.action$
     .pipe(
       ofType(GameActions.addGuess),
       concatLatestFrom(() => this.gameStore.select(selectGameState)),
@@ -28,25 +28,27 @@ export class GameEffects {
       })
     ));
 
-  togglePlayer$ = createEffect(() => this.action$
+  readonly togglePlayer$ = createEffect(() => this.action$
     .pipe(
       ofType(GameActions.togglePlayer),
       concatLatestFrom(() => this.gameStore.select(selectGameState)),
       concatMap(async ([_, gameState]) => {
-          if (!gameState.isPlayingMusic) {
-            return GameActions.togglePlayerOn({
-              tasks: gameState.numberOfGuesses + 1
-            });
-          }
-          return GameActions.togglePlayerOff();
+        if (!gameState.isPlayingMusic) {
+          return GameActions.togglePlayerOn({
+            tasks: gameState.numberOfGuesses + 1
+          });
+        }
+        return GameActions.togglePlayerOff();
       })
-    ));
+    )
+  );
 
-  turnOffPlayer$ = createEffect(() => this.action$
+  readonly turnOffPlayer$ = createEffect(() => this.action$
     .pipe(
       ofType(ProgressBarQueueActions.completeAllTasks),
       exhaustMap(async () => {
         return GameActions.togglePlayerOff();
       })
-    ))
+    )
+  );
 }
