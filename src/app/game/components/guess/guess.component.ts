@@ -6,15 +6,17 @@ import { Guess } from '../../models/guess';
 import { GuessType } from '../../models/guess-type';
 import { GameActions } from '../../state/actions/game.actions';
 import { Game } from '../../state/models/game.model';
-import { defer, EMPTY, map, startWith, tap } from 'rxjs';
+import { debounceTime, defer, distinctUntilChanged, EMPTY, map, Observable, startWith, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-guess',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    NgbTypeaheadModule
   ],
   templateUrl: './guess.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -24,6 +26,20 @@ export class GuessComponent {
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly SKIP_GUESS_TEXT = 'SKIPPED';
   readonly GuessType = GuessType;
+
+  private readonly songs = [
+    'Garden Song',
+    'Cherry Wine',
+    'Lemon',
+    'Lucy',
+    'Spite'
+  ]
+
+  search = (input: Observable<string>) => input.pipe(
+    debounceTime(250),
+    distinctUntilChanged(),
+    map(search => this.songs.filter(name => name.toLocaleLowerCase().startsWith(search.toLocaleLowerCase()))),
+  );
 
   guessForm = this.formBuilder.group({
     currentGuess: ['', [Validators.required, Validators.maxLength(100)]]
