@@ -1,0 +1,3 @@
+{
+  "spotifyClientId": "$(SPOTIFY_CLIENT_ID)"
+}

@@ -9,13 +9,8 @@ import { GameEffects } from './app/game/state/effects/game.effects';
 import { ProgressBarQueueEffects } from './app/game/state/effects/progress-bar-queue.effects';
 import { GameReducer } from './app/game/state/reducers/game.reducer';
 import { QueueStateReducer } from './app/game/state/reducers/progress-bar-queue.reducer';
-
-const routes: Routes = [
-  {
-    path: '**',
-    redirectTo: 'AppComponent',
-  }
-];
+import { routes } from './app/app-routes';
+import { SettingsService } from './app/shared/services/settings.service';
 
 bootstrapApplication(AppComponent, {
   providers: [
