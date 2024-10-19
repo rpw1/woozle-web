@@ -1,24 +1,27 @@
 import { inject, Injectable } from '@angular/core';
 import { SettingsService } from '../../shared/services/settings.service';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private readonly baseUrl = 'https://accounts.spotify.com';
+  private readonly httpClient = inject(HttpClient);
   private readonly $settings = inject(SettingsService).settings;
 
   async authorize(): Promise<void> {
-    const clientId = this.$settings?.().spotifyClientId ?? '';
-    const redirectUri = 'http://localhost:4200';
+    const clientId = this.$settings().spotifyClientId;
+    const redirectUri = this.$settings().redirectUri;
 
     const scope = 'user-read-private user-read-email';
-    const authUrl = new URL("https://accounts.spotify.com/authorize");
+    const authUrl = new URL(this.baseUrl + '/authorize');
 
     const codeVerifier = this.generateRandomString(64);
     const hashed = await this.sha256(codeVerifier)
     const codeChallenge = this.base64encode(hashed);
 
-    // generated in the previous step
     window.localStorage.setItem('code_verifier', codeVerifier);
 
     const params =  {
@@ -32,6 +35,27 @@ export class AuthService {
 
     authUrl.search = new URLSearchParams(params).toString();
     window.location.href = authUrl.toString();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    console.log(code)
+
+    // stored in the previous step
+    //let codeVerifier = localStorage.getItem('code_verifier');
+
+    const response = await firstValueFrom(this.httpClient.post<any>(this.baseUrl + '/api/token', {
+      client_id: clientId,
+      grant_type: 'authorization_code',
+      code,
+      redirect_uri: redirectUri,
+      code_verifier: codeVerifier,
+    }, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }
+    }));
+
+    localStorage.setItem('access_token', response.access_token);
   }
 
   private base64encode(input: ArrayBuffer): string {

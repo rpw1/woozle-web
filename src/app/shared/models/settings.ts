@@ -1,3 +1,4 @@
 export interface Settings {
-  spotifyClientId: string
+  spotifyClientId: string,
+  redirectUri: string
 }

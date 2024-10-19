@@ -11,6 +11,7 @@ import { GameReducer } from './app/game/state/reducers/game.reducer';
 import { QueueStateReducer } from './app/game/state/reducers/progress-bar-queue.reducer';
 import { routes } from './app/app-routes';
 import { SettingsService } from './app/shared/services/settings.service';
+import { provideHttpClient } from '@angular/common/http';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -30,6 +31,7 @@ bootstrapApplication(AppComponent, {
       trace: true,
       traceLimit: 75,
       connectInZone: true
-    })
+    }),
+    provideHttpClient()
 ]
 }).catch(e => console.error(e));
