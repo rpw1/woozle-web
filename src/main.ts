@@ -1,4 +1,4 @@
-import { isDevMode } from '@angular/core';
+import { APP_INITIALIZER, isDevMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { Routes, provideRouter } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
@@ -10,7 +10,7 @@ import { ProgressBarQueueEffects } from './app/game/state/effects/progress-bar-q
 import { GameReducer } from './app/game/state/reducers/game.reducer';
 import { QueueStateReducer } from './app/game/state/reducers/progress-bar-queue.reducer';
 import { routes } from './app/app-routes';
-import { SettingsService } from './app/shared/services/settings.service';
+import { initApp, SettingsService } from './app/shared/services/settings.service';
 import { provideHttpClient } from '@angular/common/http';
 
 bootstrapApplication(AppComponent, {
@@ -32,6 +32,13 @@ bootstrapApplication(AppComponent, {
       traceLimit: 75,
       connectInZone: true
     }),
-    provideHttpClient()
+    provideHttpClient(),
+    SettingsService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initApp,
+      deps: [SettingsService],
+      multi: true
+    }
 ]
 }).catch(e => console.error(e));

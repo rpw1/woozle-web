@@ -7,7 +7,7 @@ import { selectIsPlayingMusic } from '../../state/selectors/game.selector';
 import { GuessListComponent } from '../guess-list/guess-list.component';
 import { GuessComponent } from '../guess/guess.component';
 import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthService } from '../../../auth/services/auth.service';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 
 @Component({
@@ -28,7 +28,6 @@ export class GameComponent {
   private readonly authService = inject(AuthService);
 
   auth() {
-    console.log('Authed')
     this.authService.authorize();
   }
 

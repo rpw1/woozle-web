@@ -1,4 +1,4 @@
 {
   "spotifyClientId": "$(SPOTIFY_CLIENT_ID)",
-  "redirectUri": "$(REDIRECT_URI)"
+  "baseUrl": "$(BASE_URL)"
 }

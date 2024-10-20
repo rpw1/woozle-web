@@ -1,61 +1,68 @@
 import { inject, Injectable } from '@angular/core';
 import { SettingsService } from '../../shared/services/settings.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { SpotifyTokenResponse } from '../models/spotify-token-response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly baseUrl = 'https://accounts.spotify.com';
+  private readonly spotifyBaseUrl = 'https://accounts.spotify.com';
   private readonly httpClient = inject(HttpClient);
   private readonly $settings = inject(SettingsService).settings;
+  private get clientId() { return this.$settings().spotifyClientId; };
+  private get redirectUri() { return this.$settings().baseUrl + '/auth/callback'; };
 
   async authorize(): Promise<void> {
-    const clientId = this.$settings().spotifyClientId;
-    const redirectUri = this.$settings().redirectUri;
-
-    const scope = 'user-read-private user-read-email';
-    const authUrl = new URL(this.baseUrl + '/authorize');
+    const scope = 'streaming user-read-currently-playing';
+    const authUrl = new URL(this.spotifyBaseUrl + '/authorize');
 
     const codeVerifier = this.generateRandomString(64);
     const hashed = await this.sha256(codeVerifier)
     const codeChallenge = this.base64encode(hashed);
 
     window.localStorage.setItem('code_verifier', codeVerifier);
-
     const params =  {
       response_type: 'code',
-      client_id: clientId,
+      client_id: this.clientId,
       scope,
       code_challenge_method: 'S256',
       code_challenge: codeChallenge,
-      redirect_uri: redirectUri,
+      redirect_uri: this.redirectUri,
     }
 
     authUrl.search = new URLSearchParams(params).toString();
     window.location.href = authUrl.toString();
+  }
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    console.log(code)
+  async getAuthToken(code: string): Promise<boolean> {
+    const codeVerifier = localStorage.getItem('code_verifier') ?? '';
+    const body = new HttpParams()
+      .set('client_id', this.clientId)
+      .set('grant_type', 'authorization_code')
+      .set('code', code)
+      .set('redirect_uri', this.redirectUri)
+      .set('code_verifier', codeVerifier);
 
-    // stored in the previous step
-    //let codeVerifier = localStorage.getItem('code_verifier');
-
-    const response = await firstValueFrom(this.httpClient.post<any>(this.baseUrl + '/api/token', {
-      client_id: clientId,
-      grant_type: 'authorization_code',
-      code,
-      redirect_uri: redirectUri,
-      code_verifier: codeVerifier,
-    }, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+    const request$ = this.httpClient.post<SpotifyTokenResponse>(this.spotifyBaseUrl + '/api/token', 
+      body.toString(), 
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/x-www-form-urlencoded')
       }
-    }));
+    );
+    console.log(body);
+    const response = await firstValueFrom(request$);
+
+    console.log(response);
+    if (!response) {
+      console.error('You failed');
+      return false;
+    } 
 
     localStorage.setItem('access_token', response.access_token);
+    return true;
   }
 
   private base64encode(input: ArrayBuffer): string {
@@ -76,6 +83,4 @@ export class AuthService {
     const data = encoder.encode(plain)
     return window.crypto.subtle.digest('SHA-256', data)
   }
-  
-  
 }
