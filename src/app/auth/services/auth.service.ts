@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { SettingsService } from '../../shared/services/settings.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { catchError, EMPTY, firstValueFrom } from 'rxjs';
 import { SpotifyTokenResponse } from '../models/spotify-token-response';
 
 @Injectable({
@@ -51,11 +51,14 @@ export class AuthService {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/x-www-form-urlencoded')
       }
+    ).pipe(
+      catchError((err) => {
+        console.error(err);
+        return EMPTY;
+      })
     );
-    console.log(body);
-    const response = await firstValueFrom(request$);
+    const response = await firstValueFrom(request$, { defaultValue: undefined });
 
-    console.log(response);
     if (!response) {
       console.error('You failed');
       return false;
