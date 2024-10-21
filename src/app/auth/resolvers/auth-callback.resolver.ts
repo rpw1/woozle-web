@@ -18,5 +18,5 @@ export const authCallbackResolver: ResolveFn<boolean> = (route, state): MaybeAsy
     return new RedirectCommand(router.parseUrl('/forbidden'));
   }
 
-  return true;
+  return new RedirectCommand(router.parseUrl(''));
 };

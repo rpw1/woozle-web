@@ -9,6 +9,8 @@ import { GuessComponent } from '../guess/guess.component';
 import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
 import { AuthService } from '../../../auth/services/auth.service';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { SpotifyService } from '../../../shared/services/spotify.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-game',
@@ -26,9 +28,17 @@ export class GameComponent {
   private readonly gameStore = inject(Store<Game>);
   readonly isPlayingMusic$ = this.gameStore.select(selectIsPlayingMusic);
   private readonly authService = inject(AuthService);
+  private readonly spotifyService = inject(SpotifyService);
+  private deviceId: string = ''
 
   auth() {
     this.authService.authorize();
+  }
+
+  async devices() {
+    const devices = await firstValueFrom(this.spotifyService.getAvailableDevices());
+    console.log(devices);
+    this.deviceId = devices.devices[0].id;
   }
 
   togglePlayer() {

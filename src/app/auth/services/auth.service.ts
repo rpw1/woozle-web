@@ -15,7 +15,13 @@ export class AuthService {
   private get redirectUri() { return this.$settings().baseUrl + '/auth/callback'; };
 
   async authorize(): Promise<void> {
-    const scope = 'streaming user-read-currently-playing';
+    const scopes = [
+      'user-read-currently-playing',
+      'user-read-playback-state',
+      'user-modify-playback-state',
+      'playlist-read-private'
+    ]
+    const scope = scopes.join(' ');
     const authUrl = new URL(this.spotifyBaseUrl + '/authorize');
 
     const codeVerifier = this.generateRandomString(64);

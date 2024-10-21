@@ -4,10 +4,6 @@ import { authGuard } from "./auth/guards/auth.guard";
 import { ForbiddenComponent } from "./auth/components/forbidden/forbidden.component";
 
 export const routes: Routes = [
-  // {
-  //   path: '**',
-  //   redirectTo: '',
-  // },
   {
     path: '',
     canActivate: [ authGuard ],

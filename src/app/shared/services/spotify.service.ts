@@ -6,12 +6,15 @@ import { catchError, EMPTY, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SpotifyService {
-  private readonly baseUrl = 'https://api.spotify.com';
+  private readonly baseUrl = 'https://api.spotify.com/v1';
   private readonly httpClient = inject(HttpClient);
 
   getCurrentUserPlaylists() : Observable<any> {
-    return this.httpClient.get(`${this.baseUrl}/'me/playlists`)
-      .pipe(
+    return this.httpClient.get(`${this.baseUrl}/'me/playlists`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token') ?? ''}`
+      }
+    }).pipe(
         catchError((err) => {
           console.error(err);
           return EMPTY;
@@ -20,8 +23,11 @@ export class SpotifyService {
   }
 
   getPlaylistTracks(playlistId: string): Observable<any> {
-    return this.httpClient.get(`${this.baseUrl}/playlists/${playlistId}/tracks`)
-      .pipe(
+    return this.httpClient.get(`${this.baseUrl}/playlists/${playlistId}/tracks`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token') ?? ''}`
+      }
+    }).pipe(
         catchError((err) => {
           console.error(err);
           return EMPTY;
@@ -30,8 +36,11 @@ export class SpotifyService {
   }
 
   getTrack(trackId: string): Observable<any> {
-    return this.httpClient.get(`${this.baseUrl}/tracks/${trackId}`)
-      .pipe(
+    return this.httpClient.get(`${this.baseUrl}/tracks/${trackId}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token') ?? ''}`
+      }
+    }).pipe(
         catchError((err) => {
           console.error(err);
           return EMPTY;
@@ -40,8 +49,11 @@ export class SpotifyService {
   }
 
   getAvailableDevices(): Observable<any> {
-    return this.httpClient.get(`${this.baseUrl}/me/player/devices`)
-      .pipe(
+    return this.httpClient.get(`${this.baseUrl}/me/player/devices`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token') ?? ''}`
+      }
+    }).pipe(
         catchError((err) => {
           console.error(err);
           return EMPTY;
@@ -51,8 +63,17 @@ export class SpotifyService {
 
   playPlayer(deviceId: string): Observable<any> {
     return this.httpClient.put(`${this.baseUrl}/me/player/play`, {
-      device_id: deviceId
-    }).pipe(
+        position_ms: 0,
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('access_token') ?? ''}`,
+        },
+        params: {
+          'device_id': deviceId
+        }
+      }
+    ).pipe(
         catchError((err) => {
           console.error(err);
           return EMPTY;
@@ -61,13 +82,21 @@ export class SpotifyService {
   }
 
   pausePlayer(deviceId: string): Observable<any> {
-    return this.httpClient.put(`${this.baseUrl}/me/player/pause`, {
-      device_id: deviceId
-    }).pipe(
-        catchError((err) => {
-          console.error(err);
-          return EMPTY;
-        })
-      );
+    return this.httpClient.put(`${this.baseUrl}/me/player/pause`, 
+        null,
+        {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token') ?? ''}`,
+          },
+          params: {
+            'device_id': deviceId
+          }
+        }
+      ).pipe(
+          catchError((err) => {
+            console.error(err);
+            return EMPTY;
+          })
+        );
   }
 }
