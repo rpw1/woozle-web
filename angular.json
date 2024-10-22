@@ -22,7 +22,6 @@
           "options": {
             "allowedCommonJsDependencies": [
               "detect-node",
-              "lodash",
               "rxjs/internal/operators/catchError",
               "cross-fetch",
               "p-cancelable",
