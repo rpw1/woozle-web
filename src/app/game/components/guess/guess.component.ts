@@ -1,17 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
-import { debounceTime, defer, distinctUntilChanged, EMPTY, firstValueFrom, map, Observable, startWith } from 'rxjs';
+import { debounceTime, defer, distinctUntilChanged, EMPTY, map, Observable, startWith } from 'rxjs';
 import { v4 } from 'uuid';
-import { SpotifyService } from '../../../shared/services/spotify.service';
 import { Guess } from '../../models/guess';
 import { GuessType } from '../../models/guess-type';
 import { GameActions } from '../../state/actions/game.actions';
 import { Game } from '../../state/models/game.model';
-import { selectSolution } from '../../state/selectors/game.selector';
+import { Track } from '../../state/models/track';
 
 @Component({
   selector: 'app-guess',
@@ -27,18 +26,9 @@ import { selectSolution } from '../../state/selectors/game.selector';
 export class GuessComponent implements OnInit {
   private readonly gameStore = inject(Store<Game>);
   private readonly formBuilder = inject(NonNullableFormBuilder);
-  private readonly spotifyService = inject(SpotifyService);
+  private readonly route = inject(ActivatedRoute);
   private readonly SKIP_GUESS_TEXT = 'SKIPPED';
   readonly GuessType = GuessType;
-  private readonly solution$ = this.gameStore.select(selectSolution).pipe(
-    map(async() => {
-      const woozleTracks = await firstValueFrom(this.spotifyService.getPlaylistTracks('5WDtkOZjocf5Qs2WUxEdsg'));
-      this.songs = woozleTracks.items.map((track: any) => {
-        return track.track.name as string
-      });
-    }),
-    takeUntilDestroyed()
-  )
 
   private songs = [
     'Garden Song',
@@ -49,13 +39,14 @@ export class GuessComponent implements OnInit {
   ]
 
   ngOnInit(): void {
-    this.solution$.subscribe();
+    const tracks = this.route.snapshot.data['tracks'] as Track[];
+    this.songs = tracks.map(x => x.song);
   }
 
   search = (input: Observable<string>) => input.pipe(
     debounceTime(250),
     distinctUntilChanged(),
-    map(search => this.songs.filter(name => name.toLocaleLowerCase().startsWith(search.toLocaleLowerCase()))),
+    map(search => this.songs.filter(name => name.toLocaleLowerCase().includes(search.toLocaleLowerCase()))),
   );
 
   guessForm = this.formBuilder.group({
