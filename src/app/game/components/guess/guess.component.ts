@@ -1,14 +1,16 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
+import { debounceTime, defer, distinctUntilChanged, EMPTY, map, Observable, startWith } from 'rxjs';
 import { v4 } from 'uuid';
 import { Guess } from '../../models/guess';
 import { GuessType } from '../../models/guess-type';
 import { GameActions } from '../../state/actions/game.actions';
 import { Game } from '../../state/models/game.model';
-import { debounceTime, defer, distinctUntilChanged, EMPTY, map, Observable, startWith, tap } from 'rxjs';
-import { CommonModule } from '@angular/common';
-import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { Track } from '../../state/models/track';
 
 @Component({
   selector: 'app-guess',
@@ -24,10 +26,11 @@ import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 export class GuessComponent {
   private readonly gameStore = inject(Store<Game>);
   private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly route = inject(ActivatedRoute);
   private readonly SKIP_GUESS_TEXT = 'SKIPPED';
   readonly GuessType = GuessType;
 
-  private readonly songs = [
+  private songs = [
     'Garden Song',
     'Cherry Wine',
     'Lemon',
@@ -35,10 +38,15 @@ export class GuessComponent {
     'Spite'
   ]
 
+  ngOnInit(): void {
+    const tracks = this.route.snapshot.data['tracks'] as Track[];
+    this.songs = tracks.map(x => x.song);
+  }
+
   search = (input: Observable<string>) => input.pipe(
     debounceTime(250),
     distinctUntilChanged(),
-    map(search => this.songs.filter(name => name.toLocaleLowerCase().startsWith(search.toLocaleLowerCase()))),
+    map(search => this.songs.filter(name => name.toLocaleLowerCase().includes(search.toLocaleLowerCase()))),
   );
 
   guessForm = this.formBuilder.group({

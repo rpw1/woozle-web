@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="row">
+    <div class="col text-center my-5">
+      <h1 class="display-1">Woozle</h1>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <div class="row">
+      <div class="col">
+        <app-guess-list></app-guess-list>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <div class="row">
+      <div class="col">
+        <app-progress-bar></app-progress-bar>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <div class="row">
+      <div class="col text-center">
+        <button [hidden]="isPlayingMusic$ | async" type="button" class="btn btn-primary w-25" (click)="togglePlayer()">Play</button>
+        <button [hidden]="!(isPlayingMusic$ | async)" type="button" class="btn btn-danger w-25" (click)="togglePlayer()">Stop</button>
+        </div>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <div class="row">
+      <div class="col text-center">
+        <app-guess></app-guess>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <div class="row">
+      <div class="col text-center">
+        <button class="btn btn-primary" type="button" (click)="getSpotifyUserInfo()">Spotify User Info</button>
+        <button class="btn btn-primary" type="button" (click)="configureSolution()">Configure Solution</button>
+      </div>
+    </div>
+  </div>
+  
+</div>
