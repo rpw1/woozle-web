@@ -20,7 +20,8 @@ export function getFakeGame(): Game {
     solution: {
       song: 'Garden Song',
       album: 'Punisher',
-      artist: 'Phoebe Bridgers'
+      artist: 'Phoebe Bridgers',
+      songUri: 'uri'
     }
   };
 }

@@ -21,7 +21,8 @@ describe('GameReducer', () => {
     solution: {
       song: 'Garden Song',
       album: 'Punisher',
-      artist: 'Phoebe Bridgers'
+      artist: 'Phoebe Bridgers',
+      songUri: 'uri'
     }
   }
 
