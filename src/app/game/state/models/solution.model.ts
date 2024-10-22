@@ -1,5 +1,6 @@
 export interface Solution {
   song: string,
   artist: string,
-  album: string
+  album: string,
+  songUri: string
 }

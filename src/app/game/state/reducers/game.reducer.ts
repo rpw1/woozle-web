@@ -19,7 +19,8 @@ export const initialState: Game = {
   solution: {
     song: 'Garden Song',
     artist: 'Phoebe Bridgers',
-    album: 'Punisher'
+    album: 'Punisher',
+    songUri: 'any'
   }
 }
 
@@ -49,5 +50,6 @@ export const GameReducer = createReducer<Game>(
       return { ...state, currentGameState: newGameState, numberOfGuesses: maximumGuesses };
     }
     return { ...state, currentGameState: newGameState };
-  })
+  }),
+  on(GameActions.setGameSolution, (state, { solution }) => ({...state, solution: solution}))
 )

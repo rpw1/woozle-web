@@ -1,14 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
+import { debounceTime, defer, distinctUntilChanged, EMPTY, firstValueFrom, map, Observable, startWith } from 'rxjs';
 import { v4 } from 'uuid';
+import { SpotifyService } from '../../../shared/services/spotify.service';
 import { Guess } from '../../models/guess';
 import { GuessType } from '../../models/guess-type';
 import { GameActions } from '../../state/actions/game.actions';
 import { Game } from '../../state/models/game.model';
-import { debounceTime, defer, distinctUntilChanged, EMPTY, map, Observable, startWith, tap } from 'rxjs';
-import { CommonModule } from '@angular/common';
-import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { selectSolution } from '../../state/selectors/game.selector';
 
 @Component({
   selector: 'app-guess',
@@ -21,19 +24,33 @@ import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './guess.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GuessComponent {
+export class GuessComponent implements OnInit {
   private readonly gameStore = inject(Store<Game>);
   private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly spotifyService = inject(SpotifyService);
   private readonly SKIP_GUESS_TEXT = 'SKIPPED';
   readonly GuessType = GuessType;
+  private readonly solution$ = this.gameStore.select(selectSolution).pipe(
+    map(async() => {
+      const woozleTracks = await firstValueFrom(this.spotifyService.getPlaylistTracks('5WDtkOZjocf5Qs2WUxEdsg'));
+      this.songs = woozleTracks.items.map((track: any) => {
+        return track.track.name as string
+      });
+    }),
+    takeUntilDestroyed()
+  )
 
-  private readonly songs = [
+  private songs = [
     'Garden Song',
     'Cherry Wine',
     'Lemon',
     'Lucy',
     'Spite'
   ]
+
+  ngOnInit(): void {
+    this.solution$.subscribe();
+  }
 
   search = (input: Observable<string>) => input.pipe(
     debounceTime(250),

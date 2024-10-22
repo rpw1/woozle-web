@@ -10,7 +10,7 @@ export class SpotifyService {
   private readonly httpClient = inject(HttpClient);
 
   getCurrentUserPlaylists() : Observable<any> {
-    return this.httpClient.get(`${this.baseUrl}/'me/playlists`, {
+    return this.httpClient.get(`${this.baseUrl}/me/playlists`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token') ?? ''}`
       }
@@ -61,9 +61,13 @@ export class SpotifyService {
       );
   }
 
-  playPlayer(deviceId: string): Observable<any> {
+  playPlayer(deviceId: string, trackUri: string): Observable<any> {
     return this.httpClient.put(`${this.baseUrl}/me/player/play`, {
         position_ms: 0,
+        uris: [trackUri],
+        offset: {
+          'position': 0
+        },
       },
       {
         headers: {

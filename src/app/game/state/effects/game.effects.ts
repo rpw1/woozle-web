@@ -84,8 +84,9 @@ export class GameEffects {
   readonly blah$ = createEffect(() =>
     this.action$.pipe(
       ofType(GameActions.togglePlayerOn),
-      exhaustMap(async () => {
-        await firstValueFrom(this.spotifyService.playPlayer(this.deviceId), {defaultValue: false});
+      concatLatestFrom(() => this.gameStore.select(selectGameState)),
+      exhaustMap(async ([_, gameState]) => {
+        await firstValueFrom(this.spotifyService.playPlayer(this.deviceId, gameState.solution.songUri), {defaultValue: false});
         return ProgressBarQueueActions.noOperation();
       })
     )
