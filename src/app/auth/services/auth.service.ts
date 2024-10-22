@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { SettingsService } from '../../shared/services/settings.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, EMPTY, firstValueFrom } from 'rxjs';
@@ -14,7 +14,7 @@ export class AuthService {
   private get clientId() { return this.$settings().spotifyClientId; };
   private get redirectUri() { return this.$settings().baseUrl + '/auth/callback'; };
 
-  async authorize(): Promise<void> {
+  async authorize(): Promise<boolean> {
     const scopes = [
       'user-read-currently-playing',
       'user-read-playback-state',
@@ -40,6 +40,7 @@ export class AuthService {
 
     authUrl.search = new URLSearchParams(params).toString();
     window.location.href = authUrl.toString();
+    return true;
   }
 
   async getAuthToken(code: string): Promise<boolean> {
