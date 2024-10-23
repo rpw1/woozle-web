@@ -22,7 +22,6 @@ import { ActivatedRoute } from '@angular/router';
 export class SolutionModalComponent {
   private readonly activeModal = inject(NgbActiveModal);
   private readonly gameStore = inject(Store<Game>);
-  private readonly route = inject(ActivatedRoute);
   readonly GameState = GameState;
   readonly endingGameState$ = this.gameStore.select(selectCurrentGameState).pipe(
     filter(x => x !== GameState.ACTIVE)
