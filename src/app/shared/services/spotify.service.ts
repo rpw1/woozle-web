@@ -22,10 +22,13 @@ export class SpotifyService {
       );
   }
 
-  getPlaylistTracks(playlistId: string): Observable<any> {
+  getPlaylistTracks(playlistId: string, offset: number): Observable<any> {
     return this.httpClient.get(`${this.baseUrl}/playlists/${playlistId}/tracks`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token') ?? ''}`
+      },
+      params: {
+        offset: offset
       }
     }).pipe(
         catchError((err) => {

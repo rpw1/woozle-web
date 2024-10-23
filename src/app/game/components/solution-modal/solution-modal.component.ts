@@ -7,6 +7,7 @@ import { GameState } from '../../state/models/game-state.model';
 import { Game } from '../../state/models/game.model';
 import { selectCurrentGameState, selectSolution } from '../../state/selectors/game.selector';
 import { GameActions } from '../../state/actions/game.actions';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-solution-modal',
@@ -21,6 +22,7 @@ import { GameActions } from '../../state/actions/game.actions';
 export class SolutionModalComponent {
   private readonly activeModal = inject(NgbActiveModal);
   private readonly gameStore = inject(Store<Game>);
+  private readonly route = inject(ActivatedRoute);
   readonly GameState = GameState;
   readonly endingGameState$ = this.gameStore.select(selectCurrentGameState).pipe(
     filter(x => x !== GameState.ACTIVE)

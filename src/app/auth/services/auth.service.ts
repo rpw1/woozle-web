@@ -72,6 +72,38 @@ export class AuthService {
     } 
 
     localStorage.setItem('access_token', response.access_token);
+    localStorage.setItem('refresh_token', response.refresh_token)
+    return true;
+  }
+
+  async getRefreshToken(): Promise<boolean> {
+    const refreshToken = localStorage.getItem('refresh_token') ?? '';
+    const body = new HttpParams()
+      .set('client_id', this.clientId)
+      .set('grant_type', 'refresh_token')
+      .set('refresh_token', refreshToken);
+
+    const request$ = this.httpClient.post<SpotifyTokenResponse>(this.spotifyBaseUrl + '/api/token', 
+      body.toString(), 
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/x-www-form-urlencoded')
+      }
+    ).pipe(
+      catchError((err) => {
+        console.error(err);
+        return EMPTY;
+      })
+    );
+    const response = await firstValueFrom(request$, { defaultValue: undefined });
+
+    if (!response) {
+      console.error('You failed');
+      return false;
+    } 
+
+    localStorage.setItem('access_token', response.access_token);
+    localStorage.setItem('refresh_token', response.refresh_token)
     return true;
   }
 
