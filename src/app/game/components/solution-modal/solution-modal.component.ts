@@ -7,6 +7,7 @@ import { GameState } from '../../state/models/game-state.model';
 import { Game } from '../../state/models/game.model';
 import { selectCurrentGameState, selectSolution } from '../../state/selectors/game.selector';
 import { GameActions } from '../../state/actions/game.actions';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-solution-modal',

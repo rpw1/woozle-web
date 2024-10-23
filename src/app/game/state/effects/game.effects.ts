@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { concatMap, exhaustMap, filter, firstValueFrom } from 'rxjs';
+import { combineLatest, concatMap, exhaustMap, filter, firstValueFrom } from 'rxjs';
 import { GameActions } from '../actions/game.actions';
 import { ProgressBarQueueActions } from '../actions/progress-bar-queue.actions';
 import { Game } from '../models/game.model';
@@ -12,12 +12,16 @@ import { GameState } from '../models/game-state.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SolutionModalComponent } from '../../components/solution-modal/solution-modal.component';
 import { SpotifyService } from '../../../shared/services/spotify.service';
+import { ProgressBarQueue } from '../models/progress-bar-queue.model';
+import { selectActiveItemState } from '../selectors/progress-bar-queue.selector';
+import { TaskStateType } from '../models/queue-state-type.model';
 
 @Injectable()
 export class GameEffects {
   private readonly action$ = inject(Actions);
   private readonly modalService = inject(NgbModal);
   private readonly gameStore = inject(Store<Game>);
+  private readonly progressBarQueueStore = inject(Store<ProgressBarQueue>);
   private readonly spotifyService = inject(SpotifyService);
   private readonly deviceId = "f8259e18790386894a3fd8e043a00eeab2279aa6";
 
@@ -84,9 +88,11 @@ export class GameEffects {
   readonly blah$ = createEffect(() =>
     this.action$.pipe(
       ofType(GameActions.togglePlayerOn),
-      concatLatestFrom(() => this.gameStore.select(selectGameState)),
-      exhaustMap(async ([_, gameState]) => {
-        await firstValueFrom(this.spotifyService.playPlayer(this.deviceId, gameState.solution.songUri), {defaultValue: false});
+      concatLatestFrom(() => combineLatest([this.gameStore.select(selectGameState), this.progressBarQueueStore.select(selectActiveItemState)])),
+      exhaustMap(async ([_, [gameState, queueState]]) => {
+        if (queueState !== TaskStateType.RUNNING) {
+          await firstValueFrom(this.spotifyService.playPlayer(this.deviceId, gameState.solution.songUri), {defaultValue: false});
+        }
         return ProgressBarQueueActions.noOperation();
       })
     )

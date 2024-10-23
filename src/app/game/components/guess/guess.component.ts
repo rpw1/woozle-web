@@ -4,7 +4,7 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute } from '@angular/router';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
-import { debounceTime, defer, distinctUntilChanged, EMPTY, map, Observable, startWith } from 'rxjs';
+import { debounceTime, defer, distinctUntilChanged, EMPTY, map, Observable, startWith, take } from 'rxjs';
 import { v4 } from 'uuid';
 import { Guess } from '../../models/guess';
 import { GuessType } from '../../models/guess-type';
@@ -46,7 +46,12 @@ export class GuessComponent implements OnInit {
   search = (input: Observable<string>) => input.pipe(
     debounceTime(250),
     distinctUntilChanged(),
-    map(search => this.songs.filter(name => name.toLocaleLowerCase().includes(search.toLocaleLowerCase()))),
+    map(search => {
+      return this.songs
+        .filter(name => name.toLocaleLowerCase()
+          .includes(search.toLocaleLowerCase()))
+        .slice(0, 15);
+    })
   );
 
   guessForm = this.formBuilder.group({

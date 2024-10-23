@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { firstValueFrom } from 'rxjs';
@@ -23,27 +23,31 @@ import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
   templateUrl: './game.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GameComponent {
+export class GameComponent implements OnInit {
   private readonly gameStore = inject(Store<Game>);
   readonly isPlayingMusic$ = this.gameStore.select(selectIsPlayingMusic);
   private readonly spotifyService = inject(SpotifyService);
   private readonly route = inject(ActivatedRoute);
 
-  async getSpotifyUserInfo() {
+  ngOnInit(): void {
+    this.createSolution()
+  }
+
+  createSolution(): void {
+    const tracks = this.route.snapshot.data['tracks'];
+    const randomIndex = Math.floor(Math.random() * tracks.length) -1;
+    const solution = tracks[randomIndex];
+    this.gameStore.dispatch(GameActions.setGameSolution({solution: solution}));
+  }
+ 
+  async getSpotifyUserInfo(): Promise<void> {
     const devices = await firstValueFrom(this.spotifyService.getAvailableDevices());
     console.log(devices);
     const playlists = await firstValueFrom(this.spotifyService.getCurrentUserPlaylists());
     console.log(playlists);
   }
 
-  async configureSolution() {
-    const tracks = this.route.snapshot.data['tracks'];
-    const randomIndex = Math.floor(Math.random() * tracks.length) -1;
-    const solution = tracks[randomIndex];
-    this.gameStore.dispatch(GameActions.setGameSolution({solution: solution}));
-  }
-
-  togglePlayer() {
+  togglePlayer(): void {
     this.gameStore.dispatch(GameActions.togglePlayer());
   }
 }
