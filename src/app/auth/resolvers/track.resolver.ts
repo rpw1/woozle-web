@@ -27,7 +27,8 @@ export const trackResolver: ResolveFn<boolean> = async (route, state) => {
       song: item.track.name,
       album: item.track.album.name,
       artist: item.track.artists.map((x: any) => x.name).join(", "),
-      songUri: item.track.uri
+      songUri: item.track.uri,
+      imageUri: item.track.album.images[0].url
     } as Track;
   });
   gameStore.dispatch(GameActions.setPlaylistTracks({tracks}));

@@ -28,7 +28,6 @@ export class SolutionModalComponent {
   readonly solution$ = this.gameStore.select(selectSolution);
 
   closeModal() {
-    // todo add a difference between close and dismiss. One to view the result and one to reset the game
     this.gameStore.dispatch(GameActions.reset());
     this.activeModal.close();
   }
