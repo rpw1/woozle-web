@@ -25,6 +25,7 @@ export function getFakeGame(): Game {
     },
     playlist: {
       playlistId: 'playlistId',
+      name: 'name',
       tracks: [
         {
           song: 'song',

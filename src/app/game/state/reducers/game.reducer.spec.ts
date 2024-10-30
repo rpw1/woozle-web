@@ -26,6 +26,7 @@ describe('GameReducer', () => {
     },
     playlist: {
       playlistId: 'playlistId',
+      name: 'name',
       tracks: [
         {
           song: 'song',
