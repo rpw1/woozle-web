@@ -1,0 +1,7 @@
+<div class="container">
+  <div class="row">
+    @for(playlist of playlist$ | async; track playlist.id) {
+      <app-playlist [playlist]="playlist" (selectedPlaylist)="selectPlaylist($event)" />
+    }
+  </div>
+</div>

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, EMPTY, Observable } from 'rxjs';
+import { catchError, EMPTY, map, Observable } from 'rxjs';
+import { SpotifyPlaylist } from '../models/spotify-playlist';
 
 @Injectable({
   providedIn: 'root'
@@ -10,15 +11,16 @@ export class SpotifyService {
   private readonly httpClient = inject(HttpClient);
 
   getCurrentUserPlaylists() : Observable<any> {
-    return this.httpClient.get(`${this.baseUrl}/me/playlists`, {
+    return this.httpClient.get<any>(`${this.baseUrl}/me/playlists`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token') ?? ''}`
       }
     }).pipe(
-        catchError((err) => {
-          console.error(err);
-          return EMPTY;
-        })
+      map(x => x.items as SpotifyPlaylist[]),
+      catchError((err) => {
+        console.error(err);
+        return EMPTY;
+      })
       );
   }
 
@@ -89,7 +91,7 @@ export class SpotifyService {
   }
 
   pausePlayer(deviceId: string): Observable<any> {
-    return this.httpClient.put(`${this.baseUrl}/me/player/pause`, 
+    return this.httpClient.put(`${this.baseUrl}/me/player/pause`,
         null,
         {
           headers: {

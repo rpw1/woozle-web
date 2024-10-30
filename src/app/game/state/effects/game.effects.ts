@@ -23,7 +23,6 @@ export class GameEffects {
   private readonly gameStore = inject(Store<Game>);
   private readonly progressBarQueueStore = inject(Store<ProgressBarQueue>);
   private readonly spotifyService = inject(SpotifyService);
-  private readonly deviceId = "f8259e18790386894a3fd8e043a00eeab2279aa6";
 
   readonly addGuess$ = createEffect(() =>
     this.action$.pipe(
@@ -91,7 +90,8 @@ export class GameEffects {
       concatLatestFrom(() => combineLatest([this.gameStore.select(selectGameState), this.progressBarQueueStore.select(selectActiveItemState)])),
       exhaustMap(async ([_, [gameState, queueState]]) => {
         if (queueState !== TaskStateType.RUNNING) {
-          await firstValueFrom(this.spotifyService.playPlayer(this.deviceId, gameState.solution.songUri), {defaultValue: false});
+          const devices = (await firstValueFrom(this.spotifyService.getAvailableDevices())).devices as any[];
+          await firstValueFrom(this.spotifyService.playPlayer(devices.find(x => x.is_active).id, gameState.solution.songUri), {defaultValue: false});
         }
         return ProgressBarQueueActions.noOperation();
       })
@@ -102,7 +102,8 @@ export class GameEffects {
     this.action$.pipe(
       ofType(GameActions.togglePlayerOff),
       exhaustMap(async () => {
-        await firstValueFrom(this.spotifyService.pausePlayer(this.deviceId), {defaultValue: false});
+        const devices = (await firstValueFrom(this.spotifyService.getAvailableDevices())).devices as any[];
+        await firstValueFrom(this.spotifyService.pausePlayer(devices.find(x => x.is_active).id), {defaultValue: false});
         return ProgressBarQueueActions.noOperation();
       })
     )

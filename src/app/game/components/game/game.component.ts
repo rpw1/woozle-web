@@ -39,7 +39,7 @@ export class GameComponent implements OnInit {
     const solution = tracks[randomIndex];
     this.gameStore.dispatch(GameActions.setGameSolution({solution: solution}));
   }
- 
+
   async getSpotifyUserInfo(): Promise<void> {
     const devices = await firstValueFrom(this.spotifyService.getAvailableDevices());
     console.log(devices);

@@ -21,7 +21,8 @@ export const initialState: Game = {
     artist: 'Phoebe Bridgers',
     album: 'Punisher',
     songUri: 'any'
-  }
+  },
+  playlistId: ''
 }
 
 export const GameReducer = createReducer<Game>(
@@ -51,5 +52,6 @@ export const GameReducer = createReducer<Game>(
     }
     return { ...state, currentGameState: newGameState };
   }),
-  on(GameActions.setGameSolution, (state, { solution }) => ({...state, solution: solution}))
+  on(GameActions.setGameSolution, (state, { solution }) => ({ ...state, solution: solution })),
+  on(GameActions.setPlaylistId, (state, { playlistId }) => ({ ...state, playlistId: playlistId }))
 )

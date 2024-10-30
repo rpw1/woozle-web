@@ -12,6 +12,7 @@ export const GameActions = createActionGroup({
     'Toggle Player On': props<{ tasks: number }>(),
     'Toggle Player Off': emptyProps(),
     'Update Game State': props<{ newGameState : GameState }>(),
-    'Set Game Solution': props<{ solution: Track }>()
+    'Set Game Solution': props<{ solution: Track }>(),
+    'Set Playlist Id': props<{ playlistId: string }>()
   }
 })

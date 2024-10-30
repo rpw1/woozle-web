@@ -1,0 +1,7 @@
+<div class="col">
+  <div class="card" style="width: 18rem;">
+    <img [src]="playlist.images[0].url" [alt]="playlist.description" title="playlist image" class="img-thumbnail" />
+    <p>{{playlist.name}}</p>
+    <button type="submit" (click)="this.selectedPlaylist.emit(playlist.id)">Select Image</button>
+  </div>
+</div>

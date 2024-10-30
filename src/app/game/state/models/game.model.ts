@@ -7,5 +7,6 @@ export interface Game {
   numberOfGuesses: number,
   isPlayingMusic: boolean,
   currentGameState: GameState
-  solution: Track
+  solution: Track,
+  playlistId: string
 }
