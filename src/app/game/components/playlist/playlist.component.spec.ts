@@ -14,6 +14,18 @@ describe('PlaylistComponent', () => {
 
     fixture = TestBed.createComponent(PlaylistComponent);
     component = fixture.componentInstance;
+    component.playlist = {
+      id: 'id',
+      description: 'description',
+      name: 'name',
+      images: [
+        {
+          url: 'url',
+          height: 900,
+          width: 800
+        }
+      ]
+    }
     fixture.detectChanges();
   });
 
