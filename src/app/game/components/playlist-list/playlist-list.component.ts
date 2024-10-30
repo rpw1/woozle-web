@@ -7,6 +7,7 @@ import { SpotifyService } from '../../../shared/services/spotify.service';
 import { GameActions } from '../../state/actions/game.actions';
 import { Game } from '../../state/models/game.model';
 import { PlaylistComponent } from '../playlist/playlist.component';
+import { SpotifyPlaylist } from '../../../shared/models/spotify-playlist';
 
 @Component({
   selector: 'app-playlist-list',
@@ -24,8 +25,8 @@ export class PlaylistListComponent {
   private readonly spotifyService = inject(SpotifyService);
   playlist$ = defer(() => this.spotifyService.getCurrentUserPlaylists());
 
-  async selectPlaylist(playlistId: string) {
-    this.game.dispatch(GameActions.setPlaylistId({ playlistId: playlistId }));
+  async selectPlaylist(playlist: SpotifyPlaylist) {
+    this.game.dispatch(GameActions.setPlaylist({ playlistId: playlist.id, name: playlist.name }));
     void this.router.navigate(['/game']);
   }
 }

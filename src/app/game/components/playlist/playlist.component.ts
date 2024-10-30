@@ -10,5 +10,5 @@ import { SpotifyPlaylist } from '../../../shared/models/spotify-playlist';
 })
 export class PlaylistComponent {
   @Input({required: true}) playlist!: SpotifyPlaylist;
-  @Output() selectedPlaylist = new EventEmitter<string>();
+  @Output() selectedPlaylist = new EventEmitter<SpotifyPlaylist>();
 }

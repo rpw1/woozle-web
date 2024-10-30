@@ -5,6 +5,13 @@
     </div>
   </div>
 
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['/playlists']" routerLinkActive="router-link-active">Playlists</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ (playlist$ | async)?.name }}</li>
+    </ol>
+  </nav>
+
   <div class="mb-4">
     <div class="row">
       <div class="col">

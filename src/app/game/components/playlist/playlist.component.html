@@ -3,7 +3,7 @@
   <div class="card-body">
     <h5 class="card-title">{{playlist.name}}</h5>
     <p class="card-text">{{playlist.description}}</p>
-    <button class="btn btn-primary" type="submit" (click)="this.selectedPlaylist.emit(playlist.id)">
+    <button class="btn btn-primary" type="submit" (click)="this.selectedPlaylist.emit(playlist)">
       Select Playlist
     </button>
   </div>
