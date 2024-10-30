@@ -3,11 +3,10 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { filter } from 'rxjs';
+import { GameActions } from '../../state/actions/game.actions';
 import { GameState } from '../../state/models/game-state.model';
 import { Game } from '../../state/models/game.model';
 import { selectCurrentGameState, selectSolution } from '../../state/selectors/game.selector';
-import { GameActions } from '../../state/actions/game.actions';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-solution-modal',

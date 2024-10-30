@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { SpotifyService } from '../../../shared/services/spotify.service';
 import { CommonModule } from '@angular/common';
-import { PlaylistComponent } from '../playlist/playlist.component';
-import { defer, firstValueFrom, tap } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { Game } from '../../state/models/game.model';
-import { GameActions } from '../../state/actions/game.actions';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { defer } from 'rxjs';
+import { SpotifyService } from '../../../shared/services/spotify.service';
+import { GameActions } from '../../state/actions/game.actions';
+import { Game } from '../../state/models/game.model';
+import { PlaylistComponent } from '../playlist/playlist.component';
 
 @Component({
   selector: 'app-playlist-list',
