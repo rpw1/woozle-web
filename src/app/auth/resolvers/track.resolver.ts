@@ -5,14 +5,13 @@ import { Track } from '../../game/state/models/track';
 import { SpotifyService } from '../../shared/services/spotify.service';
 import { Store } from '@ngrx/store';
 import { Game } from '../../game/state/models/game.model';
-import { selectPlaylistId } from '../../game/state/selectors/game.selector';
+import { selectPlaylist } from '../../game/state/selectors/game.selector';
+import { GameActions } from '../../game/state/actions/game.actions';
 
-export const trackResolver: ResolveFn<Track[]> = async (route, state) => {
-  console.log('in track resolver')
-  const game = inject(Store<Game>);
+export const trackResolver: ResolveFn<boolean> = async (route, state) => {
+  const gameStore = inject(Store<Game>);
   const spotifyService = inject(SpotifyService);
-  const playlistId = await firstValueFrom(game.select(selectPlaylistId));
-  console.log(playlistId)
+  const playlistId = (await firstValueFrom(gameStore.select(selectPlaylist))).playlistId;
   let offset = 0;
   let isFullTrackList = false;
   let spotifyTracks: any[] = []
@@ -31,5 +30,7 @@ export const trackResolver: ResolveFn<Track[]> = async (route, state) => {
       songUri: item.track.uri
     } as Track;
   });
-  return tracks;
+  gameStore.dispatch(GameActions.setPlaylistTracks({tracks}));
+  gameStore.dispatch(GameActions.setGameSolution());
+  return true;
 };

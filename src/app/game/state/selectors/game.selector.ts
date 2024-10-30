@@ -28,7 +28,7 @@ export const selectSolution = createSelector(
   (state: Game) => state.solution
 );
 
-export const selectPlaylistId = createSelector(
+export const selectPlaylist = createSelector(
   selectGameState,
-  (state: Game) => state.playlistId
+  (state: Game) => state.playlist
 )

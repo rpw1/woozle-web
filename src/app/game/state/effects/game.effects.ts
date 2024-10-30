@@ -84,27 +84,35 @@ export class GameEffects {
     )
   );
 
-  readonly blah$ = createEffect(() =>
+  readonly playPlayer$ = createEffect(() =>
     this.action$.pipe(
       ofType(GameActions.togglePlayerOn),
       concatLatestFrom(() => combineLatest([this.gameStore.select(selectGameState), this.progressBarQueueStore.select(selectActiveItemState)])),
       exhaustMap(async ([_, [gameState, queueState]]) => {
         if (queueState !== TaskStateType.RUNNING) {
           const devices = (await firstValueFrom(this.spotifyService.getAvailableDevices())).devices as any[];
-          await firstValueFrom(this.spotifyService.playPlayer(devices.find(x => x.is_active).id, gameState.solution.songUri), {defaultValue: false});
+          await firstValueFrom(this.spotifyService.playPlayer(devices[0].id, gameState.solution.songUri), {defaultValue: false});
         }
         return ProgressBarQueueActions.noOperation();
       })
     )
   );
 
-  readonly blah2$ = createEffect(() =>
+  readonly pausePlayer$ = createEffect(() =>
     this.action$.pipe(
       ofType(GameActions.togglePlayerOff),
       exhaustMap(async () => {
-        const devices = (await firstValueFrom(this.spotifyService.getAvailableDevices())).devices as any[];
-        await firstValueFrom(this.spotifyService.pausePlayer(devices.find(x => x.is_active).id), {defaultValue: false});
+        await firstValueFrom(this.spotifyService.pausePlayer(), {defaultValue: false});
         return ProgressBarQueueActions.noOperation();
+      })
+    )
+  );
+
+  readonly resetGame$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(GameActions.reset),
+      exhaustMap(async () => {
+        return GameActions.setGameSolution();
       })
     )
   );

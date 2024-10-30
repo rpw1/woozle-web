@@ -90,16 +90,13 @@ export class SpotifyService {
       );
   }
 
-  pausePlayer(deviceId: string): Observable<any> {
+  pausePlayer(): Observable<any> {
     return this.httpClient.put(`${this.baseUrl}/me/player/pause`,
         null,
         {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('access_token') ?? ''}`,
           },
-          params: {
-            'device_id': deviceId
-          }
         }
       ).pipe(
           catchError((err) => {
