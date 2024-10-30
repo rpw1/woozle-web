@@ -17,14 +17,15 @@ export const initialState: Game = {
   numberOfGuesses: 0,
   isPlayingMusic: false,
   solution: {
-    song: 'Garden Song',
-    artist: 'Phoebe Bridgers',
-    album: 'Punisher',
-    songUri: 'any'
+    song: '',
+    artist: '',
+    album: '',
+    songUri: '',
+    imageUri: ''
   },
   playlist: {
     playlistId: '',
-    name: 'name',
+    name: '',
     tracks: []
   }
 }

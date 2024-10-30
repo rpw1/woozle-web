@@ -22,7 +22,8 @@ describe('GameReducer', () => {
       song: 'Garden Song',
       album: 'Punisher',
       artist: 'Phoebe Bridgers',
-      songUri: 'uri'
+      songUri: 'uri',
+      imageUri: 'imageUri'
     },
     playlist: {
       playlistId: 'playlistId',
@@ -32,7 +33,8 @@ describe('GameReducer', () => {
           song: 'song',
           album: 'album',
           artist: 'artist',
-          songUri: 'songUri'
+          songUri: 'songUri',
+          imageUri: 'imageUri'
         }
       ]
     }
