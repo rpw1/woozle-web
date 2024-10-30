@@ -21,6 +21,10 @@ export const initialState: Game = {
     artist: 'Phoebe Bridgers',
     album: 'Punisher',
     songUri: 'any'
+  },
+  playlist: {
+    playlistId: '',
+    tracks: []
   }
 }
 
@@ -42,7 +46,7 @@ export const GameReducer = createReducer<Game>(
     }
     return deepClone(newState);
   }),
-  on(GameActions.reset, () => (deepClone(initialState))),
+  on(GameActions.reset, (state) => ({ ...initialState, playlist: state.playlist})),
   on(GameActions.togglePlayerOn, (state) => ({...state, isPlayingMusic: true})),
   on(GameActions.togglePlayerOff, (state) => ({...state, isPlayingMusic: false})),
   on(GameActions.updateGameState, (state, { newGameState }) => {
@@ -51,5 +55,14 @@ export const GameReducer = createReducer<Game>(
     }
     return { ...state, currentGameState: newGameState };
   }),
-  on(GameActions.setGameSolution, (state, { solution }) => ({...state, solution: solution}))
+  on(GameActions.setGameSolution, (state) => {
+    if (state.playlist.tracks.length === 0) {
+      return state
+    }
+
+    const randomIndex = Math.floor(Math.random() * state.playlist.tracks.length) -1;
+    return { ...state, solution: state.playlist.tracks[randomIndex] }
+  }),
+  on(GameActions.setPlaylistId, (state, { playlistId }) => ({ ...state, playlist: { ...state.playlist, playlistId: playlistId } })),
+  on(GameActions.setPlaylistTracks, (state, { tracks }) => ({ ...state, playlist: { ...state.playlist, tracks: tracks } }))
 )

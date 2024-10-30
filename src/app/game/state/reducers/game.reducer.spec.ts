@@ -23,6 +23,17 @@ describe('GameReducer', () => {
       album: 'Punisher',
       artist: 'Phoebe Bridgers',
       songUri: 'uri'
+    },
+    playlist: {
+      playlistId: 'playlistId',
+      tracks: [
+        {
+          song: 'song',
+          album: 'album',
+          artist: 'artist',
+          songUri: 'songUri'
+        }
+      ]
     }
   }
 
@@ -42,7 +53,8 @@ describe('GameReducer', () => {
     it('should reset game state to its initial state', () => {
       const result = fromReducer.GameReducer(state, GameActions.reset);
 
-      expect(result).toEqual(fromReducer.initialState);
+
+      expect(result).toEqual({ ...fromReducer.initialState, playlist: state.playlist });
     });
   });
 

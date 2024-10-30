@@ -1,21 +1,19 @@
 import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivateFn, GuardResult, MaybeAsync, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
-  : MaybeAsync<GuardResult> => {
+export const authGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
     const accessToken = localStorage.getItem('access_token');
     const refreshToken = localStorage.getItem('refresh_token');
     const authService = inject(AuthService);
     if (!accessToken || !refreshToken) {
-      
       return authService.authorize();
     }
 
-    const response = authService.getRefreshToken();
+    const response = await authService.getRefreshToken();
     if (!response) {
       return authService.authorize();
     }
-    
-    return true;
+
+    return Promise.resolve(true);
 };

@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
-import { debounceTime, defer, distinctUntilChanged, EMPTY, map, Observable, startWith, take } from 'rxjs';
+import { debounceTime, defer, distinctUntilChanged, EMPTY, map, Observable, startWith } from 'rxjs';
 import { v4 } from 'uuid';
 import { Guess } from '../../models/guess';
 import { GuessType } from '../../models/guess-type';
 import { GameActions } from '../../state/actions/game.actions';
 import { Game } from '../../state/models/game.model';
-import { Track } from '../../state/models/track';
+import { selectPlaylist } from '../../state/selectors/game.selector';
 
 @Component({
   selector: 'app-guess',
@@ -23,31 +23,19 @@ import { Track } from '../../state/models/track';
   templateUrl: './guess.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GuessComponent implements OnInit {
+export class GuessComponent {
   private readonly gameStore = inject(Store<Game>);
   private readonly formBuilder = inject(NonNullableFormBuilder);
-  private readonly route = inject(ActivatedRoute);
   private readonly SKIP_GUESS_TEXT = 'SKIPPED';
   readonly GuessType = GuessType;
-
-  private songs = [
-    'Garden Song',
-    'Cherry Wine',
-    'Lemon',
-    'Lucy',
-    'Spite'
-  ]
-
-  ngOnInit(): void {
-    const tracks = this.route.snapshot.data['tracks'] as Track[];
-    this.songs = tracks.map(x => x.song);
-  }
 
   search = (input: Observable<string>) => input.pipe(
     debounceTime(250),
     distinctUntilChanged(),
-    map(search => {
-      return this.songs
+    concatLatestFrom(() => this.gameStore.select(selectPlaylist)),
+    map(([search, playlist]) => {
+      return playlist.tracks
+        .map(track => track.song)
         .filter(name => name.toLocaleLowerCase()
           .includes(search.toLocaleLowerCase()))
         .slice(0, 15);

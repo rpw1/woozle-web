@@ -1,5 +1,6 @@
 import { Guess } from '../../models/guess';
 import { GameState } from './game-state.model';
+import { Playlist } from './playlist';
 import { Track } from './track';
 
 export interface Game {
@@ -7,5 +8,6 @@ export interface Game {
   numberOfGuesses: number,
   isPlayingMusic: boolean,
   currentGameState: GameState
-  solution: Track
+  solution: Track,
+  playlist: Playlist
 }

@@ -3,26 +3,25 @@ import { ResolveFn } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { Track } from '../../game/state/models/track';
 import { SpotifyService } from '../../shared/services/spotify.service';
+import { Store } from '@ngrx/store';
+import { Game } from '../../game/state/models/game.model';
+import { selectPlaylist } from '../../game/state/selectors/game.selector';
+import { GameActions } from '../../game/state/actions/game.actions';
 
-// This is taylor swift: 37i9dQZF1DX5KpP2LN299J
-// Rolling stones top 500: 6uRb2P6XRj5ygnanxpMCfS
-// Woozle: 5WDtkOZjocf5Qs2WUxEdsg
-// Classic Rock: 37i9dQZF1EIcVkEtbzdTRx
-// 2000s Rock Bangers: 7GLUzbIwVGzQncTELBnmE6
-// Keys jam: 5JhplKcqXZiA5C1oAjxf0f
-
-export const trackResolver: ResolveFn<Track[]> = async (route, state) => {
+export const trackResolver: ResolveFn<boolean> = async (route, state) => {
+  const gameStore = inject(Store<Game>);
   const spotifyService = inject(SpotifyService);
+  const playlistId = (await firstValueFrom(gameStore.select(selectPlaylist))).playlistId;
   let offset = 0;
   let isFullTrackList = false;
   let spotifyTracks: any[] = []
   while (!isFullTrackList) {
-    const spotifyTracksResponse = await firstValueFrom(spotifyService.getPlaylistTracks('6uRb2P6XRj5ygnanxpMCfS', offset));
+    const spotifyTracksResponse = await firstValueFrom(spotifyService.getPlaylistTracks(playlistId, offset));
     spotifyTracks = spotifyTracks.concat(spotifyTracksResponse.items);
     offset += 100;
     isFullTrackList = !spotifyTracksResponse.next
   }
-  
+
   const tracks = spotifyTracks.map((item: any) => {
     return {
       song: item.track.name,
@@ -31,5 +30,7 @@ export const trackResolver: ResolveFn<Track[]> = async (route, state) => {
       songUri: item.track.uri
     } as Track;
   });
-  return tracks;
+  gameStore.dispatch(GameActions.setPlaylistTracks({tracks}));
+  gameStore.dispatch(GameActions.setGameSolution());
+  return true;
 };
