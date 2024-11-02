@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { combineLatest, concatMap, exhaustMap, filter, firstValueFrom } from 'rxjs';
+import { combineLatest, concatMap, exhaustMap, filter, firstValueFrom, map, switchMap } from 'rxjs';
 import { GameActions } from '../actions/game.actions';
 import { ProgressBarQueueActions } from '../actions/progress-bar-queue.actions';
 import { Game } from '../models/game.model';
@@ -114,6 +114,23 @@ export class GameEffects {
       exhaustMap(async () => {
         return GameActions.setGameSolution();
       })
+    )
+  );
+
+  readonly loadPlaylist$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(GameActions.loadPlaylist),
+      switchMap((props) => this.spotifyService.loadPlaylistTracks(props.playlist.id)),
+      map((tracks) => GameActions.loadPlaylistSuccess({ tracks: tracks }))
+    )
+  );
+
+  readonly loadPlaylistSuccess$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(GameActions.loadPlaylistSuccess),
+      switchMap(async () => {
+        return GameActions.setGameSolution()
+      }),
     )
   );
 }
