@@ -2,7 +2,6 @@ import { Routes } from "@angular/router";
 import { ForbiddenComponent } from "./auth/components/forbidden/forbidden.component";
 import { authGuard } from "./auth/guards/auth.guard";
 import { authCallbackResolver } from "./auth/resolvers/auth-callback.resolver";
-import { trackResolver } from "./auth/resolvers/track.resolver";
 
 export const routes: Routes = [
   {
@@ -19,7 +18,6 @@ export const routes: Routes = [
   {
     path: 'game',
     canActivate: [ authGuard ],
-    resolve: { tracks: trackResolver },
     loadComponent: () => import('./game/components/game/game.component')
       .then(x => x.GameComponent)
   },

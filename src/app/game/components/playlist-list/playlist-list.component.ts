@@ -25,8 +25,8 @@ export class PlaylistListComponent {
   private readonly spotifyService = inject(SpotifyService);
   playlist$ = defer(() => this.spotifyService.getCurrentUserPlaylists());
 
-  async selectPlaylist(playlist: SpotifyPlaylist) {
-    this.game.dispatch(GameActions.setPlaylist({ playlistId: playlist.id, name: playlist.name }));
+  setPlaylist(playlist: SpotifyPlaylist) {
+    this.game.dispatch(GameActions.loadPlaylist({ playlist: playlist }));
     void this.router.navigate(['/game']);
   }
 }

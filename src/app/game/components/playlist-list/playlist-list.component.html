@@ -2,7 +2,7 @@
   <div class="row row-cols-1 row-cols-md-1 row-cols-lg-4 mt-3 gy-5">
     @for(playlist of playlist$ | async; track playlist.id) {
       <div class="col">
-        <app-playlist [playlist]="playlist" (selectedPlaylist)="selectPlaylist($event)" />
+        <app-playlist [playlist]="playlist" (selectedPlaylist)="setPlaylist($event)" />
       </div>
     }
   </div>

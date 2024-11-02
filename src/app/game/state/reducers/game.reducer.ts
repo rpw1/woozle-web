@@ -65,6 +65,23 @@ export const GameReducer = createReducer<Game>(
     const randomIndex = Math.floor(Math.random() * state.playlist.tracks.length) -1;
     return { ...state, solution: state.playlist.tracks[randomIndex] }
   }),
-  on(GameActions.setPlaylist, (state, { playlistId, name }) => ({ ...state, playlist: { ...state.playlist, playlistId: playlistId, name: name } })),
-  on(GameActions.setPlaylistTracks, (state, { tracks }) => ({ ...state, playlist: { ...state.playlist, tracks: tracks } }))
+  on(GameActions.loadPlaylist, (state, action) => {
+    return { 
+      ...state, 
+      playlist: { 
+        ...state.playlist, 
+        playlistId: action.playlist.id, 
+        name: action.playlist.name 
+      } 
+    }
+  }),
+  on(GameActions.loadPlaylistSuccess, (state, action) => {
+    return { 
+      ...state, 
+      playlist: { 
+        ...state.playlist, 
+        tracks: action.tracks 
+      } 
+    }
+  })
 )

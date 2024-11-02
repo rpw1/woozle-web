@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, EMPTY, map, Observable } from 'rxjs';
+import { catchError, EMPTY, expand, map, mergeAll, Observable, of, reduce, tap } from 'rxjs';
+import { Track } from '../../game/state/models/track';
 import { SpotifyPlaylist } from '../models/spotify-playlist';
+import { SpotifyPlaylistItemsResponse } from '../models/spotify-playlist-items-response';
 
 @Injectable({
   providedIn: 'root'
@@ -21,35 +23,6 @@ export class SpotifyService {
         console.error(err);
         return EMPTY;
       })
-      );
-  }
-
-  getPlaylistTracks(playlistId: string, offset: number): Observable<any> {
-    return this.httpClient.get(`${this.baseUrl}/playlists/${playlistId}/tracks`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('access_token') ?? ''}`
-      },
-      params: {
-        offset: offset
-      }
-    }).pipe(
-        catchError((err) => {
-          console.error(err);
-          return EMPTY;
-        })
-      );
-  }
-
-  getTrack(trackId: string): Observable<any> {
-    return this.httpClient.get(`${this.baseUrl}/tracks/${trackId}`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('access_token') ?? ''}`
-      }
-    }).pipe(
-        catchError((err) => {
-          console.error(err);
-          return EMPTY;
-        })
       );
   }
 
@@ -104,5 +77,38 @@ export class SpotifyService {
             return EMPTY;
           })
         );
+  }
+
+  loadPlaylistTracks(playlistId: string): Observable<Track[]> {
+    return this.getPlaylistTracks(playlistId, 0)
+      .pipe(
+        expand(response => response.next ? this.getPlaylistTracks(playlistId, response.offset + 100) : EMPTY),
+        map(response => response.items.map(item => {
+          return {
+            song: item.track.name,
+            album: item.track.album.name,
+            artist: item.track.artists.map((x: any) => x.name).join(", "),
+            songUri: item.track.uri,
+            imageUri: item.track.album.images.at(0)?.url
+          } as Track;
+        })),
+        reduce((acc: Track[], tracks) => acc.concat(tracks), []),
+      )
+  }
+
+  private getPlaylistTracks(playlistId: string, offset: number): Observable<SpotifyPlaylistItemsResponse> {
+    return this.httpClient.get<SpotifyPlaylistItemsResponse>(`${this.baseUrl}/playlists/${playlistId}/tracks`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token') ?? ''}`
+      },
+      params: {
+        offset: offset
+      }
+    }).pipe(
+      catchError((err) => {
+        console.error(err);
+        return EMPTY;
+      })
+    );
   }
 }
