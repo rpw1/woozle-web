@@ -1,19 +1,22 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { concatMap, exhaustMap } from 'rxjs';
 import { GameActions } from '../actions/game.actions';
 import { ProgressBarQueueActions } from '../actions/progress-bar-queue.actions';
+import { Game } from '../models/game.model';
 import { ProgressBarQueue } from '../models/progress-bar-queue.model';
 import { TaskStateType } from '../models/queue-state-type.model';
+import { selectNumberOfGuesses } from '../selectors/game.selector';
 import { selectQueuedTasks, selectQueueState } from '../selectors/progress-bar-queue.selector';
-import { concatLatestFrom } from '@ngrx/operators';
 
 @Injectable()
 export class ProgressBarQueueEffects {
 
   private readonly action$ = inject(Actions);
   private readonly progressBarQueueStore = inject(Store<ProgressBarQueue>);
+  private readonly gameStore = inject(Store<Game>);
 
   readonly queueTask$ = createEffect(() =>
     this.action$.pipe(
@@ -32,10 +35,9 @@ export class ProgressBarQueueEffects {
 
   readonly queueGuessTasks$ = createEffect(() =>
     this.action$.pipe(
-      ofType(GameActions.togglePlayerOn),
-      exhaustMap(async (tasks) => {
-        return ProgressBarQueueActions.queueTask(tasks);
-      })
+      ofType(GameActions.togglePlayerOnSuccess),
+      concatLatestFrom(() => this.gameStore.select(selectNumberOfGuesses)),
+      exhaustMap(async ([action, numberOfGuesses]) => ProgressBarQueueActions.queueTask({ tasks: numberOfGuesses + 1 }))
     )
   );
 
@@ -45,9 +47,7 @@ export class ProgressBarQueueEffects {
         GameActions.togglePlayerOff,
         GameActions.reset
       ),
-      exhaustMap(async () => {
-        return ProgressBarQueueActions.resetTasks();
-      })
+      exhaustMap(async () => ProgressBarQueueActions.resetTasks())
     )
   );
 
@@ -68,18 +68,14 @@ export class ProgressBarQueueEffects {
   readonly completeAllTasks$ = createEffect(() =>
     this.action$.pipe(
       ofType(ProgressBarQueueActions.completeAllTasks),
-      exhaustMap(async () => {
-        return ProgressBarQueueActions.resetTasks();
-      })
+      exhaustMap(async () => ProgressBarQueueActions.resetTasks())
     )
   );
 
   readonly taskStarted$ = createEffect(() =>
     this.action$.pipe(
       ofType(ProgressBarQueueActions.startTask),
-      exhaustMap(async () => {
-        return ProgressBarQueueActions.runningTask();
-      })
+      exhaustMap(async () => ProgressBarQueueActions.runningTask())
     )
   );
 }
