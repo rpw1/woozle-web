@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
@@ -17,7 +17,6 @@ import { selectPlaylist } from '../../state/selectors/game.selector';
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    FormsModule,
     CommonModule,
     NgbTypeaheadModule
   ],
@@ -53,7 +52,6 @@ export class GuessComponent {
   )) ?? EMPTY);
 
   submitGuess(guessType: GuessType): void {
-    console.log(guessType)
     let guess: Guess;
     if (guessType === GuessType.SKIP) {
       guess = {
