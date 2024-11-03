@@ -26,6 +26,7 @@ export class PlaylistListComponent {
   playlist$ = defer(() => this.spotifyService.getCurrentUserPlaylists());
 
   setPlaylist(playlist: SpotifyPlaylist) {
+    this.game.dispatch(GameActions.reset());
     this.game.dispatch(GameActions.loadPlaylist({ playlist: playlist }));
     void this.router.navigate(['/game']);
   }

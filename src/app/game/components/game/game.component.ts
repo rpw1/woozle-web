@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { SpotifyService } from '../../../shared/services/spotify.service';
 import { GameActions } from '../../state/actions/game.actions';
 import { Game } from '../../state/models/game.model';
 import { selectIsPlayingMusic, selectPlaylist } from '../../state/selectors/game.selector';
@@ -28,7 +27,11 @@ export class GameComponent {
   readonly isPlayingMusic$ = this.gameStore.select(selectIsPlayingMusic);
   readonly playlist$ = this.gameStore.select(selectPlaylist);
 
-  togglePlayer(): void {
-    this.gameStore.dispatch(GameActions.togglePlayer());
+  togglePlayerOn(): void {
+    this.gameStore.dispatch(GameActions.togglePlayerOn());
+  }
+
+  togglePlayerOff(): void {
+    this.gameStore.dispatch(GameActions.togglePlayerOff());
   }
 }

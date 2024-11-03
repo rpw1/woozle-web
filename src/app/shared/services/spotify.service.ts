@@ -23,7 +23,7 @@ export class SpotifyService {
         console.error(err);
         return EMPTY;
       })
-      );
+    );
   }
 
   getAvailableDevices(): Observable<any> {
@@ -32,11 +32,11 @@ export class SpotifyService {
         'Authorization': `Bearer ${localStorage.getItem('access_token') ?? ''}`
       }
     }).pipe(
-        catchError((err) => {
-          console.error(err);
-          return EMPTY;
-        })
-      );
+      catchError((err) => {
+        console.error(err);
+        return EMPTY;
+      })
+    );
   }
 
   playPlayer(deviceId: string, trackUri: string): Observable<any> {
@@ -65,18 +65,18 @@ export class SpotifyService {
 
   pausePlayer(): Observable<any> {
     return this.httpClient.put(`${this.baseUrl}/me/player/pause`,
-        null,
-        {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('access_token') ?? ''}`,
-          },
-        }
-      ).pipe(
-          catchError((err) => {
-            console.error(err);
-            return EMPTY;
-          })
-        );
+      null,
+      {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('access_token') ?? ''}`,
+        },
+      }
+    ).pipe(
+      catchError((err) => {
+        console.error(err);
+        return EMPTY;
+      })
+    );
   }
 
   loadPlaylistTracks(playlistId: string): Observable<Track[]> {
