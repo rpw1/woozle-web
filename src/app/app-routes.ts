@@ -6,8 +6,14 @@ import { authCallbackResolver } from "./auth/resolvers/auth-callback.resolver";
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'playlists',
+    redirectTo: 'devices',
     pathMatch: 'full'
+  },
+  {
+    path: 'devices',
+    canActivate: [ authGuard ],
+    loadComponent: () => import('./game/components/device-list/device-list.component')
+      .then(x => x.DeviceListComponent),
   },
   {
     path: 'playlists',
