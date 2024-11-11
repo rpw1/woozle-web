@@ -95,7 +95,7 @@ export const GameReducer = createReducer<Game>(
       ...state, 
       device: { 
         ...state.device,
-        playlistId: action.device.id, 
+        id: action.device.id, 
         isActive: action.device.is_active,
         name: action.device.name ,
         type: action.device.type

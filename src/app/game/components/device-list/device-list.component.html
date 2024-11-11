@@ -1,9 +1,13 @@
 <div class="container">
+  @let devices = (devices$ | async)?.devices;
   <div class="row row-cols-1 row-cols-md-1 row-cols-lg-4 mt-3 gy-5">
-    @for(device of (devices$ | async)?.devices; track device.id) {
+    @for(device of devices; track device.id) {
       <div class="col">
         <app-device [device]="device" (selectedDevice)="setDevice($event)" />
       </div>
     }
   </div>
+  @if (devices?.length === 0) {
+    <p class="fs-2">No devices found. Please run spotify on your browser or desktop web app.</p>
+  }
 </div>

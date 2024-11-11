@@ -61,8 +61,7 @@ export class GameEffects {
       ofType(GameActions.togglePlayerOn),
       concatLatestFrom(() => this.gameStore.select(selectGameState)),
       exhaustMap(async ([action, gameState]) => {
-        const devices = (await firstValueFrom(this.spotifyService.getAvailableDevices())).devices as any[];
-        await firstValueFrom(this.spotifyService.playPlayer(devices[0].id, gameState.solution.songUri), { defaultValue: false });
+        await firstValueFrom(this.spotifyService.playPlayer(gameState.device.id, gameState.solution.songUri), { defaultValue: false });
         return GameActions.togglePlayerOnSuccess();
       })
     )
