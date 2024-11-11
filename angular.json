@@ -83,7 +83,7 @@
               "namedChunks": true
             }
           },
-          "defaultConfiguration": ""
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -91,6 +91,9 @@
             "buildTarget": "woozle:build"
           },
           "configurations": {
+            "development": {
+              "buildTarget": "woozle:build:development"
+            },
             "production": {
               "buildTarget": "woozle:build:production"
             }
