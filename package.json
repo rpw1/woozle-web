@@ -6,9 +6,9 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve -o --host=localhost",
+    "start": "ng serve -o --host=localhost --configuration development",
     "build": "ng build",
-    "prod-build-dev": "ng build --configuration production  --localize",
+    "dev-build": "ng build --configuration development",
     "test": "ng test",
     "test-headless": "ng test --watch=false --browsers=ChromeHeadless --code-coverage=true",
     "lint": "ng lint"
