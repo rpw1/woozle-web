@@ -27,6 +27,12 @@ export const initialState: Game = {
     playlistId: '',
     name: '',
     tracks: []
+  },
+  device: {
+    id: '',
+    isActive: false,
+    name: '',
+    type: ''
   }
 }
 
@@ -48,7 +54,7 @@ export const GameReducer = createReducer<Game>(
     }
     return deepClone(newState);
   }),
-  on(GameActions.reset, (state) => ({ ...initialState, playlist: state.playlist})),
+  on(GameActions.reset, (state) => ({ ...initialState, playlist: state.playlist, device: state.device })),
   on(GameActions.togglePlayerOn, (state) => ({...state, isPlayingMusic: true})),
   on(GameActions.togglePlayerOff, (state) => ({...state, isPlayingMusic: false})),
   on(GameActions.updateGameState, (state, { newGameState }) => {
@@ -83,5 +89,17 @@ export const GameReducer = createReducer<Game>(
         tracks: action.tracks 
       } 
     }
-  })
+  }),
+  on(GameActions.loadDevice, (state, action) => {
+    return { 
+      ...state, 
+      device: { 
+        ...state.device,
+        id: action.device.id, 
+        isActive: action.device.is_active,
+        name: action.device.name ,
+        type: action.device.type
+      } 
+    }
+  }),
 )

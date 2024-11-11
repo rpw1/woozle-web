@@ -4,6 +4,7 @@ import { catchError, EMPTY, expand, map, mergeAll, Observable, of, reduce, tap }
 import { Track } from '../../game/state/models/track';
 import { SpotifyPlaylist } from '../models/spotify-playlist';
 import { SpotifyPlaylistItemsResponse } from '../models/spotify-playlist-items-response';
+import { SpotifyDevice } from '../models/spotify-device';
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +27,8 @@ export class SpotifyService {
     );
   }
 
-  getAvailableDevices(): Observable<any> {
-    return this.httpClient.get(`${this.baseUrl}/me/player/devices`, {
+  getAvailableDevices(): Observable<{devices: SpotifyDevice[]}> {
+    return this.httpClient.get<{devices: SpotifyDevice[]}>(`${this.baseUrl}/me/player/devices`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token') ?? ''}`
       }

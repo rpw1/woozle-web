@@ -32,3 +32,8 @@ export const selectPlaylist = createSelector(
   selectGameState,
   (state: Game) => state.playlist
 )
+
+export const selectDevice = createSelector(
+  selectGameState,
+  (state: Game) => state.device
+)

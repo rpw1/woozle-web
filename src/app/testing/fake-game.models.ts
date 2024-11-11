@@ -36,6 +36,12 @@ export function getFakeGame(): Game {
           imageUri: 'imageUri'
         }
       ]
+    },
+    device: {
+      id: 'deviceId',
+      isActive: true,
+      name: 'Woozle device',
+      type: 'Computer'
     }
   };
 }

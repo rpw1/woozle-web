@@ -1,0 +1,13 @@
+<div class="container">
+  @let devices = (devices$ | async)?.devices;
+  <div class="row row-cols-1 row-cols-md-1 row-cols-lg-4 mt-3 gy-5">
+    @for(device of devices; track device.id) {
+      <div class="col">
+        <app-device [device]="device" (selectedDevice)="setDevice($event)" />
+      </div>
+    }
+  </div>
+  @if (devices?.length === 0) {
+    <p class="fs-2">No devices found. Please have spotify running on your laptop, phone, gaming console, etc. to play woozle.</p>
+  }
+</div>

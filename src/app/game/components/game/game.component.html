@@ -1,12 +1,8 @@
 <div class="container">
-  <div class="row">
-    <div class="col text-center my-5">
-      <h1 class="display-1">Woozle</h1>
-    </div>
-  </div>
-
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['/devices']" routerLinkActive="router-link-active">Devices</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ (selectedDevice$ | async)?.name }}</li>
       <li class="breadcrumb-item"><a [routerLink]="['/playlists']" routerLinkActive="router-link-active">Playlists</a></li>
       <li class="breadcrumb-item active" aria-current="page">{{ (playlist$ | async)?.name }}</li>
     </ol>
