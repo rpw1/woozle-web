@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, Signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Settings } from '../models/settings';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class SettingsService {
   private readonly httpClient = inject(HttpClient);
   
   // todo add some logic to get a different path deployment vs local
-  private readonly settingsPath = '/assets/settings.local.json';
+  private readonly settingsPath = environment.production ? '/assets/settings.json' : '/assets/settings.local.json';
   settings!: Signal<Settings>;
 
   async loadSettings(): Promise<void> {

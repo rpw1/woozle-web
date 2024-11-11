@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, isDevMode } from '@angular/core';
+import { APP_INITIALIZER, enableProdMode, isDevMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { Routes, provideRouter } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
@@ -12,6 +12,11 @@ import { QueueStateReducer } from './app/game/state/reducers/progress-bar-queue.
 import { routes } from './app/app-routes';
 import { initApp, SettingsService } from './app/shared/services/settings.service';
 import { provideHttpClient } from '@angular/common/http';
+import { environment } from './environments/environment';
+
+if (environment.production) {
+  enableProdMode();
+}
 
 bootstrapApplication(AppComponent, {
   providers: [
