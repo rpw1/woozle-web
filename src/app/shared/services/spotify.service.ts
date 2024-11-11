@@ -40,7 +40,7 @@ export class SpotifyService {
     );
   }
 
-  playPlayer(deviceId: string, trackUri: string): Observable<any> {
+  playPlayer(trackUri: string): Observable<any> {
     return this.httpClient.put(`${this.baseUrl}/me/player/play`, {
         position_ms: 0,
         uris: [trackUri],
@@ -51,9 +51,6 @@ export class SpotifyService {
       {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('access_token') ?? ''}`,
-        },
-        params: {
-          'device_id': deviceId
         }
       }
     ).pipe(
@@ -95,6 +92,24 @@ export class SpotifyService {
         })),
         reduce((acc: Track[], tracks) => acc.concat(tracks), []),
       )
+  }
+
+  transferPlayback(deviceId: string): Observable<void> {
+    return this.httpClient.put<void>(`${this.baseUrl}/me/player`, {
+        device_ids: [
+          deviceId
+        ]
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('access_token') ?? ''}`
+        },
+    }).pipe(
+      catchError((err) => {
+        console.error(err);
+        return EMPTY;
+      })
+    );
   }
 
   private getPlaylistTracks(playlistId: string, offset: number): Observable<SpotifyPlaylistItemsResponse> {
