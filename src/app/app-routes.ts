@@ -29,7 +29,7 @@ export const routes: Routes = [
   },
   {
     path: 'auth/callback',
-    resolve: {data: authCallbackResolver},
+    resolve: { data: authCallbackResolver },
     loadComponent: () => ForbiddenComponent
   },
   {
