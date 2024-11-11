@@ -25,6 +25,7 @@ export class SolutionModalComponent {
   readonly endingGameState$ = this.gameStore.select(selectCurrentGameState).pipe(
     filter(x => x !== GameState.ACTIVE)
   );
+  
   readonly solution$ = this.gameStore.select(selectSolution);
 
   closeModal() {
