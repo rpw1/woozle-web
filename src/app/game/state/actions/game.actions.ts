@@ -21,6 +21,7 @@ export const GameActions = createActionGroup({
     loadPlaylistSuccess: props<{ tracks: Track[] }>(),
     setGameSolution: emptyProps(),
 
-    loadDevice: props<{ device: SpotifyDevice }>()
+    loadDevice: props<{ device: SpotifyDevice }>(),
+    loadDeviceSuccess: emptyProps()
   }
 })

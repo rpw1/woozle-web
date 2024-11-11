@@ -61,7 +61,7 @@ export class GameEffects {
       ofType(GameActions.togglePlayerOn),
       concatLatestFrom(() => this.gameStore.select(selectGameState)),
       exhaustMap(async ([action, gameState]) => {
-        await firstValueFrom(this.spotifyService.playPlayer(gameState.device.id, gameState.solution.songUri), { defaultValue: false });
+        await firstValueFrom(this.spotifyService.playPlayer(gameState.solution.songUri), { defaultValue: false });
         return GameActions.togglePlayerOnSuccess();
       })
     )
@@ -101,6 +101,14 @@ export class GameEffects {
     this.action$.pipe(
       ofType(GameActions.loadPlaylistSuccess),
       switchMap(async () => GameActions.setGameSolution()),
+    )
+  );
+
+  readonly loadDevice$ = createEffect(() => 
+    this.action$.pipe(
+      ofType(GameActions.loadDevice),
+      switchMap((props) => this.spotifyService.transferPlayback(props.device.id)),
+      map(() => GameActions.loadDeviceSuccess())
     )
   );
 }
