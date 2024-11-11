@@ -1,63 +1,28 @@
 import { deepClone } from 'fast-json-patch';
+import { getFakeGame } from '../../../testing/fake-game.models';
 import { GuessType } from '../../models/guess-type';
 import { GameActions } from '../actions/game.actions';
 import { Game } from '../models/game.model';
 import * as fromReducer from './game.reducer';
-import { GameState } from '../models/game-state.model';
 
 describe('GameReducer', () => {
-  const state : Game = {
-    numberOfGuesses: 6,
-    isPlayingMusic: true,
-    guesses: [
-      {id: 'id1', song: 'song 1', type: GuessType.GUESS},
-      {id: 'id2', song: 'SKIPPED', type: GuessType.SKIP},
-      {id: 'id3', song: '', type: GuessType.UNKNOWN},
-      {id: 'id4', song: '', type: GuessType.UNKNOWN},
-      {id: 'id5', song: '', type: GuessType.UNKNOWN},
-      {id: 'id6', song: '', type: GuessType.UNKNOWN},
-    ],
-    currentGameState: GameState.ACTIVE,
-    solution: {
-      song: 'Garden Song',
-      album: 'Punisher',
-      artist: 'Phoebe Bridgers',
-      songUri: 'uri',
-      imageUri: 'imageUri'
-    },
-    playlist: {
-      playlistId: 'playlistId',
-      name: 'name',
-      tracks: [
-        {
-          song: 'song',
-          album: 'album',
-          artist: 'artist',
-          songUri: 'songUri',
-          imageUri: 'imageUri'
-        }
-      ]
-    }
-  }
+  const state : Game = getFakeGame()
 
   describe('addGuess', () => {
     it('should increment guesses by one', () => {
-      const { initialState } = fromReducer;
       const result = fromReducer.GameReducer(
-        initialState,
+        state,
         GameActions.addGuess({guess:{id: 'id1', song: 'song 1', type: GuessType.GUESS}})
       );
-      expect(result.guesses[0]).toEqual({id: 'id1', song: 'song 1', type: GuessType.GUESS});
-      expect(result.numberOfGuesses).toBe(1);
+      expect(result.guesses[result.numberOfGuesses - 1]).toEqual({id: 'id1', song: 'song 1', type: GuessType.GUESS});
+      expect(result.numberOfGuesses).toBe(5);
     });
   });
 
   describe('reset', () => {
     it('should reset game state to its initial state', () => {
       const result = fromReducer.GameReducer(state, GameActions.reset);
-
-
-      expect(result).toEqual({ ...fromReducer.initialState, playlist: state.playlist });
+      expect(result).toEqual({ ...fromReducer.initialState, playlist: state.playlist, device: state.device });
     });
   });
 

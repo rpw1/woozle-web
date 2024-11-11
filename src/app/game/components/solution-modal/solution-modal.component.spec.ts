@@ -40,4 +40,8 @@ describe('SolutionModalComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  afterAll(() => {
+    document.body.removeChild(fixture.debugElement.nativeNode);
+  });
 });
