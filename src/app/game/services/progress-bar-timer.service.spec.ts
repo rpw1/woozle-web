@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ProgressBarTimerService } from './progress-bar-timer.service';
-import { initialState } from '../../state/reducers/progress-bar-queue.reducer';
+import { initialState } from '../state/reducers/progress-bar-queue.reducer';
 import { deepClone } from 'fast-json-patch';
 
 describe('ProgressBarTimerService', () => {

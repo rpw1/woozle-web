@@ -1,12 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { EMPTY, concatMap, filter, map, of, takeUntil, timer } from 'rxjs';
-import { Constants } from '../../models/constants';
-import { GameConstants } from '../../models/game-constants';
-import { ProgressBarQueueActions } from '../../state/actions/progress-bar-queue.actions';
-import { ProgressBarQueue } from '../../state/models/progress-bar-queue.model';
-import { TaskStateType } from '../../state/models/queue-state-type.model';
-import { selectSuccessiveTasksRan, selectActiveItemState } from '../../state/selectors/progress-bar-queue.selector';
+import { Constants } from '../models/constants';
+import { GameConstants } from '../models/game-constants';
+import { ProgressBarQueueActions } from '../state/actions/progress-bar-queue.actions';
+import { ProgressBarQueue } from '../state/models/progress-bar-queue.model';
+import { TaskStateType } from '../state/models/queue-state-type.model';
+import { selectSuccessiveTasksRan, selectActiveItemState } from '../state/selectors/progress-bar-queue.selector';
 import { concatLatestFrom } from '@ngrx/operators';
 
 @Injectable({
