@@ -9,21 +9,21 @@ import { SpotifyService } from '../../../shared/services/spotify.service';
 import { getFakeGame } from '../../../testing/fake-game.models';
 import { Game } from '../../state/models/game.model';
 import { selectDevice } from '../../state/selectors/game.selector';
-import { PlaylistComponent } from '../playlist/playlist.component';
-import { PlaylistListComponent } from './playlist-list.component';
+import { ContentComponent } from '../content/content.component';
+import { ContentListComponent } from './content-list.component';
 
-describe('PlaylistListComponent', () => {
-  let component: PlaylistListComponent;
-  let fixture: ComponentFixture<PlaylistListComponent>;
+describe('ContentListComponent', () => {
+  let component: ContentListComponent;
+  let fixture: ComponentFixture<ContentListComponent>;
   let spotifyServiceSpy: jasmine.SpyObj<SpotifyService>;
   let mockStore: MockStore<Store<Game>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        MockComponent(PlaylistComponent),
+        MockComponent(ContentComponent),
         CommonModule,
-        PlaylistListComponent,
+        ContentListComponent,
         RouterLink
       ],
       providers: [
@@ -34,10 +34,10 @@ describe('PlaylistListComponent', () => {
     })
     .compileComponents();
     spotifyServiceSpy = TestBed.inject(SpotifyService) as jasmine.SpyObj<SpotifyService>;
-    spotifyServiceSpy.getCurrentUserPlaylists.and.returnValue(of());
+    //spotifyServiceSpy.getCurrentUserPlaylists.and.returnValue(of());
     mockStore = TestBed.inject(MockStore<Store<Game>>)
     mockStore.overrideSelector(selectDevice, getFakeGame().device);
-    fixture = TestBed.createComponent(PlaylistListComponent);
+    fixture = TestBed.createComponent(ContentListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

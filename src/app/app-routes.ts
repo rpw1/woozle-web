@@ -18,10 +18,10 @@ export const routes: Routes = [
       .then(x => x.DeviceListComponent),
   },
   {
-    path: 'playlists',
+    path: 'contents',
     canActivate: [ authGuard, deviceGuard ],
-    loadComponent: () => import('./game/components/playlist-list/playlist-list.component')
-      .then(x => x.PlaylistListComponent),
+    loadComponent: () => import('./game/components/content-list/content-list.component')
+      .then(x => x.ContentListComponent),
   },
   {
     path: 'game',

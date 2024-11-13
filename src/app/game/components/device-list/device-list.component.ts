@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Game } from '../../state/models/game.model';
 import { Router } from '@angular/router';
@@ -19,14 +19,18 @@ import { DeviceComponent } from '../device/device.component';
   templateUrl: './device-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DeviceListComponent {
-  private readonly game = inject(Store<Game>);
+export class DeviceListComponent implements OnInit {
+  private readonly gameStore = inject(Store<Game>);
   private readonly router = inject(Router);
   private readonly spotifyService = inject(SpotifyService);
   devices$ = defer(() => this.spotifyService.getAvailableDevices());
 
+  ngOnInit(): void {
+    this.gameStore.dispatch(GameActions.searchContent({ searchParameters: undefined }))
+  }
+
   setDevice(device: SpotifyDevice) {
-    this.game.dispatch(GameActions.loadDevice({ device: device }));
-    void this.router.navigate(['/playlists']);
+    this.gameStore.dispatch(GameActions.loadDevice({ device: device }));
+    void this.router.navigate(['/contents']);
   }
 }

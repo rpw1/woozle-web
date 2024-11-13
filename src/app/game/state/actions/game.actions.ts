@@ -1,9 +1,10 @@
 import { createActionGroup, emptyProps, props } from "@ngrx/store";
-import { Guess } from '../../models/guess';
-import { GameState } from '../models/game-state.model';
-import { SpotifyPlaylist } from '../../../shared/models/spotify-playlist';
-import { Track } from '../models/track';
 import { SpotifyDevice } from '../../../shared/models/spotify-device';
+import { Guess } from '../../models/guess';
+import { Content } from '../models/content';
+import { GameState } from '../models/game-state.model';
+import { Track } from '../models/track';
+import { ContentSearchParameters } from '../models/content-search-parameters';
 
 export const GameActions = createActionGroup({
   source: 'Game State',
@@ -16,9 +17,11 @@ export const GameActions = createActionGroup({
     togglePlayerOnSuccess: emptyProps(),
     togglePlayerOff: emptyProps(),
     togglePlayerOffSuccess: emptyProps(),
-    
-    loadPlaylist: props<{ playlist: SpotifyPlaylist }>(),
-    loadPlaylistSuccess: props<{ tracks: Track[] }>(),
+
+    searchContent: props<{ searchParameters: ContentSearchParameters | undefined }>(),
+    searchContentSuccess: props<{ contents: Content[] }>(),
+    loadContent: props<{ content: Content }>(),
+    loadContentSuccess: props<{ tracks: Track[] }>(),
     setGameSolution: emptyProps(),
 
     loadDevice: props<{ device: SpotifyDevice }>(),

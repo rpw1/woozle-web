@@ -10,7 +10,7 @@ import { Guess } from '../../models/guess';
 import { GuessType } from '../../models/guess-type';
 import { GameActions } from '../../state/actions/game.actions';
 import { Game } from '../../state/models/game.model';
-import { selectPlaylist } from '../../state/selectors/game.selector';
+import { selectContent } from '../../state/selectors/game.selector';
 
 @Component({
   selector: 'app-guess',
@@ -32,7 +32,7 @@ export class GuessComponent {
   search = (input: Observable<string>) => input.pipe(
     debounceTime(250),
     distinctUntilChanged(),
-    concatLatestFrom(() => this.gameStore.select(selectPlaylist)),
+    concatLatestFrom(() => this.gameStore.select(selectContent)),
     map(([search, playlist]) => {
       return playlist.tracks
         .map(track => track.song)

@@ -6,6 +6,7 @@ import { GameConstants } from '../../models/game-constants';
 import { GuessType } from '../../models/guess-type';
 import { v4 } from 'uuid';
 import { GameState } from '../models/game-state.model';
+import { ContentType } from '../models/content-type';
 
 export const maximumGuesses = GameConstants.SECONDS_ARRAY.length;
 export const initialState: Game = {
@@ -21,12 +22,29 @@ export const initialState: Game = {
     artist: '',
     album: '',
     songUri: '',
-    imageUri: ''
+    image: {
+      url: '',
+      height: 0,
+      width: 0
+    }
   },
-  playlist: {
-    playlistId: '',
-    name: '',
-    tracks: []
+  contentState: {
+    contentSearchParameters: {
+      name: undefined
+    },
+    availableContents: [],
+    content: {
+      id: '',
+      type: ContentType.Playlist,
+      description: undefined,
+      name: '',
+      image: {
+        url: '',
+        height: 0,
+        width: 0
+      },
+      tracks: []
+    }
   },
   device: {
     id: '',
@@ -54,7 +72,7 @@ export const GameReducer = createReducer<Game>(
     }
     return deepClone(newState);
   }),
-  on(GameActions.reset, (state) => ({ ...initialState, playlist: state.playlist, device: state.device })),
+  on(GameActions.reset, (state) => ({ ...initialState, contentState: state.contentState, device: state.device })),
   on(GameActions.togglePlayerOn, (state) => ({...state, isPlayingMusic: true})),
   on(GameActions.togglePlayerOff, (state) => ({...state, isPlayingMusic: false})),
   on(GameActions.updateGameState, (state, { newGameState }) => {
@@ -64,42 +82,69 @@ export const GameReducer = createReducer<Game>(
     return { ...state, currentGameState: newGameState };
   }),
   on(GameActions.setGameSolution, (state) => {
-    if (state.playlist.tracks.length === 0) {
-      return state
+    if (state.contentState.content.tracks.length === 0) {
+      return state;
     }
 
-    const randomIndex = Math.floor(Math.random() * state.playlist.tracks.length) -1;
-    return { ...state, solution: state.playlist.tracks[randomIndex] }
+    const randomIndex = Math.floor(Math.random() * state.contentState.content.tracks.length) -1;
+    return { ...state, solution: state.contentState.content.tracks[randomIndex] }
   }),
-  on(GameActions.loadPlaylist, (state, action) => {
-    return { 
-      ...state, 
-      playlist: { 
-        ...state.playlist, 
-        playlistId: action.playlist.id, 
-        name: action.playlist.name 
-      } 
+  on(GameActions.searchContent, (state, action) => {
+    if (action.searchParameters === undefined) {
+      return state;
+    }
+
+    return {
+      ...state,
+      contentState: {
+        ...state.contentState,
+        contentSearchParameters: { ...action.searchParameters }
+      }
+
     }
   }),
-  on(GameActions.loadPlaylistSuccess, (state, action) => {
-    return { 
-      ...state, 
-      playlist: { 
-        ...state.playlist, 
-        tracks: action.tracks 
-      } 
+  on(GameActions.searchContentSuccess, (state, action) => {
+    return {
+      ...state,
+      contentState: {
+        ...state.contentState,
+        availableContents: action.contents
+      }
+
+    }
+  }),
+  on(GameActions.loadContent, (state, action) => {
+    return {
+      ...state,
+      contentState: {
+        ...state.contentState,
+        content: action.content
+      }
+    }
+  }),
+  on(GameActions.loadContentSuccess, (state, action) => {
+    return {
+      ...state,
+      contentState: {
+        ...state.contentState,
+        content: {
+          ...state.contentState.content,
+          tracks: [ ...action.tracks ]
+        }
+
+      }
     }
   }),
   on(GameActions.loadDevice, (state, action) => {
-    return { 
-      ...state, 
-      device: { 
+    return {
+      ...state,
+      device: {
         ...state.device,
-        id: action.device.id, 
+        id: action.device.id,
         isActive: action.device.is_active,
         name: action.device.name ,
         type: action.device.type
-      } 
+      }
     }
   }),
 )

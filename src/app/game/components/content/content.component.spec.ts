@@ -1,30 +1,31 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PlaylistComponent } from './playlist.component';
+import { ContentComponent } from './content.component';
+import { ContentType } from '../../state/models/content-type';
 
-describe('PlaylistComponent', () => {
-  let component: PlaylistComponent;
-  let fixture: ComponentFixture<PlaylistComponent>;
+describe('ContentComponent', () => {
+  let component: ContentComponent;
+  let fixture: ComponentFixture<ContentComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PlaylistComponent]
+      imports: [ContentComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PlaylistComponent);
+    fixture = TestBed.createComponent(ContentComponent);
     component = fixture.componentInstance;
-    component.playlist = {
+    component.content = {
       id: 'id',
+      type: ContentType.Playlist,
       description: 'description',
       name: 'name',
-      images: [
-        {
-          url: 'url',
-          height: 900,
-          width: 800
-        }
-      ]
+      image: {
+        url: 'url',
+        height: 900,
+        width: 800
+      },
+      tracks: []
     }
     fixture.detectChanges();
   });
