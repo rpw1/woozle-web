@@ -1,9 +1,9 @@
 import { inject } from '@angular/core';
-import { CanActivateFn, RedirectCommand, Router, UrlTree } from '@angular/router';
+import { CanActivateFn, RedirectCommand, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { map } from 'rxjs';
 import { Game } from '../state/models/game.model';
 import { selectDevice } from '../state/selectors/game.selector';
-import { map } from 'rxjs';
 
 export const deviceGuard: CanActivateFn = (route, state) => {
   const gameStore = inject(Store<Game>);

@@ -6,9 +6,9 @@
     </ol>
   </nav>
   <div class="row row-cols-1 row-cols-md-1 row-cols-lg-4 mt-3 gy-5">
-    @for(playlist of playlists$ | async; track playlist.id) {
+    @for(content of availableContents$ | async; track content.id) {
       <div class="col">
-        <app-playlist [playlist]="playlist" (selectedPlaylist)="setPlaylist($event)" />
+        <app-content [content]="content" (selectedContent)="setContent($event)" />
       </div>
     }
   </div>

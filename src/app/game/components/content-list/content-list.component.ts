@@ -2,35 +2,32 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { defer } from 'rxjs';
-import { SpotifyService } from '../../../shared/services/spotify.service';
 import { GameActions } from '../../state/actions/game.actions';
+import { Content } from '../../state/models/content';
 import { Game } from '../../state/models/game.model';
-import { PlaylistComponent } from '../playlist/playlist.component';
-import { SpotifyPlaylist } from '../../../shared/models/spotify-playlist';
-import { selectDevice } from '../../state/selectors/game.selector';
+import { selectAvailableContents, selectDevice } from '../../state/selectors/game.selector';
+import { ContentComponent } from '../content/content.component';
 
 @Component({
-  selector: 'app-playlist-list',
+  selector: 'app-content-list',
   standalone: true,
   imports: [
     CommonModule,
-    PlaylistComponent,
+    ContentComponent,
     RouterLink
   ],
-  templateUrl: './playlist-list.component.html',
+  templateUrl: './content-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PlaylistListComponent {
+export class ContentListComponent {
   private readonly gameStore = inject(Store<Game>);
   private readonly router = inject(Router);
-  private readonly spotifyService = inject(SpotifyService);
-  readonly playlists$ = defer(() => this.spotifyService.getCurrentUserPlaylists());
+  readonly availableContents$ = this.gameStore.select(selectAvailableContents);
   readonly selectedDevice$ = this.gameStore.select(selectDevice);
 
-  setPlaylist(playlist: SpotifyPlaylist) {
+  setContent(content: Content) {
     this.gameStore.dispatch(GameActions.reset());
-    this.gameStore.dispatch(GameActions.loadPlaylist({ playlist: playlist }));
+    this.gameStore.dispatch(GameActions.loadContent({ content: content }));
     void this.router.navigate(['/game']);
   }
 }

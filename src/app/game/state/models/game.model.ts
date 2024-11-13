@@ -1,7 +1,7 @@
 import { Guess } from '../../models/guess';
+import { ContentState } from './content-state';
 import { Device } from './device';
 import { GameState } from './game-state.model';
-import { Playlist } from './playlist';
 import { Track } from './track';
 
 export interface Game {
@@ -10,6 +10,6 @@ export interface Game {
   isPlayingMusic: boolean,
   currentGameState: GameState
   solution: Track,
-  playlist: Playlist,
+  contentState: ContentState
   device: Device
 }

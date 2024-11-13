@@ -19,7 +19,9 @@ export class AuthService {
       'user-read-currently-playing',
       'user-read-playback-state',
       'user-modify-playback-state',
-      'playlist-read-private'
+      'playlist-read-private',
+      'user-follow-read',
+      'user-library-read'
     ]
     const scope = scopes.join(' ');
     const authUrl = new URL(this.spotifyBaseUrl + '/authorize');
@@ -52,8 +54,8 @@ export class AuthService {
       .set('redirect_uri', this.redirectUri)
       .set('code_verifier', codeVerifier);
 
-    const request$ = this.httpClient.post<SpotifyTokenResponse>(this.spotifyBaseUrl + '/api/token', 
-      body.toString(), 
+    const request$ = this.httpClient.post<SpotifyTokenResponse>(this.spotifyBaseUrl + '/api/token',
+      body.toString(),
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -69,7 +71,7 @@ export class AuthService {
     if (!response) {
       console.error('You failed');
       return false;
-    } 
+    }
 
     localStorage.setItem('access_token', response.access_token);
     localStorage.setItem('refresh_token', response.refresh_token)
@@ -83,8 +85,8 @@ export class AuthService {
       .set('grant_type', 'refresh_token')
       .set('refresh_token', refreshToken);
 
-    const request$ = this.httpClient.post<SpotifyTokenResponse>(this.spotifyBaseUrl + '/api/token', 
-      body.toString(), 
+    const request$ = this.httpClient.post<SpotifyTokenResponse>(this.spotifyBaseUrl + '/api/token',
+      body.toString(),
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -100,7 +102,7 @@ export class AuthService {
     if (!response) {
       console.error('You failed');
       return false;
-    } 
+    }
 
     localStorage.setItem('access_token', response.access_token);
     localStorage.setItem('refresh_token', response.refresh_token)
@@ -119,7 +121,7 @@ export class AuthService {
     const values = crypto.getRandomValues(new Uint8Array(length));
     return values.reduce((acc, x) => acc + possible[x % possible.length], "");
   }
-  
+
   private async sha256(plain: string): Promise<ArrayBuffer> {
     const encoder = new TextEncoder()
     const data = encoder.encode(plain)

@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
-import { concatMap, exhaustMap, filter, firstValueFrom, map, switchMap } from 'rxjs';
+import { concatMap, exhaustMap, filter, firstValueFrom, map, switchMap, tap } from 'rxjs';
 import { SpotifyService } from '../../../shared/services/spotify.service';
 import { SolutionModalComponent } from '../../components/solution-modal/solution-modal.component';
 import { GameActions } from '../actions/game.actions';
@@ -12,6 +12,7 @@ import { GameState } from '../models/game-state.model';
 import { Game } from '../models/game.model';
 import { maximumGuesses } from '../reducers/game.reducer';
 import { selectGameState } from '../selectors/game.selector';
+import { ContentType } from '../models/content-type';
 
 @Injectable()
 export class GameEffects {
@@ -39,7 +40,7 @@ export class GameEffects {
         }
         if (!gameState.isPlayingMusic) {
           return GameActions.togglePlayerOn();
-        } 
+        }
 
         return ProgressBarQueueActions.queueTask({ tasks: 1 });
       })
@@ -89,22 +90,48 @@ export class GameEffects {
     )
   );
 
-  readonly loadPlaylist$ = createEffect(() =>
+  readonly searchContent$ = createEffect(() =>
     this.action$.pipe(
-      ofType(GameActions.loadPlaylist),
-      switchMap((props) => this.spotifyService.loadPlaylistTracks(props.playlist.id)),
-      map((tracks) => GameActions.loadPlaylistSuccess({ tracks: tracks }))
+      ofType(GameActions.searchContent),
+      switchMap((props) => this.spotifyService.loadContent()),
+      map((contents) => GameActions.searchContentSuccess({ contents: contents }))
     )
   );
 
-  readonly loadPlaylistSuccess$ = createEffect(() =>
+  readonly loadPlaylist$ = createEffect(() =>
     this.action$.pipe(
-      ofType(GameActions.loadPlaylistSuccess),
+      ofType(GameActions.loadContent),
+      filter(x => x.content.type === ContentType.Playlist),
+      switchMap((props) => this.spotifyService.loadPlaylistTracks(props.content.id)),
+      map((tracks) => GameActions.loadContentSuccess({ tracks: tracks }))
+    )
+  );
+
+  readonly loadArtist$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(GameActions.loadContent),
+      filter(x => x.content.type === ContentType.Artist),
+      switchMap((props) => this.spotifyService.loadArtistTracks(props.content.id)),
+      map((tracks) => GameActions.loadContentSuccess({ tracks: tracks }))
+    )
+  );
+
+  readonly loadAlbum$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(GameActions.loadContent),
+      filter(x => x.content.type === ContentType.Album),
       switchMap(async () => GameActions.setGameSolution()),
     )
   );
 
-  readonly loadDevice$ = createEffect(() => 
+  readonly loadContentSuccess$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(GameActions.loadContentSuccess),
+      switchMap(async () => GameActions.setGameSolution()),
+    )
+  );
+
+  readonly loadDevice$ = createEffect(() =>
     this.action$.pipe(
       ofType(GameActions.loadDevice),
       switchMap((props) => this.spotifyService.transferPlayback(props.device.id)),
