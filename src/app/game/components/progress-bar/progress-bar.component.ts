@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { GameCalculationService } from '../../services/game-calculation/game-calculation.service';
+import { GameCalculationService } from '../../services/game-calculation.service';
 import { ProgressSegmentComponent } from '../progress-segment/progress-segment.component';
 
 @Component({

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs';
-import { ProgressBarTimerService } from '../../services/progress-bar-timer/progress-bar-timer.service';
+import { ProgressBarTimerService } from '../../services/progress-bar-timer.service';
 import { Game } from '../../state/models/game.model';
 import { ProgressBarQueue } from '../../state/models/progress-bar-queue.model';
 import { TaskStateType } from '../../state/models/queue-state-type.model';

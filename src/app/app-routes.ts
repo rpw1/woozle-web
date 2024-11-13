@@ -2,6 +2,8 @@ import { Routes } from "@angular/router";
 import { ForbiddenComponent } from "./auth/components/forbidden/forbidden.component";
 import { authGuard } from "./auth/guards/auth.guard";
 import { authCallbackResolver } from "./auth/resolvers/auth-callback.resolver";
+import { deviceGuard } from './game/guards/device.guard';
+import { contentGuard } from './game/guards/content.guard';
 
 export const routes: Routes = [
   {
@@ -17,13 +19,13 @@ export const routes: Routes = [
   },
   {
     path: 'playlists',
-    canActivate: [ authGuard ],
+    canActivate: [ authGuard, deviceGuard ],
     loadComponent: () => import('./game/components/playlist-list/playlist-list.component')
       .then(x => x.PlaylistListComponent),
   },
   {
     path: 'game',
-    canActivate: [ authGuard ],
+    canActivate: [ authGuard, deviceGuard, contentGuard ],
     loadComponent: () => import('./game/components/game/game.component')
       .then(x => x.GameComponent)
   },
