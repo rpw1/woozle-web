@@ -1,5 +1,5 @@
 <div class="card">
-  <img [src]="content.image.url" [alt]="content.description ?? content.name" title="content image" class="img-thumbnail" />
+  <img [src]="content.image?.url" [alt]="content.description ?? content.name" title="content image" class="img-thumbnail" />
   <div class="card-body">
     <h5 class="card-title">{{content.name}}</h5>
     @if(content.description) {

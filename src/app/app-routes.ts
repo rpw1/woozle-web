@@ -3,7 +3,7 @@ import { ForbiddenComponent } from "./auth/components/forbidden/forbidden.compon
 import { authGuard } from "./auth/guards/auth.guard";
 import { authCallbackResolver } from "./auth/resolvers/auth-callback.resolver";
 import { deviceGuard } from './game/guards/device.guard';
-import { contentGuard } from './game/guards/content.guard';
+import { contentGuard } from './content/guards/content.guard';
 
 export const routes: Routes = [
   {
@@ -20,7 +20,7 @@ export const routes: Routes = [
   {
     path: 'contents',
     canActivate: [ authGuard, deviceGuard ],
-    loadComponent: () => import('./game/components/content-list/content-list.component')
+    loadComponent: () => import('./content/components/content-list/content-list.component')
       .then(x => x.ContentListComponent),
   },
   {

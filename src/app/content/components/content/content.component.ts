@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Content } from '../../state/models/content';
+import { SpotifyContent } from '../../state/models/spotify-content';
 
 @Component({
   selector: 'app-content',
@@ -9,6 +9,6 @@ import { Content } from '../../state/models/content';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContentComponent {
-  @Input({required: true}) content!: Content;
-  @Output() selectedContent = new EventEmitter<Content>();
+  @Input({required: true}) content!: SpotifyContent;
+  @Output() selectedContent = new EventEmitter<SpotifyContent>();
 }

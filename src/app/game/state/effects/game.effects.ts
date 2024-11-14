@@ -12,7 +12,6 @@ import { GameState } from '../models/game-state.model';
 import { Game } from '../models/game.model';
 import { maximumGuesses } from '../reducers/game.reducer';
 import { selectGameState } from '../selectors/game.selector';
-import { ContentType } from '../models/content-type';
 
 @Injectable()
 export class GameEffects {
@@ -80,54 +79,6 @@ export class GameEffects {
       ofType(GameActions.togglePlayerOff),
       exhaustMap(() => this.spotifyService.pausePlayer()),
       map(() => ProgressBarQueueActions.noOperation())
-    )
-  );
-
-  readonly resetGame$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(GameActions.reset),
-      exhaustMap(async () => GameActions.setGameSolution())
-    )
-  );
-
-  readonly searchContent$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(GameActions.searchContent),
-      switchMap((props) => this.spotifyService.loadContent()),
-      map((contents) => GameActions.searchContentSuccess({ contents: contents }))
-    )
-  );
-
-  readonly loadPlaylist$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(GameActions.loadContent),
-      filter(x => x.content.type === ContentType.Playlist),
-      switchMap((props) => this.spotifyService.loadPlaylistTracks(props.content.id)),
-      map((tracks) => GameActions.loadContentSuccess({ tracks: tracks }))
-    )
-  );
-
-  readonly loadArtist$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(GameActions.loadContent),
-      filter(x => x.content.type === ContentType.Artist),
-      switchMap((props) => this.spotifyService.loadArtistTracks(props.content.id)),
-      map((tracks) => GameActions.loadContentSuccess({ tracks: tracks }))
-    )
-  );
-
-  readonly loadAlbum$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(GameActions.loadContent),
-      filter(x => x.content.type === ContentType.Album),
-      switchMap(async () => GameActions.setGameSolution()),
-    )
-  );
-
-  readonly loadContentSuccess$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(GameActions.loadContentSuccess),
-      switchMap(async () => GameActions.setGameSolution()),
     )
   );
 

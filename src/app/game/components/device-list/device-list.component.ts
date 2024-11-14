@@ -8,6 +8,7 @@ import { SpotifyDevice } from '../../../shared/models/spotify-device';
 import { GameActions } from '../../state/actions/game.actions';
 import { CommonModule } from '@angular/common';
 import { DeviceComponent } from '../device/device.component';
+import { ContentActions } from '../../../content/state/actions/content.actions';
 
 @Component({
   selector: 'app-device-list',
@@ -26,7 +27,7 @@ export class DeviceListComponent implements OnInit {
   devices$ = defer(() => this.spotifyService.getAvailableDevices());
 
   ngOnInit(): void {
-    this.gameStore.dispatch(GameActions.searchContent({ searchParameters: undefined }))
+    this.gameStore.dispatch(ContentActions.loadContent())
   }
 
   setDevice(device: SpotifyDevice) {

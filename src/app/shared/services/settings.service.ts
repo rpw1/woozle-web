@@ -10,7 +10,6 @@ import { environment } from '../../../environments/environment';
 export class SettingsService {
   private readonly httpClient = inject(HttpClient);
   
-  // todo add some logic to get a different path deployment vs local
   private readonly settingsPath = environment.production ? '/assets/settings.json' : '/assets/settings.local.json';
   settings!: Signal<Settings>;
 
