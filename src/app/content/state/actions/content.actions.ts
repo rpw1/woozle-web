@@ -12,5 +12,6 @@ export const ContentActions = createActionGroup({
     searchAvailableContent: props<{ filters: AvailableContentFilters }>(),
     setGameContent: props<{ content: SpotifyContent }>(),
     setGameContentSuccess: props<{ tracks: Track[] }>(),
+    resetAvailableContentFilters: emptyProps(),
   }
 })
