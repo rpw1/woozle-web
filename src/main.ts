@@ -15,7 +15,7 @@ import { QueueStateReducer } from './app/game/state/reducers/progress-bar-queue.
 import { initApp, SettingsService } from './app/shared/services/settings.service';
 import { environment } from './environments/environment';
 import { ContentEffects } from './app/content/state/effects/content.effects';
-import { spotifyAuthInterceptorInterceptor } from './app/shared/interceptors/spotify-auth.interceptor';
+import { spotifyAuthInterceptor } from './app/shared/interceptors/spotify-auth.interceptor';
 
 if (environment.production) {
   enableProdMode();

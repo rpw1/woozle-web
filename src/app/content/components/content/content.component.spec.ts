@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ContentComponent } from './content.component';
-import { ContentType } from '../../../game/state/models/content-type';
+import { ContentType } from '../../state/models/content-type';
 
 describe('ContentComponent', () => {
   let component: ContentComponent;

@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpInterceptorFn } from '@angular/common/http';
 
-import { spotifyAuthInterceptorInterceptor } from './spotify-auth.interceptor';
+import { spotifyAuthInterceptor } from './spotify-auth.interceptor';
 
-describe('spotifyAuthInterceptorInterceptor', () => {
+describe('spotifyAuthInterceptor', () => {
   const interceptor: HttpInterceptorFn = (req, next) =>
-    TestBed.runInInjectionContext(() => spotifyAuthInterceptorInterceptor(req, next));
+    TestBed.runInInjectionContext(() => spotifyAuthInterceptor(req, next));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

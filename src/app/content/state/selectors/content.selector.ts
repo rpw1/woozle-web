@@ -38,3 +38,8 @@ export const selectAvailablePlaylists = createSelector(
     return state.availableContent.playlists;
   }
 );
+
+export const selectGameContent = createSelector(
+  selectGameState,
+  (state: Content) => state.gameContent
+);

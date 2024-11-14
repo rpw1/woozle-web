@@ -22,20 +22,11 @@ export function getFakeGame(): Game {
       album: 'Punisher',
       artist: 'Phoebe Bridgers',
       songUri: 'uri',
-      imageUri: 'imageUri'
-    },
-    playlist: {
-      playlistId: 'playlistId',
-      name: 'name',
-      tracks: [
-        {
-          song: 'song',
-          album: 'album',
-          artist: 'artist',
-          songUri: 'songUri',
-          imageUri: 'imageUri'
-        }
-      ]
+      image: {
+        url: 'imageUrl',
+        height: 300,
+        width: 300
+      }
     },
     device: {
       id: 'deviceId',
