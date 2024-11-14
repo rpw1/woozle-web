@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { SpotifyContent } from '../../state/models/spotify-content';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-content',
   standalone: true,
-  imports: [],
+  imports: [NgOptimizedImage],
   templateUrl: './content.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
