@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { GameActions } from '../../state/actions/game.actions';
-import { Content } from '../../state/models/content';
-import { Game } from '../../state/models/game.model';
-import { selectAvailableContents, selectDevice } from '../../state/selectors/game.selector';
+import { GameActions } from '../../../game/state/actions/game.actions';
+import { Content } from '../../../game/state/models/content';
+import { Game } from '../../../game/state/models/game.model';
+import { selectAvailableContents, selectDevice } from '../../../game/state/selectors/game.selector';
 import { ContentComponent } from '../content/content.component';
 
 @Component({

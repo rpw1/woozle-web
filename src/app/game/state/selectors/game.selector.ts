@@ -28,16 +28,6 @@ export const selectSolution = createSelector(
   (state: Game) => state.solution
 );
 
-export const selectAvailableContents = createSelector(
-  selectGameState,
-  (state: Game) => state.contentState.availableContents
-)
-
-export const selectContent = createSelector(
-  selectGameState,
-  (state: Game) => state.contentState.content
-)
-
 export const selectDevice = createSelector(
   selectGameState,
   (state: Game) => state.device

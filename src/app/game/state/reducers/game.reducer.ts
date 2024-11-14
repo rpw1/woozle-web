@@ -6,7 +6,6 @@ import { GameConstants } from '../../models/game-constants';
 import { GuessType } from '../../models/guess-type';
 import { v4 } from 'uuid';
 import { GameState } from '../models/game-state.model';
-import { ContentType } from '../models/content-type';
 
 export const maximumGuesses = GameConstants.SECONDS_ARRAY.length;
 export const initialState: Game = {
@@ -26,24 +25,6 @@ export const initialState: Game = {
       url: '',
       height: 0,
       width: 0
-    }
-  },
-  contentState: {
-    contentSearchParameters: {
-      name: undefined
-    },
-    availableContents: [],
-    content: {
-      id: '',
-      type: ContentType.Playlist,
-      description: undefined,
-      name: '',
-      image: {
-        url: '',
-        height: 0,
-        width: 0
-      },
-      tracks: []
     }
   },
   device: {

@@ -7,8 +7,8 @@ import { MockComponent, MockProvider } from 'ng-mocks';
 import { of } from 'rxjs';
 import { SpotifyService } from '../../../shared/services/spotify.service';
 import { getFakeGame } from '../../../testing/fake-game.models';
-import { Game } from '../../state/models/game.model';
-import { selectDevice } from '../../state/selectors/game.selector';
+import { Game } from '../../../game/state/models/game.model';
+import { selectDevice } from '../../../game/state/selectors/game.selector';
 import { ContentComponent } from '../content/content.component';
 import { ContentListComponent } from './content-list.component';
 

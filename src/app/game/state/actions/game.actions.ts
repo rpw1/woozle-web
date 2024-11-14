@@ -3,7 +3,7 @@ import { SpotifyDevice } from '../../../shared/models/spotify-device';
 import { Guess } from '../../models/guess';
 import { Content } from '../models/content';
 import { GameState } from '../models/game-state.model';
-import { Track } from '../models/track';
+import { Track } from '../../../content/state/models/track';
 import { ContentSearchParameters } from '../models/content-search-parameters';
 
 export const GameActions = createActionGroup({

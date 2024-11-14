@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Content } from '../../state/models/content';
+import { Content } from '../../../game/state/models/content';
 
 @Component({
   selector: 'app-content',

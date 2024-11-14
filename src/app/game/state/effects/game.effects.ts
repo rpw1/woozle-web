@@ -12,7 +12,6 @@ import { GameState } from '../models/game-state.model';
 import { Game } from '../models/game.model';
 import { maximumGuesses } from '../reducers/game.reducer';
 import { selectGameState } from '../selectors/game.selector';
-import { ContentType } from '../models/content-type';
 
 @Injectable()
 export class GameEffects {
