@@ -106,4 +106,14 @@ export class GameEffects {
       map(() => GameActions.loadDeviceSuccess())
     )
   );
+
+  readonly resetGame$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(
+        GameActions.reset,
+        GameActions.setGameSolutions
+      ),
+      switchMap(async () => GameActions.setGameSolution())
+    )
+  );
 }
