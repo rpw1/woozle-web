@@ -48,31 +48,32 @@ export class ContentEffects {
     )
   );
 
-  readonly loadAlbum$ = createEffect(() =>
+  readonly setGameContentSuccess$ = createEffect(() =>
     this.action$.pipe(
-      ofType(ContentActions.setGameContent),
-      filter((x) => x.content.type === ContentType.Album),
+      ofType(
+        ContentActions.setGameContentSuccess,
+        ContentActions.setGameContent
+      ),
+      filter((action) => {
+        if (action.type == ContentActions.setGameContent.type) {
+          return action.content.type === ContentType.Album;
+        }
+        return true;
+      }),
       concatLatestFrom(() => this.contentStore.select(selectGameContent)),
       switchMap(async ([action, gameContent]) => {
-        const randomIndex =
-          Math.floor(Math.random() * gameContent.tracks.length) - 1;
-        return GameActions.setGameSolution({
-          track: gameContent.tracks[randomIndex],
-        });
-      })
-    )
-  );
+        let tracks = action.type === ContentActions.setGameContentSuccess.type
+          ? [...action.tracks]
+          : [...gameContent.tracks];
 
-  readonly resetGame$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(GameActions.reset, ContentActions.setGameContentSuccess),
-      concatLatestFrom(() => this.contentStore.select(selectGameContent)),
-      switchMap(async ([action, gameContent]) => {
-        const randomIndex =
-          Math.floor(Math.random() * gameContent.tracks.length) - 1;
-        return GameActions.setGameSolution({
-          track: gameContent.tracks[randomIndex],
-        });
+        for (let i = tracks.length - 1; i >= 0; i--) {
+          const randomIndex = Math.floor(Math.random() * (i + 1));
+          const temp = tracks[i];
+          tracks[i] = tracks[randomIndex];
+          tracks[randomIndex] = temp;
+        }
+
+        return GameActions.setGameSolutions({ solutions: tracks });
       })
     )
   );

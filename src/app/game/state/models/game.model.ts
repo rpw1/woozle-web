@@ -9,5 +9,7 @@ export interface Game {
   isPlayingMusic: boolean,
   currentGameState: GameState
   solution: Track,
+  solutions: Track[],
+  solutionIndex: number,
   device: Device
 }

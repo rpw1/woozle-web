@@ -27,6 +27,8 @@ export const initialState: Game = {
       width: 0,
     },
   },
+  solutions: [],
+  solutionIndex: 0,
   device: {
     id: '',
     isActive: false,
@@ -56,6 +58,8 @@ export const GameReducer = createReducer<Game>(
   on(GameActions.reset, (state) => ({
     ...initialState,
     device: state.device,
+    solutions: state.solutions,
+    solutionIndex: state.solutionIndex,
   })),
   on(GameActions.togglePlayerOn, (state) => ({
     ...state,
@@ -75,9 +79,24 @@ export const GameReducer = createReducer<Game>(
     }
     return { ...state, currentGameState: newGameState };
   }),
-  on(GameActions.setGameSolution, (state, action) => ({
+  on(GameActions.setGameSolution, (state) => {
+    if (state.solutions.length === 0) {
+      return state;
+    }
+
+    if (state.solutionIndex === state.solutions.length - 1) {
+      state.solutionIndex = 0;
+    }
+    
+    return {
+      ...state,
+      solution: state.solutions[state.solutionIndex],
+      solutionIndex: state.solutionIndex + 1
+    }
+  }),
+  on(GameActions.setGameSolutions, (state, action) => ({
     ...state,
-    solution: action.track,
+    solutions: [...action.solutions],
   })),
   on(GameActions.loadDevice, (state, action) => {
     return {

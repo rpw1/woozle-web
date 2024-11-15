@@ -7,10 +7,10 @@ export const initialState: Content = {
   availableContent: {
     albums: [],
     artists: [],
-    playlists: []
+    playlists: [],
   },
   availableContentFilters: {
-    name: undefined
+    name: undefined,
   },
   gameContent: {
     id: '',
@@ -20,20 +20,32 @@ export const initialState: Content = {
     image: {
       url: '',
       height: 0,
-      width: 0
+      width: 0,
     },
-    tracks: []
-  }
-}
+    tracks: [],
+  },
+};
 
 export const ContentReducer = createReducer<Content>(
   initialState,
-  on(ContentActions.loadContentSuccess, (state, action) =>
-    ({ ...state, availableContent: action.availableContent })),
-  on(ContentActions.searchAvailableContent, (state, actions) =>
-    ({ ...state, availableContentFilters: actions.filters })),
-  on(ContentActions.setGameContent, (state, actions) =>
-    ({ ...state, gameContent: actions.content })),
-  on(ContentActions.setGameContentSuccess, (state, actions) =>
-    ({ ...state, gameContent: { ...state.gameContent, tracks: actions.tracks } }))
-)
+  on(ContentActions.loadContentSuccess, (state, action) => ({
+    ...state,
+    availableContent: action.availableContent,
+  })),
+  on(ContentActions.searchAvailableContent, (state, actions) => ({
+    ...state,
+    availableContentFilters: actions.filters,
+  })),
+  on(ContentActions.setGameContent, (state, actions) => ({
+    ...state,
+    gameContent: actions.content,
+  })),
+  on(ContentActions.setGameContentSuccess, (state, actions) => ({
+    ...state,
+    gameContent: { ...state.gameContent, tracks: actions.tracks },
+  })),
+  on(ContentActions.resetAvailableContentFilters, (state, actions) => ({
+    ...state,
+    availableContentFilters: { ...initialState.availableContentFilters },
+  }))
+);
