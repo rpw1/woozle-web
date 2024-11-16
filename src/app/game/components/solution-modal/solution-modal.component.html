@@ -13,8 +13,8 @@
     <div class="mb-3">
       @let solution = solution$ | async;
       @if(solution != null || solution != {}) {
-        <img class="border border-dark mb-3 mx-auto d-block" [ngSrc]="solution?.image?.url ?? ''"
-          alt="solution album" [height]="300" [width]="300" />
+        <img class="border border-dark mb-3 mx-auto d-block" [src]="solution?.image?.url ?? ''"
+          alt="solution album" [width]="300" />
         <hr>
         <div class="ms-2">
           <p class="fs-5">Artist: {{ solution?.artist }}</p>
