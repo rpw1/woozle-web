@@ -33,7 +33,7 @@ export class GameEffects {
       concatMap(async ([action, gameState]) => {
         if (
           action.guess.song?.toLocaleLowerCase() ===
-          gameState.solution.song.toLocaleLowerCase()
+          `${gameState.solution.song} - ${gameState.solution.artist}`.toLocaleLowerCase()
         ) {
           await this.solutionModalService.open();
           return GameActions.updateGameState({
