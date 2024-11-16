@@ -6,15 +6,21 @@ import { Game } from '../models/game.model';
 import * as fromReducer from './game.reducer';
 
 describe('GameReducer', () => {
-  const state : Game = getFakeGame()
+  const state: Game = getFakeGame();
 
   describe('addGuess', () => {
     it('should increment guesses by one', () => {
       const result = fromReducer.GameReducer(
         state,
-        GameActions.addGuess({guess:{id: 'id1', song: 'song 1', type: GuessType.GUESS}})
+        GameActions.addGuess({
+          guess: { id: 'id1', song: 'song 1', type: GuessType.GUESS },
+        })
       );
-      expect(result.guesses[result.numberOfGuesses - 1]).toEqual({id: 'id1', song: 'song 1', type: GuessType.GUESS});
+      expect(result.guesses[result.numberOfGuesses - 1]).toEqual({
+        id: 'id1',
+        song: 'song 1',
+        type: GuessType.GUESS,
+      });
       expect(result.numberOfGuesses).toBe(5);
     });
   });
@@ -22,7 +28,12 @@ describe('GameReducer', () => {
   describe('reset', () => {
     it('should reset game state to its initial state', () => {
       const result = fromReducer.GameReducer(state, GameActions.reset);
-      expect(result).toEqual({ ...fromReducer.initialState, device: state.device });
+      expect(result).toEqual({
+        ...fromReducer.initialState,
+        device: state.device,
+        solutions: state.solutions,
+        solutionIndex: state.solutionIndex,
+      });
     });
   });
 
@@ -31,7 +42,10 @@ describe('GameReducer', () => {
       const initialState: Game = deepClone(state);
       initialState.isPlayingMusic = false;
 
-      const result = fromReducer.GameReducer(initialState, GameActions.togglePlayerOn);
+      const result = fromReducer.GameReducer(
+        initialState,
+        GameActions.togglePlayerOn
+      );
 
       expect(result.isPlayingMusic).toEqual(true);
     });
@@ -40,9 +54,12 @@ describe('GameReducer', () => {
       const initialState: Game = deepClone(state);
       initialState.isPlayingMusic = true;
 
-      const result = fromReducer.GameReducer(initialState, GameActions.togglePlayerOff);
+      const result = fromReducer.GameReducer(
+        initialState,
+        GameActions.togglePlayerOff
+      );
 
       expect(result.isPlayingMusic).toEqual(false);
     });
   });
-})
+});
