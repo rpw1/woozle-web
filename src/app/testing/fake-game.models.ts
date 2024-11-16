@@ -28,6 +28,20 @@ export function getFakeGame(): Game {
         width: 300
       }
     },
+    solutions: [
+      {
+        song: 'Garden Song',
+        album: 'Punisher',
+        artist: 'Phoebe Bridgers',
+        songUri: 'uri',
+        image: {
+          url: 'imageUrl',
+          height: 300,
+          width: 300
+        }
+      }
+    ],
+    solutionIndex: 0,
     device: {
       id: 'deviceId',
       isActive: true,

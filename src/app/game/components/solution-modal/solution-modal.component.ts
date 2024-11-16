@@ -1,4 +1,4 @@
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -19,7 +19,7 @@ import {
 @Component({
   selector: 'app-solution-modal',
   standalone: true,
-  imports: [CommonModule, NgbModule, NgOptimizedImage],
+  imports: [CommonModule, NgbModule],
   templateUrl: './solution-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
