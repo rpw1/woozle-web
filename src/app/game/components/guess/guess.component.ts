@@ -46,11 +46,10 @@ export class GuessComponent {
       concatLatestFrom(() => this.contentStore.select(selectGameContent)),
       map(([search, playlist]) => {
         return playlist.tracks
-          .map((track) => track.song)
-          .filter((name) =>
-            name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
-          )
-          .slice(0, 15);
+          .map(track => `${track.song} - ${track.artist}`)
+          .filter((track) =>
+            track.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+          ).slice(0, 15);
       })
     );
 

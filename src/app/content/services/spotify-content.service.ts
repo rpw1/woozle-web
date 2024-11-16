@@ -7,7 +7,7 @@ import {
   map,
   mergeMap,
   Observable,
-  reduce,
+  reduce
 } from 'rxjs';
 import { SpotifyPlaylist } from '../../shared/models/spotify-playlist';
 import { SpotifyService } from '../../shared/services/spotify.service';
@@ -59,7 +59,8 @@ export class SpotifyContentService {
           } as Track;
         })
       ),
-      reduce((acc: Track[], tracks) => acc.concat(tracks), [])
+      reduce((acc: Track[], tracks) => acc.concat(tracks), []),
+      map(tracks => [...new Map(tracks.map(x => [x.song, x])).values()])
     );
   }
 
@@ -89,7 +90,8 @@ export class SpotifyContentService {
           )
         )
       ),
-      reduce((acc: Track[], tracks) => acc.concat(tracks), [])
+      reduce((acc: Track[], tracks) => acc.concat(tracks), []),
+      map(tracks => [...new Map(tracks.map(x => [x.song, x])).values()])
     );
   }
 
