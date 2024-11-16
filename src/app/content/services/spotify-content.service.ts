@@ -60,7 +60,7 @@ export class SpotifyContentService {
         })
       ),
       reduce((acc: Track[], tracks) => acc.concat(tracks), []),
-      map(tracks => [...new Map(tracks.map(x => [x.song, x])).values()])
+      map(tracks => [...new Map(tracks.map(x => [`${x.song} - ${x.artist}`, x])).values()])
     );
   }
 
@@ -91,7 +91,7 @@ export class SpotifyContentService {
         )
       ),
       reduce((acc: Track[], tracks) => acc.concat(tracks), []),
-      map(tracks => [...new Map(tracks.map(x => [x.song, x])).values()])
+      map(tracks => [...new Map(tracks.map(x => [`${x.song} - ${x.artist}`, x])).values()])
     );
   }
 
