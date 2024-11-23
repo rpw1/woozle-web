@@ -1,33 +1,28 @@
 import { Routes } from "@angular/router";
-import { ForbiddenComponent } from "./auth/components/forbidden/forbidden.component";
-import { authGuard } from "./auth/guards/auth.guard";
-import { authCallbackResolver } from "./auth/resolvers/auth-callback.resolver";
-import { deviceGuard } from './game/guards/device.guard';
-import { contentGuard } from './content/guards/content.guard';
+import { ForbiddenComponent } from "./user/components/forbidden/forbidden.component";
+import { authGuard } from "./user/guards/auth.guard";
+import { authCallbackResolver } from "./user/resolvers/auth-callback.resolver";
 
-export const routes: Routes = [
+export const appRoutes: Routes = [
   {
     path: '',
-    redirectTo: 'devices',
+    redirectTo: 'game',
     pathMatch: 'full'
   },
   {
-    path: 'devices',
-    canActivate: [ authGuard ],
-    loadComponent: () => import('./game/components/device-list/device-list.component')
-      .then(x => x.DeviceListComponent),
+    path: 'game',
+    canActivateChild: [ authGuard ],
+    loadChildren: () => import('./game/game-routes').then(x => x.gameRoutes)
   },
   {
     path: 'contents',
-    canActivate: [ authGuard, deviceGuard ],
-    loadComponent: () => import('./content/components/content-list/content-list.component')
-      .then(x => x.ContentListComponent),
+    canActivateChild: [ authGuard ],
+    loadChildren: () => import('./content/content-routes').then(x => x.contentRoutes)
   },
   {
-    path: 'game',
-    canActivate: [ authGuard, deviceGuard, contentGuard ],
-    loadComponent: () => import('./game/components/game/game.component')
-      .then(x => x.GameComponent)
+    path: 'user',
+    canActivateChild: [ authGuard ],
+    loadChildren: () => import('./user/user-routes').then(x => x.userRoutes)
   },
   {
     path: 'auth/callback',
@@ -38,4 +33,4 @@ export const routes: Routes = [
     path: 'forbidden',
     loadComponent: () => ForbiddenComponent
   }
-];
+]

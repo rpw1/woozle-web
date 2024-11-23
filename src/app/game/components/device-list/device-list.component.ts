@@ -32,6 +32,6 @@ export class DeviceListComponent implements OnInit {
 
   setDevice(device: SpotifyDevice) {
     this.gameStore.dispatch(GameActions.loadDevice({ device: device }));
-    void this.router.navigate(['/contents']);
+    void this.router.navigate(['/contents/select']);
   }
 }
