@@ -6,7 +6,6 @@ import { ContentActions } from '../../../content/state/actions/content.actions';
 import { GameActions } from '../../../game/state/actions/game.actions';
 import { Game } from '../../../game/state/models/game.model';
 import { SpotifyDevice } from '../../../shared/models/spotify-device';
-import { SpotifyPlaybackService } from '../../services/spotify-playback.service';
 import { AvailableDevicesService } from '../../state/available-devices.service';
 import { DeviceComponent } from '../device/device.component';
 
@@ -24,15 +23,11 @@ export class DeviceListComponent implements OnInit {
   private readonly gameStore = inject(Store<Game>);
   private readonly router = inject(Router);
   private readonly availableDevicesService = inject(AvailableDevicesService);
-  private readonly spotifyPlaybackService = inject(SpotifyPlaybackService);
   devices$ = this.availableDevicesService.availableDevices$;
 
   async ngOnInit(): Promise<void> {
-    console.log('in on init')
     this.gameStore.dispatch(ContentActions.loadContent());
-    const accessToken = localStorage.getItem('access_token') ?? '';
-    await this.spotifyPlaybackService.initPlaybackSDK(accessToken, 0.5);
-    console.log('player is init')
+    await this.availableDevicesService.loadAvailableDevice();
   }
 
   setDevice(device: SpotifyDevice) {
