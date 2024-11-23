@@ -5,17 +5,17 @@ import { provideRouter } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { routes } from './app/app-routes';
+import { appRoutes } from './app/app-routes';
 import { AppComponent } from './app/app.component';
+import { ContentEffects } from './app/content/state/effects/content.effects';
 import { ContentReducer } from './app/content/state/reducers/content.reducer';
 import { GameEffects } from './app/game/state/effects/game.effects';
 import { ProgressBarQueueEffects } from './app/game/state/effects/progress-bar-queue.effects';
 import { GameReducer } from './app/game/state/reducers/game.reducer';
 import { QueueStateReducer } from './app/game/state/reducers/progress-bar-queue.reducer';
+import { spotifyAuthInterceptor } from './app/shared/interceptors/spotify-auth.interceptor';
 import { initApp, SettingsService } from './app/shared/services/settings.service';
 import { environment } from './environments/environment';
-import { ContentEffects } from './app/content/state/effects/content.effects';
-import { spotifyAuthInterceptor } from './app/shared/interceptors/spotify-auth.interceptor';
 
 if (environment.production) {
   enableProdMode();
@@ -23,7 +23,7 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideRouter(routes),
+    provideRouter(appRoutes),
     provideStore({
       content: ContentReducer,
       game: GameReducer,

@@ -8,7 +8,7 @@ import { selectDevice } from '../state/selectors/game.selector';
 export const deviceGuard: CanActivateFn = (route, state) => {
   const gameStore = inject(Store<Game>);
   const router = inject(Router);
-  const devicesRoute = router.parseUrl('/devices');
+  const devicesRoute = router.parseUrl('/game/devices');
   return gameStore.select(selectDevice)
     .pipe(map(x => x.id === '' ? new RedirectCommand(devicesRoute) : true));
 };
