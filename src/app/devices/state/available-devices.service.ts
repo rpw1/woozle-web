@@ -7,7 +7,7 @@ import { SpotifyService } from '../../shared/services/spotify.service';
 })
 export class AvailableDevicesService {
   private readonly spotifyService = inject(SpotifyService);
-  private hasBuiltInPlayerLoaded = false;
+  spotifyPlayer : any | undefined;
 
   private readonly spotifyPlaybackDevice = new ReplaySubject<void>(1);
   readonly availableDevices$ = this.spotifyPlaybackDevice.pipe(
@@ -15,7 +15,7 @@ export class AvailableDevicesService {
   )
 
   async loadAvailableDevice(): Promise<void> {
-    if (this.hasBuiltInPlayerLoaded) {
+    if (this.spotifyPlayer) {
       this.spotifyPlaybackDevice.next();
       return
     }
@@ -53,16 +53,16 @@ export class AvailableDevicesService {
 
     player.addListener('ready', ({ device_id }: { device_id: string }) => {
       console.log('[Angular Spotify] Ready with Device ID', device_id);
-      this.hasBuiltInPlayerLoaded = true;
       this.spotifyPlaybackDevice.next();
     });
 
     player.addListener('not_ready', ({ device_id }: { device_id: string }) => {
       console.log('[Angular Spotify] Device ID has gone offline', device_id);
-      this.hasBuiltInPlayerLoaded = false;
+      this.spotifyPlayer = undefined;
     });
 
     await player.connect();
+    this.spotifyPlayer = player;
   }
 
   private waitForSpotifyWebPlaybackSDKToLoad(): Promise<any> {

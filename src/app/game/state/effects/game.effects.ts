@@ -18,6 +18,7 @@ import { GameState } from '../models/game-state.model';
 import { Game } from '../models/game.model';
 import { maximumGuesses } from '../reducers/game.reducer';
 import { selectGameState } from '../selectors/game.selector';
+import { AvailableDevicesService } from '../../../devices/state/available-devices.service';
 
 @Injectable()
 export class GameEffects {
@@ -25,6 +26,7 @@ export class GameEffects {
   private readonly solutionModalService = inject(SolutionModalService);
   private readonly gameStore = inject(Store<Game>);
   private readonly spotifyService = inject(SpotifyService);
+  private readonly availableDevicesService = inject(AvailableDevicesService);
 
   readonly addGuess$ = createEffect(() =>
     this.action$.pipe(
@@ -77,6 +79,7 @@ export class GameEffects {
           this.spotifyService.playPlayer(gameState.solution.songUri),
           { defaultValue: false }
         );
+        this.availableDevicesService.spotifyPlayer?.activateElement();
         return GameActions.togglePlayerOnSuccess();
       })
     )
