@@ -21,7 +21,10 @@ export class AuthService {
       'user-modify-playback-state',
       'playlist-read-private',
       'user-follow-read',
-      'user-library-read'
+      'user-library-read',
+      'streaming',
+      'user-read-email',
+      'user-read-private'
     ]
     const scope = scopes.join(' ');
     const authUrl = new URL(this.spotifyBaseUrl + '/authorize');

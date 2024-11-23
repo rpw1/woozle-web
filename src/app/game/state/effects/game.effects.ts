@@ -113,7 +113,7 @@ export class GameEffects {
         GameActions.reset,
         GameActions.setGameSolutions
       ),
-      switchMap(async () => GameActions.setGameSolution())
+      switchMap(async () => GameActions.setGameSolution()),
     )
   );
 }

@@ -29,6 +29,8 @@
     "@ngrx/operators": "^18.1.0",
     "@ngrx/store": "^18.1.0",
     "@ngrx/store-devtools": "^18.1.0",
+    "@types/spotify-api": "^0.0.25",
+    "@types/spotify-web-playback-sdk": "^0.1.19",
     "bootstrap": "^5.3.3",
     "fast-json-patch": "^3.1.1",
     "rxjs": "^7.8.1",
