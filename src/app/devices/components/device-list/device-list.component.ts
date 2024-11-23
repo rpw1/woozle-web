@@ -1,14 +1,13 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Game } from '../../state/models/game.model';
-import { Router } from '@angular/router';
-import { SpotifyService } from '../../../shared/services/spotify.service';
-import { defer } from 'rxjs';
-import { SpotifyDevice } from '../../../shared/models/spotify-device';
-import { GameActions } from '../../state/actions/game.actions';
 import { CommonModule } from '@angular/common';
-import { DeviceComponent } from '../device/device.component';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { ContentActions } from '../../../content/state/actions/content.actions';
+import { GameActions } from '../../../game/state/actions/game.actions';
+import { Game } from '../../../game/state/models/game.model';
+import { SpotifyDevice } from '../../../shared/models/spotify-device';
+import { AvailableDevicesService } from '../../state/available-devices.service';
+import { DeviceComponent } from '../device/device.component';
 
 @Component({
   selector: 'app-device-list',
@@ -23,11 +22,12 @@ import { ContentActions } from '../../../content/state/actions/content.actions';
 export class DeviceListComponent implements OnInit {
   private readonly gameStore = inject(Store<Game>);
   private readonly router = inject(Router);
-  private readonly spotifyService = inject(SpotifyService);
-  devices$ = defer(() => this.spotifyService.getAvailableDevices());
+  private readonly availableDevicesService = inject(AvailableDevicesService);
+  devices$ = this.availableDevicesService.availableDevices$;
 
-  ngOnInit(): void {
-    this.gameStore.dispatch(ContentActions.loadContent())
+  async ngOnInit(): Promise<void> {
+    this.gameStore.dispatch(ContentActions.loadContent());
+    await this.availableDevicesService.loadAvailableDevice();
   }
 
   setDevice(device: SpotifyDevice) {

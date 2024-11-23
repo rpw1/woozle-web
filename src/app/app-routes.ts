@@ -15,6 +15,11 @@ export const appRoutes: Routes = [
     loadChildren: () => import('./game/game-routes').then(x => x.gameRoutes)
   },
   {
+    path: 'devices',
+    canActivateChild: [ authGuard ],
+    loadChildren: () => import('./devices/devices-routes').then(x => x.devicesRoutes)
+  },
+  {
     path: 'contents',
     canActivateChild: [ authGuard ],
     loadChildren: () => import('./content/content-routes').then(x => x.contentRoutes)
