@@ -5,7 +5,7 @@
       <li class="breadcrumb-item active" aria-current="page">{{ (selectedDevice$ | async)?.name }}</li>
     </ol>
   </nav>
-  <ul ngbNav #nav="ngbNav" class="nav-tabs">
+  <ul ngbNav #nav="ngbNav" class="nav-pills">
     <li ngbNavItem>
       <button ngbNavLink type="button">Playlists</button>
       <ng-template ngbNavContent>

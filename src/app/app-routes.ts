@@ -1,5 +1,5 @@
 import { Routes } from "@angular/router";
-import { ForbiddenComponent } from "./user/components/forbidden/forbidden.component";
+import { ForbiddenComponent } from "./shared/components/forbidden/forbidden.component";
 import { authGuard } from "./user/guards/auth.guard";
 import { authCallbackResolver } from "./user/resolvers/auth-callback.resolver";
 
