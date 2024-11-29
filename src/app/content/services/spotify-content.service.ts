@@ -49,7 +49,9 @@ export class SpotifyContentService {
           : EMPTY
       ),
       map((response) =>
-        response.items.map((item) => {
+        response.items
+          .filter((item: any) => item != null) 
+          .map((item) => {
           return {
             song: item.track.name,
             album: item.track.album.name,
@@ -78,7 +80,9 @@ export class SpotifyContentService {
               : EMPTY
           ),
           map((response) =>
-            response.items.map((item: any): Track => {
+            response.items
+              .filter((item: any) => item != null) 
+              .map((item: any): Track => {
               return {
                 song: item.name,
                 album: album.name,
@@ -103,7 +107,9 @@ export class SpotifyContentService {
           : EMPTY
       ),
       map((response) =>
-        response.items.map((item: any): SpotifyContent => {
+        response.items
+          .filter((item: any) => item != null)
+          .map((item: any): SpotifyContent => {
           return {
             id: item.album.id,
             type: ContentType.Album,
@@ -134,7 +140,9 @@ export class SpotifyContentService {
           : EMPTY
       ),
       map((response) =>
-        response.items.map((playlist: SpotifyPlaylist): SpotifyContent => {
+        response.items
+          .filter((playlist: SpotifyPlaylist) => playlist != null)
+          .map((playlist: SpotifyPlaylist): SpotifyContent => {
           return {
             id: playlist.id,
             type: ContentType.Playlist,
@@ -159,7 +167,9 @@ export class SpotifyContentService {
           : EMPTY
       ),
       map((response) =>
-        response.artists.items.map((artist: any): SpotifyContent => {
+        response.artists.items
+          .filter((item: any) => item != null) 
+          .map((artist: any): SpotifyContent => {
           return {
             id: artist.id,
             type: ContentType.Artist,
