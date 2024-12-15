@@ -1,12 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { exhaustMap, filter, map, switchMap } from 'rxjs';
+import { exhaustMap, map, switchMap } from 'rxjs';
 import { GameActions } from '../../../game/state/actions/game.actions';
 import { SpotifyContentService } from '../../services/spotify-content.service';
 import { ContentActions } from '../actions/content.actions';
 import { Content } from '../models/content';
-import { ContentType } from '../models/content-type';
 
 @Injectable()
 export class ContentEffects {
