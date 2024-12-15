@@ -44,14 +44,11 @@ export class ProgressBarTimerService {
           return EMPTY;
         }
         switch (task) {
-          case TaskStateType.STARTED: {
-            this.timeElapsed = 0;
-            return this.timer$;
-          }
           case TaskStateType.RUNNING: {
             return this.timer$;
           }
           case TaskStateType.COMPLETED: {
+            this.timeElapsed = 0;
             return EMPTY;
           }
           case TaskStateType.RESET: {
