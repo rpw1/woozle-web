@@ -1,7 +1,7 @@
-import { inject, Injectable, signal } from '@angular/core';
-import { SettingsService } from '../../shared/services/settings.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import { catchError, EMPTY, firstValueFrom } from 'rxjs';
+import { SettingsService } from '../../shared/services/settings.service';
 import { SpotifyTokenResponse } from '../models/spotify-token-response';
 
 @Injectable({

@@ -7,6 +7,7 @@ import {
   map,
   mergeMap,
   Observable,
+  of,
   reduce
 } from 'rxjs';
 import { SpotifyPlaylist } from '../../shared/models/spotify-playlist';
@@ -38,7 +39,19 @@ export class SpotifyContentService {
     );
   }
 
-  loadPlaylistTracks(playlistId: string): Observable<Track[]> {
+  loadTracks(content : SpotifyContent): Observable<Track[]> {
+    if (content.type === ContentType.Artist) {
+      return this.loadArtistTracks(content.id);
+    }
+
+    if (content.type === ContentType.Playlist) {
+      return this.loadPlaylistTracks(content.id)
+    }
+
+    return of(content.tracks);
+  }
+
+  private loadPlaylistTracks(playlistId: string): Observable<Track[]> {
     return this.spotifyService.getPlaylistTracks(playlistId).pipe(
       expand((response) =>
         response.next
@@ -66,7 +79,7 @@ export class SpotifyContentService {
     );
   }
 
-  loadArtistTracks(artistId: string) {
+  private loadArtistTracks(artistId: string) {
     return this.spotifyService.getArtistAlbums(artistId).pipe(
       mergeMap((response) => from(response.items as any[])),
       mergeMap((album) =>

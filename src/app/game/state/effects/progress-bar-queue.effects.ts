@@ -45,7 +45,8 @@ export class ProgressBarQueueEffects {
     this.action$.pipe(
       ofType(
         GameActions.togglePlayerOff,
-        GameActions.reset
+        GameActions.reset,
+        ProgressBarQueueActions.completeAllTasks
       ),
       exhaustMap(async () => ProgressBarQueueActions.resetTasks())
     )
@@ -62,20 +63,6 @@ export class ProgressBarQueueEffects {
 
         return ProgressBarQueueActions.completeAllTasks();
       })
-    )
-  );
-
-  readonly completeAllTasks$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(ProgressBarQueueActions.completeAllTasks),
-      exhaustMap(async () => ProgressBarQueueActions.resetTasks())
-    )
-  );
-
-  readonly taskStarted$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(ProgressBarQueueActions.startTask),
-      exhaustMap(async () => ProgressBarQueueActions.runningTask())
     )
   );
 }
