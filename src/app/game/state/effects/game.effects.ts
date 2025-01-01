@@ -79,7 +79,7 @@ export class GameEffects {
           this.spotifyService.playPlayer(gameState.solution.songUri),
           { defaultValue: false }
         );
-        this.availableDevicesService.spotifyPlayer?.activateElement();
+        this.availableDevicesService.setPlayerActiveElement();
         return GameActions.togglePlayerOnSuccess();
       })
     )

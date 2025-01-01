@@ -7,7 +7,7 @@ import { SpotifyService } from '../../shared/services/spotify.service';
 })
 export class AvailableDevicesService {
   private readonly spotifyService = inject(SpotifyService);
-  spotifyPlayer : any | undefined;
+  private spotifyPlayer: any | undefined;
 
   private readonly spotifyPlaybackDevice = new ReplaySubject<void>(1);
   readonly availableDevices$ = this.spotifyPlaybackDevice.pipe(
@@ -16,14 +16,20 @@ export class AvailableDevicesService {
 
   async loadAvailableDevice(): Promise<void> {
     if (this.spotifyPlayer) {
-      this.spotifyPlaybackDevice.next();
-      return
+      this.spotifyPlayer.disconnect();
     }
     
     const accessToken = localStorage.getItem('access_token') ?? '';
     await this.initPlaybackSDK(accessToken, 0.5);
+    this.spotifyPlaybackDevice.next();
   }
 
+  // This is needed for the music to play on iOS devices
+  setPlayerActiveElement() {
+    if (this.spotifyPlayer) {
+      this.spotifyPlayer.activateElement();
+    }
+  }
 
   private async initPlaybackSDK(token: string, volume: number) {
     const { Player } = await this.waitForSpotifyWebPlaybackSDKToLoad();

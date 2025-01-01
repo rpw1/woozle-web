@@ -2,7 +2,6 @@
 // import { ComponentFixture, TestBed } from '@angular/core/testing';
 // import { ReactiveFormsModule } from '@angular/forms';
 // import { provideMockStore } from '@ngrx/store/testing';
-// import { deepClone } from 'fast-json-patch';
 // import { MockProvider } from 'ng-mocks';
 // import { SpotifyService } from '../../../shared/services/spotify.service';
 // import { initialState } from '../../state/reducers/game.reducer';
@@ -11,7 +10,6 @@
 // describe('GuessComponent', () => {
 //   let component: GuessComponent;
 //   let fixture: ComponentFixture<GuessComponent>;
-//   const state = deepClone(initialState)
 
 //   beforeEach(async () => {
 //     await TestBed.configureTestingModule({

@@ -1,11 +1,11 @@
 import { createReducer, on } from '@ngrx/store';
 import { Game } from '../models/game.model';
 import { GameActions } from '../actions/game.actions';
-import { deepClone } from 'fast-json-patch';
 import { GameConstants } from '../../models/game-constants';
 import { GuessType } from '../../models/guess-type';
 import { v4 } from 'uuid';
 import { GameState } from '../models/game-state.model';
+import { deepClone } from '../../../shared/utilities/deep-clone';
 
 export const maximumGuesses = GameConstants.SECONDS_ARRAY.length;
 export const initialState: Game = {
