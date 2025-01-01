@@ -1,4 +1,4 @@
-import { deepClone } from 'fast-json-patch';
+import { deepClone } from '../../../shared/utilities/deep-clone';
 import { getFakeGame } from '../../../testing/fake-game.models';
 import { GuessType } from '../../models/guess-type';
 import { GameActions } from '../actions/game.actions';

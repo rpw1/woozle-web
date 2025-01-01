@@ -1,7 +1,7 @@
-import { deepClone } from 'fast-json-patch';
-import { Game } from '../models/game.model'
+import { deepClone } from '../../../shared/utilities/deep-clone';
+import { Game } from '../models/game.model';
+import { initialState } from '../reducers/game.reducer';
 import * as selectors from './game.selector';
-import { initialState }  from '../reducers/game.reducer';
 
 describe('GameSelectors', () => {
   const state: Game = deepClone(initialState)
