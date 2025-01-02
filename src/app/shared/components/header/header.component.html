@@ -1,11 +1,11 @@
 <div class="my-4">
   <h1 class="mb-4">Woozle</h1>
   <nav>
-    <ul ngbNav class="nav-tabs">
-      <li ngbNavItem>
+    <ul ngbNav class="nav-tabs" [activeId]="activeTab$ | async">
+      <li ngbNavItem="/game">
         <a ngbNavLink [routerLink]="['/game']">Game</a>
       </li>
-      <li ngbNavItem>
+      <li ngbNavItem="/user/releaseNotes">
         <a ngbNavLink [routerLink]="['/user/releaseNotes']">Release Notes</a>
       </li>
     </ul>

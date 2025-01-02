@@ -14,7 +14,7 @@ export class AvailableDevicesService {
     exhaustMap(() => this.spotifyService.getAvailableDevices())
   )
 
-  async loadAvailableDevice(): Promise<void> {
+  async loadAvailableDevices(): Promise<void> {
     if (this.spotifyPlayer) {
       this.spotifyPlayer.disconnect();
     }

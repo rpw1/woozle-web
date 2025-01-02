@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
@@ -33,7 +33,7 @@ import { ContentComponent } from '../content/content.component';
   templateUrl: './content-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContentListComponent implements OnInit {
+export class ContentListComponent {
   private readonly gameStore = inject(Store<Game>);
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly contentStore = inject(Store<Content>);
@@ -46,14 +46,10 @@ export class ContentListComponent implements OnInit {
   readonly selectedDevice$ = this.gameStore.select(selectDevice);
 
   readonly contentSearchForm = this.formBuilder.group({
-    contentSearchInput: ['', [Validators.maxLength(100)]],
+    contentSearchInput: ['', [Validators.maxLength(500)]],
   });
   get contentSearchInput() {
     return this.contentSearchForm.get('contentSearchInput');
-  }
-
-  ngOnInit(): void {
-    this.contentStore.dispatch(ContentActions.resetAvailableContentFilters());
   }
 
   search() {
