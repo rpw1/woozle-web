@@ -1,8 +1,8 @@
 import { MaybeAsync, RedirectCommand, ResolveFn, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../user/services/auth.service';
 import { inject } from '@angular/core';
 
-export const authCallbackResolver: ResolveFn<MaybeAsync<boolean | RedirectCommand>> = async (route, state): Promise<MaybeAsync<boolean | RedirectCommand>> => {
+export const authCallbackResolver: ResolveFn<RedirectCommand> = async (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
   const error = route.queryParams['error'];

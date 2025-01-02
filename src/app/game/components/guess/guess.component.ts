@@ -54,7 +54,7 @@ export class GuessComponent {
     );
 
   readonly guessForm = this.formBuilder.group({
-    currentGuess: ['', [Validators.required, Validators.maxLength(100)]],
+    currentGuess: ['', [Validators.required, Validators.maxLength(500)]],
   });
   get currentGuess() {
     return this.guessForm.get('currentGuess');
