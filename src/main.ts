@@ -1,5 +1,5 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { APP_INITIALIZER, enableProdMode, isDevMode } from '@angular/core';
+import { enableProdMode, isDevMode, inject, provideAppInitializer } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
@@ -46,11 +46,9 @@ bootstrapApplication(AppComponent, {
       withInterceptors([spotifyAuthInterceptor])
     ),
     SettingsService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initApp,
-      deps: [SettingsService],
-      multi: true
-    }
+    provideAppInitializer(() => {
+        const initializerFn = (initApp)(inject(SettingsService));
+        return initializerFn();
+      })
 ]
 }).catch(e => console.error(e));

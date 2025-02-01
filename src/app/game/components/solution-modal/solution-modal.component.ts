@@ -17,11 +17,10 @@ import {
 } from '../../state/selectors/game.selector';
 
 @Component({
-  selector: 'app-solution-modal',
-  standalone: true,
-  imports: [CommonModule, NgbModule],
-  templateUrl: './solution-modal.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-solution-modal',
+    imports: [CommonModule, NgbModule],
+    templateUrl: './solution-modal.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SolutionModalComponent implements OnInit {
   private readonly activeModal = inject(NgbActiveModal);

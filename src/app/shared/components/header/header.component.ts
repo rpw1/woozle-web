@@ -5,15 +5,14 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { filter, map } from 'rxjs';
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [
-    RouterLink,
-    NgbNavModule,
-    AsyncPipe
-  ],
-  templateUrl: './header.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-header',
+    imports: [
+        RouterLink,
+        NgbNavModule,
+        AsyncPipe
+    ],
+    templateUrl: './header.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
   private readonly router = inject(Router);

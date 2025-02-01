@@ -9,14 +9,13 @@ import { AvailableDevicesService } from '../../state/available-devices.service';
 import { DeviceComponent } from '../device/device.component';
 
 @Component({
-  selector: 'app-device-list',
-  standalone: true,
-  imports: [
-    CommonModule,
-    DeviceComponent
-  ],
-  templateUrl: './device-list.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-device-list',
+    imports: [
+        CommonModule,
+        DeviceComponent
+    ],
+    templateUrl: './device-list.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DeviceListComponent {
   private readonly availableDevicesService = inject(AvailableDevicesService);

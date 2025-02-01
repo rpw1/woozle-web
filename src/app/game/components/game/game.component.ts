@@ -20,17 +20,16 @@ import { GuessComponent } from '../guess/guess.component';
 import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
 
 @Component({
-  selector: 'app-game',
-  standalone: true,
-  imports: [
-    GuessListComponent,
-    GuessComponent,
-    ProgressBarComponent,
-    CommonModule,
-    RouterLink,
-  ],
-  templateUrl: './game.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-game',
+    imports: [
+        GuessListComponent,
+        GuessComponent,
+        ProgressBarComponent,
+        CommonModule,
+        RouterLink,
+    ],
+    templateUrl: './game.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GameComponent implements OnInit {
   private readonly gameStore = inject(Store<Game>);

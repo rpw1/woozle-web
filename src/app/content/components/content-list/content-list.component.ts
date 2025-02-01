@@ -21,17 +21,16 @@ import {
 import { ContentComponent } from '../content/content.component';
 
 @Component({
-  selector: 'app-content-list',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ContentComponent,
-    RouterLink,
-    NgbNavModule,
-    ReactiveFormsModule,
-  ],
-  templateUrl: './content-list.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-content-list',
+    imports: [
+        CommonModule,
+        ContentComponent,
+        RouterLink,
+        NgbNavModule,
+        ReactiveFormsModule,
+    ],
+    templateUrl: './content-list.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContentListComponent {
   private readonly gameStore = inject(Store<Game>);

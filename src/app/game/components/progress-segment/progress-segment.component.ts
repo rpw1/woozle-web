@@ -11,12 +11,11 @@ import { selectQueueState } from '../../state/selectors/progress-bar-queue.selec
 import { concatLatestFrom } from '@ngrx/operators';
 
 @Component({
-  selector: 'app-progress-segment',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './progress-segment.component.html',
-  styleUrl: './progress-segment.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-progress-segment',
+    imports: [CommonModule],
+    templateUrl: './progress-segment.component.html',
+    styleUrl: './progress-segment.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProgressSegmentComponent {
   @Input({required: true}) segmentIndex!: number;
