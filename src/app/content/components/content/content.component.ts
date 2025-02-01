@@ -8,11 +8,10 @@ import {
 import { SpotifyContent } from '../../state/models/spotify-content';
 
 @Component({
-  selector: 'app-content',
-  standalone: true,
-  imports: [],
-  templateUrl: './content.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-content',
+    imports: [],
+    templateUrl: './content.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContentComponent {
   @Input({ required: true }) content!: SpotifyContent;
