@@ -1,7 +1,7 @@
-@import "src/styles/_variables.scss";
-@import 'node_modules/bootstrap/scss/bootstrap';
-@import 'node_modules/bootstrap/scss/variables';
-@import "node_modules/bootstrap/scss/mixins";
+@use "src/styles/_variables.scss";
+@use 'node_modules/bootstrap/scss/bootstrap';
+@use 'node_modules/bootstrap/scss/variables';
+@use "node_modules/bootstrap/scss/mixins";
 
 
 body {
