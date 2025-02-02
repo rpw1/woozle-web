@@ -26,10 +26,10 @@ import { Content } from '../../../content/state/models/content';
 import { selectGameContent } from '../../../content/state/selectors/content.selector';
 
 @Component({
-    selector: 'app-guess',
-    imports: [ReactiveFormsModule, CommonModule, NgbTypeaheadModule],
-    templateUrl: './guess.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-guess',
+  imports: [ReactiveFormsModule, CommonModule, NgbTypeaheadModule],
+  templateUrl: './guess.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GuessComponent {
   private readonly gameStore = inject(Store<Game>);

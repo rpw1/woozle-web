@@ -6,13 +6,13 @@ import { Game } from '../../state/models/game.model';
 import { selectGuesses } from '../../state/selectors/game.selector';
 
 @Component({
-    selector: 'app-guess-list',
-    imports: [
-        CommonModule
-    ],
-    templateUrl: './guess-list.component.html',
-    styleUrls: ['./guess-list.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-guess-list',
+  imports: [
+    CommonModule
+  ],
+  templateUrl: './guess-list.component.html',
+  styleUrls: ['./guess-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GuessListComponent {
 
