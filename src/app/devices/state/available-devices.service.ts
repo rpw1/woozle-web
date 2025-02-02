@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { exhaustMap, ReplaySubject, Subject } from 'rxjs';
+import { exhaustMap, firstValueFrom, ReplaySubject } from 'rxjs';
 import { SpotifyService } from '../../shared/services/spotify.service';
 
 @Injectable({
@@ -7,7 +7,6 @@ import { SpotifyService } from '../../shared/services/spotify.service';
 })
 export class AvailableDevicesService {
   private readonly spotifyService = inject(SpotifyService);
-  private spotifyPlayer: any | undefined;
 
   private readonly spotifyPlaybackDevice = new ReplaySubject<void>(1);
   readonly availableDevices$ = this.spotifyPlaybackDevice.pipe(
@@ -15,20 +14,22 @@ export class AvailableDevicesService {
   )
 
   async loadAvailableDevices(): Promise<void> {
-    if (this.spotifyPlayer) {
-      this.spotifyPlayer.disconnect();
+    const availableDevices = await firstValueFrom(this.spotifyService.getAvailableDevices());
+    const activePlayer = availableDevices.devices.find(x => x.name === 'Woozle Built-In Spotify Web Player')
+    if (!activePlayer) {
+      const accessToken = localStorage.getItem('access_token') ?? '';
+      await this.initPlaybackSDK(accessToken, 0.5);
     }
-    
-    const accessToken = localStorage.getItem('access_token') ?? '';
-    await this.initPlaybackSDK(accessToken, 0.5);
+
     this.spotifyPlaybackDevice.next();
   }
 
   // This is needed for the music to play on iOS devices
+  // Not removing this file because I can't test on mobile until I push my changes
   setPlayerActiveElement() {
-    if (this.spotifyPlayer) {
-      this.spotifyPlayer.activateElement();
-    }
+    // if (this.spotifyPlayer) {
+    //   this.spotifyPlayer.activateElement();
+    // }
   }
 
   private async initPlaybackSDK(token: string, volume: number) {
@@ -64,11 +65,9 @@ export class AvailableDevicesService {
 
     player.addListener('not_ready', ({ device_id }: { device_id: string }) => {
       console.log('[Angular Spotify] Device ID has gone offline', device_id);
-      this.spotifyPlayer = undefined;
     });
 
     await player.connect();
-    this.spotifyPlayer = player;
   }
 
   private waitForSpotifyWebPlaybackSDKToLoad(): Promise<any> {
