@@ -24,6 +24,7 @@ export class AvailableDevicesService {
   }
 
   // This is needed for the music to play on iOS devices
+  // Not removing this file because I can't test on mobile until I push my changes
   setPlayerActiveElement() {
     if (this.player) {
       this.player.activateElement();
