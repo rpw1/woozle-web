@@ -16,6 +16,7 @@ import { QueueStateReducer } from './app/game/state/reducers/progress-bar-queue.
 import { spotifyAuthInterceptor } from './app/shared/interceptors/spotify-auth.interceptor';
 import { initApp, SettingsService } from './app/shared/services/settings.service';
 import { environment } from './environments/environment';
+import { provideServiceWorker } from '@angular/service-worker';
 
 if (environment.production) {
   enableProdMode();
@@ -49,6 +50,9 @@ bootstrapApplication(AppComponent, {
     provideAppInitializer(() => {
         const initializerFn = (initApp)(inject(SettingsService));
         return initializerFn();
-      })
+      }), provideServiceWorker('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            registrationStrategy: 'registerWhenStable:30000'
+          })
 ]
 }).catch(e => console.error(e));
