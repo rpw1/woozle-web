@@ -1,7 +1,5 @@
 FROM node:20.17.0-alpine AS baseline
 
-RUN npm ci
-
 WORKDIR /opt/web
 COPY package.json package-lock.json ./
 
@@ -9,6 +7,7 @@ ENV PATH="./node_modules/.bin:$PATH"
 ENV NODE_ENV=production
 
 COPY . ./
+RUN npm ci
 RUN node_modules/.bin/ng build
 
 FROM nginx:1.26-alpine
