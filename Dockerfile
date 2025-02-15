@@ -1,3 +1,5 @@
+RUN npm ci
+
 FROM node:20.17.0-alpine AS baseline
 
 WORKDIR /opt/web
@@ -7,7 +9,7 @@ ENV PATH="./node_modules/.bin:$PATH"
 ENV NODE_ENV=production
 
 COPY . ./
-RUN node_modules/.bin/ng build --prod
+RUN node_modules/.bin/ng build
 
 FROM nginx:1.26-alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
