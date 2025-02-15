@@ -7,7 +7,7 @@ ENV PATH="./node_modules/.bin:$PATH"
 ENV NODE_ENV=production
 
 COPY . ./
-RUN npm run build
+RUN node_modules/.bin/ng build --prod
 
 FROM nginx:1.26-alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
