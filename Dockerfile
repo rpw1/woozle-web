@@ -4,6 +4,7 @@ WORKDIR /opt/web
 COPY package.json package-lock.json ./
 
 ENV PATH="./node_modules/.bin:$PATH"
+ENV NODE_ENV=production
 
 COPY . ./
 RUN npm run build
