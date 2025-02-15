@@ -1,7 +1,7 @@
 FROM node:20.17.0-alpine AS baseline
 
 WORKDIR /opt/web
-COPY package.json package-lock.json .npmrc ./
+COPY package.json package-lock.json ./
 
 ENV PATH="./node_modules/.bin:$PATH"
 
