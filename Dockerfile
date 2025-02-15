@@ -1,6 +1,6 @@
-RUN npm ci
-
 FROM node:20.17.0-alpine AS baseline
+
+RUN npm ci
 
 WORKDIR /opt/web
 COPY package.json package-lock.json ./
