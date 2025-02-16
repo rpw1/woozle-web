@@ -8,7 +8,7 @@ ENV NODE_ENV=production
 
 COPY . ./
 RUN npm install -g @angular/cli
-RUN npm ci
+RUN npm ci --include dev
 RUN npm run build
 
 FROM nginx:1.26-alpine
