@@ -8,7 +8,7 @@ ENV NODE_ENV=production
 
 COPY . ./
 RUN npm ci
-RUN npm run build
+RUN npx ng build
 
 FROM nginx:1.26-alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
