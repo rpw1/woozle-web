@@ -7,8 +7,9 @@ ENV PATH="./node_modules/.bin:$PATH"
 ENV NODE_ENV=production
 
 COPY . ./
+RUN npm install -g @angular/cli
 RUN npm ci
-RUN npx ng build
+RUN npm run build
 
 FROM nginx:1.26-alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
