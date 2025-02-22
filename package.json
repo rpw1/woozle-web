@@ -70,7 +70,7 @@
     "karma-jasmine-html-reporter": "^2.1.0",
     "karma-junit-reporter": "^2.0.1",
     "ng-mocks": "^14.13.2",
-    "puppeteer": "^23.0.2",
+    "puppeteer": "^24.2.1",
     "typescript": "^5.4.5"
   }
 }

@@ -13,7 +13,7 @@ jobs:
   audit_node_version_job:
     if: github.event_name == 'pull_request' && github.event.action != 'closed'
     runs-on: ubuntu-latest
-    name: Build Job
+    name: Audit Node Version
     steps:
       - uses: actions/setup-node@v4
         with:
@@ -24,7 +24,7 @@ jobs:
   audit_npm_packages_job:
     if: github.event_name == 'pull_request' && github.event.action != 'closed'
     runs-on: ubuntu-latest
-    name: Build Job
+    name: Audit NPM Packages
     steps:
       - uses: actions/checkout@v3
         with:
@@ -37,7 +37,7 @@ jobs:
         run: npm ci
       - name: Audit NPM Packages
         run: npm audit
-        
+
   build_job:
     if: github.event_name == 'pull_request' && github.event.action != 'closed'
     runs-on: ubuntu-latest
