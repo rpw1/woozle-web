@@ -9,6 +9,11 @@ on:
     branches:
       - main
 
+env:
+  REGISTRY: registry.hub.docker.com/library
+  IMAGE_NAME: woozle-image
+  COMPARE_TAG: latest
+
 jobs:
   audit_node_version_job:
     if: github.event_name == 'pull_request' && github.event.action != 'closed'
@@ -18,6 +23,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20.18.2'
+
       - name: Audit Node Version
         run: npx is-my-node-vulnerable
 
@@ -30,11 +36,14 @@ jobs:
         with:
           submodules: true
           lfs: false
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20.18.2'
+
       - name: Install Dependencies
         run: npm ci
+
       - name: Audit NPM Packages
         run: npm audit
 
@@ -47,26 +56,91 @@ jobs:
         with:
           submodules: true
           lfs: false
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20.18.2'
+
       - name: Install Dependencies
         run: npm ci
+
       - name: Run Build
         run: npm run build
+
       - name: Run Tests
         run: npm run ci-test
-  #     - name: Upload Woozle Artifact
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: woozle_artifact
 
-  # deploy_job:
-  #   if: github.event_name == 'pull_request' && github.event.action == 'closed'
-  #   runs-on: ubuntu-latest
-  #   name: Deploy Job
-  #   steps:
-  #     - uses: actions/download-artifact@v4
-  #       with:
-  #         name: woozle_artifact
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v2.1.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PAT }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4.4.0
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@v4.0.0
+        with:
+          context: .
+          push: false
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Docker Scout
+        id: docker-scout
+        uses: docker/scout-action@v1
+        with:
+          command: compare
+          image: ${{ steps.meta.outputs.tags }}
+          to: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.COMPARE_TAG }}
+          ignore-unchanged: true
+          only-severities: critical,high
+
+  deploy_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Deploy Job
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          lfs: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.18.2'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Build
+        run: npm run build
+
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v2.1.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PAT }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4.4.0
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@v4.0.0
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
       
