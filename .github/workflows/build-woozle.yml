@@ -25,9 +25,7 @@ jobs:
       - name: Audit Node Version
         run: npx is-my-node-vulnerable
       - name: Install Dependencies
-        run: npm install
-      - name: Audit NPM Packages
-        run: npm audit
+        run: npm ci
       - name: Run Build
         run: npm run build
       - name: Run Tests
