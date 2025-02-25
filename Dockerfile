@@ -1,4 +1,5 @@
-FROM node:20.17.2 as builder
+FROM node:20.18-alpine AS build
+WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
