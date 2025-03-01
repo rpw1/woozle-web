@@ -22,13 +22,18 @@ jobs:
     runs-on: ubuntu-22.04
     name: Audit Node Version
     steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          lfs: false
+
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Audit Node Version
         run: npm run check-node-vulnerability
-        working-directory: woozle-web
+        working-directory: ${{ env.WEB_WORKING_DIRECTORY }}
 
   audit_npm_packages_job:
     if: github.event_name == 'pull_request' && github.event.action != 'closed'
