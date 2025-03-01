@@ -1,4 +1,9 @@
 services:
+  web:
+    container_name: "woozle-container"
+    build: .
+    ports:
+      - "8080:80"
   app:
     image: 'jc21/nginx-proxy-manager:latest'
     restart: unless-stopped
