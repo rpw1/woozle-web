@@ -2,6 +2,7 @@ services:
   networks:
     proxynet:
       name: woozle-network
+      driver: bridge
 
   web:
     container_name: "woozle-web-container"
