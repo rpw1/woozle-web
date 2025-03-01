@@ -1,0 +1,23 @@
+services:
+  web:
+    container_name: "woozle-web-container"
+    build: ./woozle-web
+    ports:
+      - "8080:80"
+    networks:
+      - proxynet
+
+  server:
+    container_name: "woozle-server-container"
+    restart: unless-stopped
+    build: .
+    ports:
+      - '80:80' # Public HTTP Port
+      - '443:443' # Public HTTPS Port
+    networks:
+      - proxynet
+
+networks:
+  proxynet:
+    name: woozle-network
+    driver: bridge

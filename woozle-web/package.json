@@ -2,7 +2,7 @@
   "name": "woozle",
   "version": "0.0.0",
   "engines": {
-    "node": "20.15.1"
+    "node": "20.18.2"
   },
   "scripts": {
     "ng": "ng",
@@ -11,7 +11,9 @@
     "dev-build": "ng build --configuration development",
     "test": "ng test",
     "test-headless": "ng test --watch=false --browsers=ChromeHeadless --code-coverage=true",
-    "lint": "ng lint"
+    "ci-test": "ng test --no-watch --no-progress --browsers=ChromeHeadless",
+    "lint": "ng lint",
+    "check-node-vulnerability": "npx is-my-node-vulnerable"
   },
   "private": true,
   "dependencies": {
@@ -69,7 +71,7 @@
     "karma-jasmine-html-reporter": "^2.1.0",
     "karma-junit-reporter": "^2.0.1",
     "ng-mocks": "^14.13.2",
-    "puppeteer": "^23.0.2",
-    "typescript": "^5.4.5"
+    "puppeteer": "^24.2.1",
+    "typescript": "^5.6.3"
   }
 }
