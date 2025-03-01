@@ -21,3 +21,6 @@ services:
       - web:web
     depends_on:
       - web
+
+  networks:
+    main:
