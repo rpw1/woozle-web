@@ -1,9 +1,15 @@
+version: '1'
 services:
   web:
     container_name: "woozle-web-container"
     build: ./woozle-web
     ports:
       - "8080:80"
+    networks:
+      main:
+        aliases:
+          - web
+
   server:
     container_name: "woozle-server-container"
     restart: unless-stopped
@@ -11,3 +17,7 @@ services:
     ports:
       - '80:80' # Public HTTP Port
       - '443:443' # Public HTTPS Port
+    links:
+      - web:web
+    depends_on:
+      - web
