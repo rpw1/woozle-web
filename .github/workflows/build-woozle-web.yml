@@ -1,4 +1,4 @@
-name: Woozle CI/CD
+name: Woozle-Web CI/CD
 
 on:
   push:
