@@ -1,7 +1,7 @@
 services:
   networks:
     woozle-network:
-      driver: bridge
+      name: woozle-network
 
   web:
     container_name: "woozle-web-container"
