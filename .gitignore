@@ -47,3 +47,6 @@ Thumbs.db
 # nginx proxy manager
 letsencrypt/
 data/
+
+#ssl local storage
+ssl/
