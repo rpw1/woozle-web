@@ -5,7 +5,7 @@ services:
     ports:
       - "8080:80"
   server:
-    container_name: "woozle-container"
+    container_name: "woozle-server-container"
     restart: unless-stopped
     build: .
     ports:
