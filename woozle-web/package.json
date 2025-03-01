@@ -12,7 +12,8 @@
     "test": "ng test",
     "test-headless": "ng test --watch=false --browsers=ChromeHeadless --code-coverage=true",
     "ci-test": "ng test --no-watch --no-progress --browsers=ChromeHeadless",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "check-node-vulnerability": "npx is-my-node-vulnerable"
   },
   "private": true,
   "dependencies": {

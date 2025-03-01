@@ -27,7 +27,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Audit Node Version
-        run: npx is-my-node-vulnerable
+        run: npm run check-node-vulnerability
         working-directory: ${{ env.WEB_WORKING_DIRECTORY }}
 
   audit_npm_packages_job:
