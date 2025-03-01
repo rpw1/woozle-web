@@ -1,7 +1,7 @@
 services:
   web:
     container_name: "woozle-web-container"
-    build: ./woozle-web .
+    build: ./woozle-web
     ports:
       - "8080:80"
   server:
