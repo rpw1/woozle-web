@@ -1,6 +1,6 @@
 services:
   networks:
-    woozle-network:
+    proxynet:
       name: woozle-network
 
   web:
@@ -9,7 +9,7 @@ services:
     ports:
       - "8080:80"
     networks:
-      - woozle-network
+      - proxynet
 
   server:
     container_name: "woozle-server-container"
@@ -19,4 +19,4 @@ services:
       - '80:80' # Public HTTP Port
       - '443:443' # Public HTTPS Port
     networks:
-      - woozle-network
+      - proxynet
