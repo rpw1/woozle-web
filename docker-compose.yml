@@ -4,12 +4,10 @@ services:
     build: ./woozle-web .
     ports:
       - "8080:80"
-  app:
+  server:
     container_name: "woozle-container"
     restart: unless-stopped
+    build: .
     ports:
-      # These ports are in format <host-port>:<container-port>
       - '80:80' # Public HTTP Port
       - '443:443' # Public HTTPS Port
-      - '81:81' # Admin Web Port
-      
