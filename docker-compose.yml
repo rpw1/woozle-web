@@ -1,9 +1,4 @@
 services:
-  networks:
-    proxynet:
-      name: woozle-network
-      driver: bridge
-
   web:
     container_name: "woozle-web-container"
     build: ./woozle-web
@@ -21,3 +16,8 @@ services:
       - '443:443' # Public HTTPS Port
     networks:
       - proxynet
+
+networks:
+  proxynet:
+    name: woozle-network
+    driver: bridge
