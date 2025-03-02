@@ -35,6 +35,63 @@ woozle-web/!.vscode/launch.json
 woozle-web/!.vscode/extensions.json
 woozle-web/.history/*
 
+# Visual Studio
+**/.vs/
+
+# User-specific files
+*.suo
+*.user
+*.sln.docstates
+
+# Build results
+**/[Dd]ebug/
+**/[Rr]elease/
+**/x64/
+**/[Bb]in/
+**/[Oo]bj/
+
+*_i.c
+*_p.c
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.log
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.scc
+
+# Others
+*.Cache
+ClientBin/
+[Ss]tyle[Cc]op.*
+~$*
+*~
+*.dbmdl
+*.[Pp]ublish.xml
+*.pfx
+*.publishsettings
+modulesbin/
+tempbin/
+
+
+# NuGet Packages
+*.nupkg
+# The packages folder can be ignored because of Package Restore
+**/packages/*
+
 # Miscellaneous
 woozle-web/.angular/cache
 .sass-cache/
