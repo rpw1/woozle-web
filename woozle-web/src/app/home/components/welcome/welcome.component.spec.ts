@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReleaseNotesComponent } from './release-notes.component';
+import { WelcomeComponent } from './welcome.component';
 
-describe('ReleaseNotesComponent', () => {
-  let component: ReleaseNotesComponent;
-  let fixture: ComponentFixture<ReleaseNotesComponent>;
+describe('WelcomeComponent', () => {
+  let component: WelcomeComponent;
+  let fixture: ComponentFixture<WelcomeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReleaseNotesComponent]
+      imports: [WelcomeComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ReleaseNotesComponent);
+    fixture = TestBed.createComponent(WelcomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

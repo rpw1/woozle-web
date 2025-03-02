@@ -2,12 +2,17 @@ import { Routes } from "@angular/router";
 import { ForbiddenComponent } from "./shared/components/forbidden/forbidden.component";
 import { authGuard } from "./user/guards/auth.guard";
 import { authCallbackResolver } from "./resolvers/auth-callback.resolver";
+import { homeRoutes } from './home/home-routes';
 
 export const appRoutes: Routes = [
   {
     path: '',
-    redirectTo: 'game',
+    redirectTo: 'home',
     pathMatch: 'full'
+  },
+  {
+    path: 'home',
+    loadChildren: () => homeRoutes
   },
   {
     path: 'game',
