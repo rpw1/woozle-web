@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35806.99 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Woozle.API", "Woozle.API\Woozle.API.csproj", "{AB0790BA-6F11-46DF-BD86-5F5123A57935}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB0790BA-6F11-46DF-BD86-5F5123A57935}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB0790BA-6F11-46DF-BD86-5F5123A57935}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB0790BA-6F11-46DF-BD86-5F5123A57935}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB0790BA-6F11-46DF-BD86-5F5123A57935}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7962D7B5-8276-43A1-8E56-CF7D62DC9DBB}
+	EndGlobalSection
+EndGlobal
