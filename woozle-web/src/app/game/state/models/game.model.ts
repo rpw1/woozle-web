@@ -1,5 +1,4 @@
 import { Guess } from '../../models/guess';
-import { Device } from './device';
 import { GameState } from './game-state.model';
 import { Track } from '../../../content/state/models/track';
 
@@ -11,5 +10,5 @@ export interface Game {
   solution: Track,
   solutions: Track[],
   solutionIndex: number,
-  device: Device
+  deviceId?: number
 }

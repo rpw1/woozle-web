@@ -1,10 +1,4 @@
 <div class="container">
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a [routerLink]="['/devices/select']">Devices</a></li>
-      <li class="breadcrumb-item active" aria-current="page">{{ (selectedDevice$ | async)?.name }}</li>
-    </ol>
-  </nav>
   <ul ngbNav #nav="ngbNav" class="nav-pills">
     <li ngbNavItem>
       <button ngbNavLink type="button">Playlists</button>

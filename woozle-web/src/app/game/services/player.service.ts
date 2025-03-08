@@ -1,26 +1,26 @@
 import { inject, Injectable } from '@angular/core';
-import { exhaustMap, ReplaySubject } from 'rxjs';
 import { SpotifyService } from '../../shared/services/spotify.service';
+import { firstValueFrom, ReplaySubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AvailableDevicesService {
+export class PlayerService {
   private player: any | undefined;
-  private readonly spotifyService = inject(SpotifyService);
-
-  private readonly spotifyPlaybackDevice = new ReplaySubject<void>(1);
-  readonly availableDevices$ = this.spotifyPlaybackDevice.pipe(
-    exhaustMap(() => this.spotifyService.getAvailableDevices())
-  )
+  private spotifyService = inject(SpotifyService);
+  
+  private playerActiveSubject = new ReplaySubject<boolean>(1);
+  playerActive$ = this.playerActiveSubject.asObservable();
 
   async loadAvailableDevices(): Promise<void> {
+    console.log(this.player)
     if (!this.player) {
       const accessToken = localStorage.getItem('access_token') ?? '';
       await this.initPlaybackSDK(accessToken, 0.5);
+      return;
     }
 
-    this.spotifyPlaybackDevice.next();
+    this.playerActiveSubject.next(true);
   }
 
   // This is needed for the music to play on iOS devices
@@ -34,7 +34,7 @@ export class AvailableDevicesService {
   private async initPlaybackSDK(token: string, volume: number) {
     const { Player } = await this.waitForSpotifyWebPlaybackSDKToLoad();
     const player = new Player({
-      name: `Woozle Built-In Spotify Web Player - ${(window as any).navigator.userAgentData?.platform ?? 'UNKNOWN'}`,
+      name: 'Woozle Built-In Spotify Web Player',
       getOAuthToken: (cb: any) => {
         cb(token);
       },
@@ -44,29 +44,33 @@ export class AvailableDevicesService {
 
     player.addListener('initialization_error', ({ message }: { message: string }) => {
       console.error(message);
+      this.playerActiveSubject.next(false)
     });
 
     player.addListener('authentication_error', ({ message }: { message: string }) => {
       console.error(message);
+      this.playerActiveSubject.next(false)
     });
 
     player.addListener('account_error', ({ message }: { message: string }) => {
       alert(`You account has to have Spotify Premium for playing music ${message}`);
+      this.playerActiveSubject.next(false)
     });
 
     player.addListener('playback_error', ({ message }: { message: string }) => {
       console.error(message);
+      this.playerActiveSubject.next(false)
     });
 
     player.addListener('ready', async ({ device_id }: { device_id: string }) => {
       console.log('[Angular Spotify] Ready with Device ID', device_id);
-      await new Promise(resolve => setTimeout(resolve, 500));
-      // Ensuring the device is registered in spotify before calling their API again.
-      this.spotifyPlaybackDevice.next();
+      await firstValueFrom(this.spotifyService.transferPlayback(device_id));
+      this.playerActiveSubject.next(true)
     });
 
     player.addListener('not_ready', ({ device_id }: { device_id: string }) => {
       console.log('[Angular Spotify] Device ID has gone offline', device_id);
+      this.playerActiveSubject.next(false)
     });
 
     await player.connect();
