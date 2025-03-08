@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, EMPTY, Observable } from 'rxjs';
-import { SpotifyDevice } from '../models/spotify-device';
 import { SpotifyPlaylistItemsResponse } from '../models/spotify-playlist-items-response';
 
 @Injectable({
@@ -10,19 +9,6 @@ import { SpotifyPlaylistItemsResponse } from '../models/spotify-playlist-items-r
 export class SpotifyService {
   public static readonly SPOTIFY_BASE_URL = 'https://api.spotify.com/v1';
   private readonly httpClient = inject(HttpClient);
-
-  getAvailableDevices(): Observable<{ devices: SpotifyDevice[] }> {
-    return this.httpClient
-      .get<{ devices: SpotifyDevice[] }>(
-        `${SpotifyService.SPOTIFY_BASE_URL}/me/player/devices`
-      )
-      .pipe(
-        catchError((err) => {
-          console.error(err);
-          return EMPTY;
-        })
-      );
-  }
 
   getAlbumTracks(albumId: string, offset: number = 0): Observable<any> {
     return this.httpClient

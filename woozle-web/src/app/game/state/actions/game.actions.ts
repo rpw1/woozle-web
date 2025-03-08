@@ -18,8 +18,5 @@ export const GameActions = createActionGroup({
 
     setGameSolution: emptyProps(),
     setGameSolutions: props<{ solutions: Track[] }>(),
-
-    loadDevice: props<{ device: SpotifyDevice }>(),
-    loadDeviceSuccess: emptyProps(),
   },
 });

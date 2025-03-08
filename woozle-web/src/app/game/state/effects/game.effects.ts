@@ -18,7 +18,7 @@ import { GameState } from '../models/game-state.model';
 import { Game } from '../models/game.model';
 import { maximumGuesses } from '../reducers/game.reducer';
 import { selectGameState } from '../selectors/game.selector';
-import { AvailableDevicesService } from '../../../devices/state/available-devices.service';
+import { PlayerService } from '../../services/player.service';
 
 @Injectable()
 export class GameEffects {
@@ -26,7 +26,7 @@ export class GameEffects {
   private readonly solutionModalService = inject(SolutionModalService);
   private readonly gameStore = inject(Store<Game>);
   private readonly spotifyService = inject(SpotifyService);
-  private readonly availableDevicesService = inject(AvailableDevicesService);
+  private readonly playerService = inject(PlayerService);
 
   readonly addGuess$ = createEffect(() =>
     this.action$.pipe(
@@ -74,12 +74,12 @@ export class GameEffects {
     this.action$.pipe(
       ofType(GameActions.togglePlayerOn),
       concatLatestFrom(() => this.gameStore.select(selectGameState)),
-      exhaustMap(async ([action, gameState]) => {
+      exhaustMap(async ([_, gameState]) => {
         await firstValueFrom(
           this.spotifyService.playPlayer(gameState.solution.songUri),
           { defaultValue: false }
         );
-        this.availableDevicesService.setPlayerActiveElement();
+        this.playerService.setPlayerActiveElement();
         return GameActions.togglePlayerOnSuccess();
       })
     )
@@ -97,16 +97,6 @@ export class GameEffects {
       ofType(GameActions.togglePlayerOff),
       exhaustMap(() => this.spotifyService.pausePlayer()),
       map(() => ProgressBarQueueActions.noOperation())
-    )
-  );
-
-  readonly loadDevice$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(GameActions.loadDevice),
-      switchMap((props) =>
-        this.spotifyService.transferPlayback(props.device.id)
-      ),
-      map(() => GameActions.loadDeviceSuccess())
     )
   );
 

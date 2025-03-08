@@ -5,11 +5,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
-import { Game } from '../../../game/state/models/game.model';
-import { selectDevice } from '../../../game/state/selectors/game.selector';
 import { ContentActions } from '../../state/actions/content.actions';
 import { Content } from '../../state/models/content';
 import { SpotifyContent } from '../../state/models/spotify-content';
@@ -25,7 +23,6 @@ import { ContentComponent } from '../content/content.component';
   imports: [
     CommonModule,
     ContentComponent,
-    RouterLink,
     NgbNavModule,
     ReactiveFormsModule,
   ],
@@ -33,7 +30,6 @@ import { ContentComponent } from '../content/content.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContentListComponent {
-  private readonly gameStore = inject(Store<Game>);
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly contentStore = inject(Store<Content>);
   private readonly router = inject(Router);
@@ -42,7 +38,6 @@ export class ContentListComponent {
   readonly availablePlaylists$ = this.contentStore.select(
     selectAvailablePlaylists
   );
-  readonly selectedDevice$ = this.gameStore.select(selectDevice);
 
   readonly contentSearchForm = this.formBuilder.group({
     contentSearchInput: ['', [Validators.maxLength(500)]],

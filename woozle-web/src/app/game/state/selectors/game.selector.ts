@@ -27,8 +27,3 @@ export const selectSolution = createSelector(
   selectGameState,
   (state: Game) => state.solution
 );
-
-export const selectDevice = createSelector(
-  selectGameState,
-  (state: Game) => state.device
-)

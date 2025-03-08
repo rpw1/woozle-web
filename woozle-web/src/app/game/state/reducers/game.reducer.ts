@@ -29,12 +29,7 @@ export const initialState: Game = {
   },
   solutions: [],
   solutionIndex: 0,
-  device: {
-    id: '',
-    isActive: false,
-    name: '',
-    type: '',
-  },
+  deviceId: undefined,
 };
 
 export const GameReducer = createReducer<Game>(
@@ -57,7 +52,7 @@ export const GameReducer = createReducer<Game>(
   }),
   on(GameActions.reset, (state) => ({
     ...initialState,
-    device: state.device,
+    deviceId: state.deviceId,
     solutions: state.solutions,
     solutionIndex: state.solutionIndex,
   })),
@@ -97,17 +92,5 @@ export const GameReducer = createReducer<Game>(
   on(GameActions.setGameSolutions, (state, action) => ({
     ...state,
     solutions: [...action.solutions],
-  })),
-  on(GameActions.loadDevice, (state, action) => {
-    return {
-      ...state,
-      device: {
-        ...state.device,
-        id: action.device.id,
-        isActive: action.device.is_active,
-        name: action.device.name,
-        type: action.device.type,
-      },
-    };
-  })
+  }))
 );
