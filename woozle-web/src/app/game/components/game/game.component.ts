@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Content } from '../../../content/state/models/content';
-import { selectGameContent } from '../../../content/state/selectors/content.selector';
+import { Content } from '../../content/state/models/content';
+import { selectGameContent } from '../../content/state/selectors/content.selector';
 import { GameActions } from '../../state/actions/game.actions';
 import { Game } from '../../state/models/game.model';
 import { selectIsPlayingMusic } from '../../state/selectors/game.selector';

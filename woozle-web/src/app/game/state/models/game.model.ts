@@ -1,6 +1,6 @@
 import { Guess } from '../../models/guess';
 import { GameState } from './game-state.model';
-import { Track } from '../../../content/state/models/track';
+import { Track } from '../../content/state/models/track';
 
 export interface Game {
   guesses: Guess[],
