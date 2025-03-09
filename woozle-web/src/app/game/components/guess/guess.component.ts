@@ -22,8 +22,8 @@ import { Guess } from '../../models/guess';
 import { GuessType } from '../../models/guess-type';
 import { GameActions } from '../../state/actions/game.actions';
 import { Game } from '../../state/models/game.model';
-import { Content } from '../../../content/state/models/content';
-import { selectGameContent } from '../../../content/state/selectors/content.selector';
+import { Content } from '../../content/state/models/content';
+import { selectGameContent } from '../../content/state/selectors/content.selector';
 
 @Component({
   selector: 'app-guess',

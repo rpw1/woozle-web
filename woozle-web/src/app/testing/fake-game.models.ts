@@ -42,12 +42,7 @@ export function getFakeGame(): Game {
       }
     ],
     solutionIndex: 0,
-    device: {
-      id: 'deviceId',
-      isActive: true,
-      name: 'Woozle device',
-      type: 'Computer'
-    }
+    deviceId: 1
   };
 }
 

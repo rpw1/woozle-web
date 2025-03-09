@@ -30,7 +30,7 @@ describe('GameReducer', () => {
       const result = fromReducer.GameReducer(state, GameActions.reset);
       expect(result).toEqual({
         ...fromReducer.initialState,
-        device: state.device,
+        deviceId: state.deviceId,
         solutions: state.solutions,
         solutionIndex: state.solutionIndex,
       });

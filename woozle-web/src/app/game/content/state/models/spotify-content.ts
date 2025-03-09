@@ -1,4 +1,4 @@
-import { SpotifyImage } from '../../../shared/models/spotify-image'
+import { SpotifyImage } from '../../../../shared/models/spotify-image'
 import { ContentType } from './content-type'
 import { Track } from './track'
 

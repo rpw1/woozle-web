@@ -10,8 +10,8 @@ import {
   of,
   reduce
 } from 'rxjs';
-import { SpotifyPlaylist } from '../../shared/models/spotify-playlist';
-import { SpotifyService } from '../../shared/services/spotify.service';
+import { SpotifyPlaylist } from '../../../shared/models/spotify-playlist';
+import { SpotifyService } from '../../../shared/services/spotify.service';
 import { AvailableContent } from '../state/models/available-content';
 import { ContentType } from '../state/models/content-type';
 import { SpotifyContent } from '../state/models/spotify-content';

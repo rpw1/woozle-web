@@ -1,11 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { CanActivateFn } from '@angular/router';
-
 import { contentGuard } from './content.guard';
 
 describe('contentGuard', () => {
   const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => contentGuard(...guardParameters));
+    TestBed.runInInjectionContext(() => contentGuard(...guardParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

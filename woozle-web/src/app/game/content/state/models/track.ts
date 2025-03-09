@@ -1,4 +1,4 @@
-import { SpotifyImage } from '../../../shared/models/spotify-image';
+import { SpotifyImage } from '../../../../shared/models/spotify-image';
 
 export interface Track {
   song: string,
