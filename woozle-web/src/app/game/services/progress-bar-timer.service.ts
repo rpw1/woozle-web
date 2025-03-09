@@ -1,49 +1,44 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { EMPTY, concatMap, filter, map, of, takeUntil, timer } from 'rxjs';
+import { EMPTY, concatMap, filter, map, of, takeUntil, tap, timer, withLatestFrom } from 'rxjs';
 import { Constants } from '../models/constants';
 import { GameConstants } from '../models/game-constants';
 import { ProgressBarQueueActions } from '../state/actions/progress-bar-queue.actions';
 import { ProgressBarQueue } from '../state/models/progress-bar-queue.model';
 import { TaskStateType } from '../state/models/queue-state-type.model';
-import { selectSuccessiveTasksRan, selectActiveItemState } from '../state/selectors/progress-bar-queue.selector';
-import { concatLatestFrom } from '@ngrx/operators';
+import { selectActiveItemState, selectSuccessiveTasksRan } from '../state/selectors/progress-bar-queue.selector';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ProgressBarTimerService {
 
   private readonly progressBarQueueStore = inject(Store<ProgressBarQueue>);
 
   private timeElapsed = 0;
-  private readonly timer$ = timer(0, 1).pipe(
-    map(_ => {
-      this.timeElapsed = this.timeElapsed + 1;
-      return this.timeElapsed;
+  
+  private readonly timer$ = timer(0, 50).pipe(
+    withLatestFrom(this.progressBarQueueStore.select(selectSuccessiveTasksRan)),
+    map(([_, successiveTasksRan]) => {
+      this.timeElapsed += 1
+      const decimalPercent = (this.timeElapsed * 50) / (GameConstants.SECONDS_ARRAY[successiveTasksRan] * 1000);
+      return decimalPercent * Constants.PERCENTAGE_CONVERSION;
     }),
-    concatLatestFrom(() => this.progressBarQueueStore.select(selectSuccessiveTasksRan)),
-    map(([interval, successiveTasksRan]) => {
-      return interval / (GameConstants.SECONDS_ARRAY[successiveTasksRan] * 10)
-    }),
-    map(percent => {
-      if (percent > Constants.PERCENTAGE_CONVERSION) {
+    tap((percent) => {
+      if ((percent) > Constants.PERCENTAGE_CONVERSION) {
         this.progressBarQueueStore.dispatch(ProgressBarQueueActions.completeTask())
       }
-      return percent
     }),
     takeUntil(this.progressBarQueueStore
       .select(selectActiveItemState).pipe(filter(state => state === TaskStateType.COMPLETED)))
-  );
+  )
 
   readonly progressBarSegmentPercentage$ = this.progressBarQueueStore
     .select(selectActiveItemState)
     .pipe(
       concatMap(task => {
-        if (task === undefined) {
-          return EMPTY;
-        }
         switch (task) {
+          case undefined: {
+            return EMPTY;
+          }
           case TaskStateType.RUNNING: {
             return this.timer$;
           }

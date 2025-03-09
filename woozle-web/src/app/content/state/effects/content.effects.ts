@@ -1,16 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { exhaustMap, map, switchMap } from 'rxjs';
 import { GameActions } from '../../../game/state/actions/game.actions';
 import { SpotifyContentService } from '../../services/spotify-content.service';
 import { ContentActions } from '../actions/content.actions';
-import { Content } from '../models/content';
 
 @Injectable()
 export class ContentEffects {
   private readonly action$ = inject(Actions);
-  private readonly contentStore = inject(Store<Content>);
   private readonly spotifyContentService = inject(SpotifyContentService);
 
   readonly loadContent$ = createEffect(() =>

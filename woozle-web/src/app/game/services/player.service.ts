@@ -12,7 +12,7 @@ export class PlayerService {
   private playerActiveSubject = new ReplaySubject<boolean>(1);
   playerActive$ = this.playerActiveSubject.asObservable();
 
-  async loadAvailableDevices(): Promise<void> {
+  async loadPlayer(): Promise<void> {
     console.log(this.player)
     if (!this.player) {
       const accessToken = localStorage.getItem('access_token') ?? '';

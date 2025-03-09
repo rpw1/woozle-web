@@ -1,6 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { Track } from '../../../content/state/models/track';
-import { SpotifyDevice } from '../../../shared/models/spotify-device';
 import { Guess } from '../../models/guess';
 import { GameState } from '../models/game-state.model';
 
