@@ -11,6 +11,7 @@ describe('ProgressBarTimerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        ProgressBarTimerService,
         provideMockStore(state)
       ]
     });
