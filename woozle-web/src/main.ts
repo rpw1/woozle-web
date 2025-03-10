@@ -48,11 +48,12 @@ bootstrapApplication(AppComponent, {
     ),
     SettingsService,
     provideAppInitializer(() => {
-        const initializerFn = (initApp)(inject(SettingsService));
-        return initializerFn();
-      }), provideServiceWorker('ngsw-worker.js', {
-            enabled: !isDevMode(),
-            registrationStrategy: 'registerWhenStable:30000'
-          })
+      const initializerFn = (initApp)(inject(SettingsService));
+      return initializerFn();
+    }), 
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000'
+    })
 ]
 }).catch(e => console.error(e));
