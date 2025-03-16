@@ -4,8 +4,6 @@ services:
     build: ./woozle-web
     ports:
       - "8080:80"
-    networks:
-      - proxynet
 
   server:
     container_name: "woozle-server-container"
@@ -14,10 +12,24 @@ services:
     ports:
       - '80:80' # Public HTTP Port
       - '443:443' # Public HTTPS Port
-    networks:
-      - proxynet
 
-networks:
-  proxynet:
-    name: woozle-network
-    driver: bridge
+  # api:
+  #   container_name: "woozle-api-container"
+  #   restart: unless-stopped
+  #   build: ./woozle-api/Woozle.API
+  #   ports: 
+  #     - "8081:8081"
+
+  # database:
+  #   image: mcr.microsoft.com/mssql/server:2022-latest
+  #   restart: unless-stopped
+  #   ports:
+  #     - "1433:1433"
+  #   environment:
+  #     - ACCEPT_EULA=Y
+  #     - SA_PASSWORD=secretpassword
+  #     - MSSQL_PID=Express
+  #   volumes:
+  #     - "./data/:/var/opt/mssql/data/"
+  #     - "./log/:/var/opt/mssql/log/"
+  #     - "./secrets/:/var/opt/mssql/secrets/"
