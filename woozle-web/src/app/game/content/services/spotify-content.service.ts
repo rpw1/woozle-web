@@ -63,7 +63,7 @@ export class SpotifyContentService {
       ),
       map((response) =>
         response.items
-          .filter((item: any) => item != null) 
+          .filter((item: any) => item?.track != null) 
           .map((item) => {
           return {
             song: item.track.name,
@@ -121,7 +121,7 @@ export class SpotifyContentService {
       ),
       map((response) =>
         response.items
-          .filter((item: any) => item != null)
+          .filter((item: any) => item?.album != null)
           .map((item: any): SpotifyContent => {
           return {
             id: item.album.id,
