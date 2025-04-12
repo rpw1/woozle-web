@@ -13,4 +13,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Woozle.API.Common\Woozle.API.Common.csproj" />
+    <ProjectReference Include="..\Woozle.API.Spotify\Woozle.API.Spotify.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -4,6 +4,7 @@ settings.local.json
 ssl/
 *.pem
 *.crt
+appsettings.*.json
 
 # Compiled output
 woozle-web/dist

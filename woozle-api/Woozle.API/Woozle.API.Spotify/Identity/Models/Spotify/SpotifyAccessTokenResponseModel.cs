@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Woozle.API.Spotify.Identity.Authentication.Models;
+namespace Woozle.API.Spotify.Identity.Models.Spotify;
 public sealed class SpotifyAccessTokenResponseModel
 {
 	[JsonPropertyName("access_token")]
