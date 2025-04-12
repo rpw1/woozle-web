@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Woozle.API.Spotify", "Woozl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Woozle.API.Features", "Woozle.API.Features\Woozle.API.Features.csproj", "{6AB27519-E4B9-4C9C-B5DE-E104FA6402FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Woozle.API.Common", "Woozle.API.Common\Woozle.API.Common.csproj", "{DB30ABC0-80E2-4817-9D3C-53530D866ADB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{6AB27519-E4B9-4C9C-B5DE-E104FA6402FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AB27519-E4B9-4C9C-B5DE-E104FA6402FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AB27519-E4B9-4C9C-B5DE-E104FA6402FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB30ABC0-80E2-4817-9D3C-53530D866ADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB30ABC0-80E2-4817-9D3C-53530D866ADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB30ABC0-80E2-4817-9D3C-53530D866ADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB30ABC0-80E2-4817-9D3C-53530D866ADB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
