@@ -17,7 +17,7 @@ public sealed class SpotifyIdentityService : ISpotifyIdentityService
 		_spotifySettings = spotifySettings.Value ?? throw new ArgumentNullException(nameof(spotifySettings));
 	}
 
-	public async Task<SpotifyAccessTokenResponseModel> RequestSpotifyAccessTokenAsync(ClientAccessTokenRequestModel request)
+	public async Task<SpotifyAccessTokenResponseModel?> RequestSpotifyAccessTokenAsync(ClientAccessTokenRequestModel request, CancellationToken cancellationToken)
 	{
 		var spotifyRequestModel = new SpotifyAccessTokenRequestModel()
 		{
@@ -25,6 +25,8 @@ public sealed class SpotifyIdentityService : ISpotifyIdentityService
 			RedirectUri = request.RedirectUri
 		};
 
-		return await _spotifyIdentityApi.RequestAccessTokenAsync(_spotifySettings.ClientCredentialsAuthorization, spotifyRequestModel);
+		var response =  await _spotifyIdentityApi.RequestAccessTokenAsync(_spotifySettings.ClientCredentialsAuthorization, spotifyRequestModel, cancellationToken);
+
+		return response.Content;
 	}
 }
