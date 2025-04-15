@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Woozle.API.Common\Woozle.API.Common.csproj" />
+    <ProjectReference Include="..\Woozle.API.Spotify\Woozle.API.Spotify.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Content\" />
+  </ItemGroup>
+
 </Project>

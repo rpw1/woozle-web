@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Woozle.API.Common\Woozle.API.Common.csproj" />
+    <ProjectReference Include="..\Woozle.API.Features\Woozle.API.Features.csproj" />
     <ProjectReference Include="..\Woozle.API.Spotify\Woozle.API.Spotify.csproj" />
   </ItemGroup>
 

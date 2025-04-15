@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Woozle.API.Features.Identity.Spotify;
+using Woozle.API.Features.Identity.Spotify.Models;
 using Woozle.API.Spotify.Identity;
-using Woozle.API.Spotify.Identity.Models.Client;
 
 namespace Woozle.API.Controllers;
 

@@ -1,4 +1,4 @@
-namespace Woozle.API.Spotify.Identity.Models.Client;
+namespace Woozle.API.Features.Identity.Spotify.Models;
 
 public sealed class ClientRefreshTokenRequestModel
 {

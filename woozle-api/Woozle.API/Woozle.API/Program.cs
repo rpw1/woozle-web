@@ -1,3 +1,4 @@
+using Woozle.API.Features;
 using Woozle.API.Spotify;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddOpenApi();
 
+builder.Services.RegisterFeatureServices();
 builder.Services.RegisterSpotifyServices(builder.Configuration);
 
 var app = builder.Build();
