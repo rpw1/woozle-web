@@ -12,16 +12,16 @@ public static class SpotifyServiceRegistration
 	{
 		services.Configure<SpotifySettings>(configuration.GetSection(nameof(SpotifySettings)));
 
-		services.RegisterDecoratedServices();
-
 		services.AddRefitClient<ISpotifyIdentityApi>()
 			.ConfigureHttpClient(client => 
 			{
-				var spotifySettings = configuration.GetValue<SpotifySettings>(nameof(SpotifySettings));
-				ArgumentNullException.ThrowIfNull(spotifySettings);
+				var spotifySettings = configuration.GetSection(nameof(SpotifySettings)).Get<SpotifySettings>();
+				ArgumentException.ThrowIfNullOrEmpty(spotifySettings?.AccountsBaseUrl);
 
                 client.BaseAddress = new Uri(spotifySettings.AccountsBaseUrl);
 			});
+
+		services.RegisterDecoratedServices();
 
 		return services;
 	}

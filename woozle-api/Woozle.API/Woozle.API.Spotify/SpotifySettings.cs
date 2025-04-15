@@ -1,8 +1,14 @@
-﻿using System.Text;
+using System.Text;
 
 namespace Woozle.API.Spotify;
 
-public sealed record class SpotifySettings(string ClientId, string ClientSecret, string AccountsBaseUrl)
+public sealed class SpotifySettings()
 {
-    public string ClientCredentialsAuthorization => Convert.ToBase64String(Encoding.UTF8.GetBytes(ClientId + ":" + ClientSecret));
+	public required string AccountsBaseUrl { get; set; }
+
+	public string ClientCredentialsAuthorization => "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(ClientId + ":" + ClientSecret));
+
+	public required string ClientId { get; set; }
+
+	public required string ClientSecret { get; set; }
 };

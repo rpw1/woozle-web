@@ -1,11 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-
-import { AuthService } from './auth.service';
+import { SpotifyIdentityService } from './spotify-identity.service';
 import { MockProvider } from 'ng-mocks';
 import { HttpClient } from '@angular/common/http';
 
-describe('AuthService', () => {
-  let service: AuthService;
+describe('SpotifyIdentityService', () => {
+  let service: SpotifyIdentityService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -13,7 +12,7 @@ describe('AuthService', () => {
         MockProvider(HttpClient)
       ]
     });
-    service = TestBed.inject(AuthService);
+    service = TestBed.inject(SpotifyIdentityService);
   });
 
   it('should be created', () => {

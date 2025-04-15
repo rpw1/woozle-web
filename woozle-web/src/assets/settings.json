@@ -1,4 +1,5 @@
 {
   "spotifyClientId": "${spotifyClientId}",
-  "baseUrl": "${baseUrl}"
+  "baseUrl": "${baseUrl}",
+  "woozleApiBaseUrl": "${woozleApiBaseUrl}"
 }

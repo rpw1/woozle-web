@@ -14,6 +14,6 @@ public sealed class SpotifyAccessTokenResponseModel
 	[JsonPropertyName("expires_in")]
 	public required int ExpiresIn { get; set; }
 
-	[JsonPropertyName("response_model")]
-	public required string RefreshToken { get; set; }
+	[JsonPropertyName("refresh_token")]
+	public string? RefreshToken { get; set; }
 }
