@@ -1,19 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
-using Woozle.API.Attributes;
+using Woozle.API.Spotify.Identity;
 using Woozle.API.Spotify.Identity.Models.Client;
 
 namespace Woozle.API.Controllers;
 
 [ApiController]
-[Route("spotify/identity")]
+[Route("api/spotify/identity")]
 public sealed class SpotifyIdentityController : ControllerBase
 {
+	private readonly ISpotifyIdentityService _spotifyIdentityService;
 
-
-	[SpotifyAuthorization]
-	[HttpPost("/accessToken")]
-	public IActionResult RequestSpotifyAccessTokenAsync([FromBody] ClientAccessTokenRequestModel request)
+	public SpotifyIdentityController(ISpotifyIdentityService spotifyIdentityService)
 	{
-		return Ok();
+		_spotifyIdentityService = spotifyIdentityService ?? throw new ArgumentNullException(nameof(spotifyIdentityService));
+	}
+
+	[HttpPost("accessToken")]
+	public async Task<IActionResult> RequestSpotifyAccessTokenAsync([FromBody] ClientAccessTokenRequestModel request, CancellationToken cancellationToken)
+	{
+		return Ok(await _spotifyIdentityService.RequestSpotifyAccessTokenAsync(request, cancellationToken));
+	}
+
+	[HttpPost("refreshToken")]
+	public async Task<IActionResult> RefreshSpotifyAccessTokenAsync([FromBody] ClientRefreshTokenRequestModel request, CancellationToken cancellationToken)
+	{
+		return Ok(await _spotifyIdentityService.RequestSpotifyAccessTokenAsync(request, cancellationToken));
 	}
 }

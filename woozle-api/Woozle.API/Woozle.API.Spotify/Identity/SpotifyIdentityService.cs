@@ -17,7 +17,7 @@ public sealed class SpotifyIdentityService : ISpotifyIdentityService
 		_spotifySettings = spotifySettings.Value ?? throw new ArgumentNullException(nameof(spotifySettings));
 	}
 
-	public async Task<SpotifyAccessTokenResponseModel?> RequestSpotifyAccessTokenAsync(ClientAccessTokenRequestModel request, CancellationToken cancellationToken)
+	public async Task<ClientAccessTokenResponseModel?> RequestSpotifyAccessTokenAsync(ClientAccessTokenRequestModel request, CancellationToken cancellationToken)
 	{
 		var spotifyRequestModel = new SpotifyAccessTokenRequestModel()
 		{
@@ -25,8 +25,44 @@ public sealed class SpotifyIdentityService : ISpotifyIdentityService
 			RedirectUri = request.RedirectUri
 		};
 
-		var response =  await _spotifyIdentityApi.RequestAccessTokenAsync(_spotifySettings.ClientCredentialsAuthorization, spotifyRequestModel, cancellationToken);
+		var response = await _spotifyIdentityApi.RequestAccessTokenAsync(_spotifySettings.ClientCredentialsAuthorization, spotifyRequestModel, cancellationToken);
 
-		return response.Content;
+		if (response?.Content is null)
+		{
+			return null;
+		}
+
+		return new ClientAccessTokenResponseModel()
+		{
+			AccessToken = response.Content.AccessToken,
+			ExpiresIn = response.Content.ExpiresIn,
+			RefreshToken = response.Content.RefreshToken,
+			Scope = response.Content.Scope,
+			TokenType = response.Content.TokenType
+		};
+	}
+
+	public async Task<ClientAccessTokenResponseModel?> RequestSpotifyAccessTokenAsync(ClientRefreshTokenRequestModel request, CancellationToken cancellationToken)
+	{
+		var spotifyRequestModel = new SpotifyRefreshTokenRequestModel()
+		{
+			RefreshToken = request.RefreshToken
+		};
+
+		var response = await _spotifyIdentityApi.RefreshTokenAsync(_spotifySettings.ClientCredentialsAuthorization, spotifyRequestModel, cancellationToken);
+
+		if (response?.Content is null)
+		{
+			return null;
+		}
+
+		return new ClientAccessTokenResponseModel()
+		{
+			AccessToken = response.Content.AccessToken,
+			ExpiresIn = response.Content.ExpiresIn,
+			RefreshToken = response.Content.RefreshToken,
+			Scope = response.Content.Scope,
+			TokenType = response.Content.TokenType
+		};
 	}
 }

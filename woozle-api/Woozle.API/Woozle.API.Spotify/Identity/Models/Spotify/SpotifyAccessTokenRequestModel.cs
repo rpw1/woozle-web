@@ -1,11 +1,13 @@
 using System.Text.Json.Serialization;
 
 namespace Woozle.API.Spotify.Identity.Models.Spotify;
+
 public sealed class SpotifyAccessTokenRequestModel
 {
 	[JsonPropertyName("grant_type")]
-	public static string GrantType => "authorization_code";
+	public string GrantType { get; set; } = "authorization_code";
 
+	[JsonPropertyName("code")]
 	public required string Code { get; set; }
 
 	[JsonPropertyName("redirect_uri")]

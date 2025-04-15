@@ -5,7 +5,7 @@ namespace Woozle.API.Spotify.Identity;
 
 public interface ISpotifyIdentityApi
 {
-	[Post("api/token")]
+	[Post("/api/token")]
     [Headers("Content-Type: application/x-www-form-urlencoded")]
     Task<IApiResponse<SpotifyAccessTokenResponseModel>> RequestAccessTokenAsync(
 		[Header("Authorization")] string accessToken,
@@ -15,7 +15,7 @@ public interface ISpotifyIdentityApi
 	[Post("/api/token")]
 	[Headers("Content-Type: application/x-www-form-urlencoded")]
 	Task<IApiResponse<SpotifyAccessTokenResponseModel>> RefreshTokenAsync(
-		[Header("Authorization")] byte[] accessToken,
+		[Header("Authorization")] string accessToken,
 		[Body(BodySerializationMethod.UrlEncoded)] SpotifyRefreshTokenRequestModel request,
         CancellationToken cancellationToken);
 }

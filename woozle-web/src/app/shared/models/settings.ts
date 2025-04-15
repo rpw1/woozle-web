@@ -1,4 +1,5 @@
 export interface Settings {
   spotifyClientId: string,
-  baseUrl: string
+  baseUrl: string,
+  woozleApiBaseUrl: string
 }
