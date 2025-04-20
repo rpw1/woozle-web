@@ -14,7 +14,7 @@ public sealed class SpotifyIdentityService : ISpotifyIdentityService
 		_spotifyClientIdentityService = spotifyClientIdentityService ?? throw new ArgumentNullException(nameof(spotifyClientIdentityService));
 	}
 
-	public async Task<ClientAccessTokenResponseModel?> RequestAccessTokenAsync(ClientAccessTokenRequestModel request, CancellationToken cancellationToken)
+	public async Task<AccessTokenResponseModel?> RequestAccessTokenAsync(AccessTokenRequestModel request, CancellationToken cancellationToken)
 	{
 		var spotifyRequestModel = new SpotifyAccessTokenRequestModel()
 		{
@@ -29,7 +29,7 @@ public sealed class SpotifyIdentityService : ISpotifyIdentityService
 			return null;
 		}
 
-		return new ClientAccessTokenResponseModel()
+		return new AccessTokenResponseModel()
 		{
 			AccessToken = result.AccessToken,
 			ExpiresIn = result.ExpiresIn,
@@ -39,7 +39,7 @@ public sealed class SpotifyIdentityService : ISpotifyIdentityService
 		};
 	}
 
-	public async Task<ClientAccessTokenResponseModel?> RequestAccessTokenAsync(ClientRefreshTokenRequestModel request, CancellationToken cancellationToken)
+	public async Task<AccessTokenResponseModel?> RequestAccessTokenAsync(RefreshTokenRequestModel request, CancellationToken cancellationToken)
 	{
 		var spotifyRequestModel = new SpotifyRefreshTokenRequestModel()
 		{
@@ -53,7 +53,7 @@ public sealed class SpotifyIdentityService : ISpotifyIdentityService
 			return null;
 		}
 
-		return new ClientAccessTokenResponseModel()
+		return new AccessTokenResponseModel()
 		{
 			AccessToken = result.AccessToken,
 			ExpiresIn = result.ExpiresIn,

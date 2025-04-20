@@ -4,7 +4,7 @@ namespace Woozle.API.Features.Identity.Spotify;
 
 public interface ISpotifyIdentityService
 {
-	Task<ClientAccessTokenResponseModel?> RequestAccessTokenAsync(ClientAccessTokenRequestModel request, CancellationToken cancellationToken);
+	Task<AccessTokenResponseModel?> RequestAccessTokenAsync(AccessTokenRequestModel request, CancellationToken cancellationToken);
 
-	Task<ClientAccessTokenResponseModel?> RequestAccessTokenAsync(ClientRefreshTokenRequestModel request, CancellationToken cancellationToken);
+	Task<AccessTokenResponseModel?> RequestAccessTokenAsync(RefreshTokenRequestModel request, CancellationToken cancellationToken);
 }

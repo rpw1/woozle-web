@@ -8,4 +8,5 @@ namespace Woozle.API.Spotify.Content;
 
 public interface ISpotifyContentService
 {
+	
 }

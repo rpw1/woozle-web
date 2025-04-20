@@ -1,14 +1,8 @@
 using Refit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Woozle.API.Spotify.Identity.Models;
 
-namespace Woozle.API.Spotify.Content;
+namespace Woozle.API.Spotify.Identity.Api;
 
-public interface ISpotifyContentApi
+public interface ISpotifyIdentityApi
 {
 	[Post("/api/token")]
 	[Headers("Content-Type: application/x-www-form-urlencoded")]

@@ -17,14 +17,14 @@ public sealed class SpotifyIdentityController : ControllerBase
 	}
 
 	[HttpPost("accessToken")]
-	public async Task<IActionResult> RequestSpotifyAccessTokenAsync([FromBody] ClientAccessTokenRequestModel request, CancellationToken cancellationToken)
+	public async Task<IActionResult> RequestSpotifyAccessTokenAsync([FromBody] AccessTokenRequestModel request, CancellationToken cancellationToken)
 	{
-		return Ok(await _spotifyIdentityService.RequestSpotifyAccessTokenAsync(request, cancellationToken));
+		return Ok(await _spotifyIdentityService.RequestAccessTokenAsync(request, cancellationToken));
 	}
 
 	[HttpPost("refreshToken")]
-	public async Task<IActionResult> RefreshSpotifyAccessTokenAsync([FromBody] ClientRefreshTokenRequestModel request, CancellationToken cancellationToken)
+	public async Task<IActionResult> RefreshSpotifyAccessTokenAsync([FromBody] RefreshTokenRequestModel request, CancellationToken cancellationToken)
 	{
-		return Ok(await _spotifyIdentityService.RequestSpotifyAccessTokenAsync(request, cancellationToken));
+		return Ok(await _spotifyIdentityService.RequestAccessTokenAsync(request, cancellationToken));
 	}
 }
