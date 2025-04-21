@@ -1,6 +1,7 @@
-namespace Woozle.API.Spotify.Identity.Models.Client;
 
-public sealed class ClientAccessTokenResponseModel
+namespace Woozle.API.Features.Identity.Spotify.Models;
+
+public sealed class AccessTokenResponseModel
 {
 	public required string AccessToken { get; set; }
 
