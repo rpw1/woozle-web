@@ -1,6 +1,6 @@
 using Woozle.API.Features.Identity.Spotify.Models;
 using Woozle.API.Spotify.Identity;
-using Woozle.API.Spotify.Identity.Models;
+using Woozle.API.Spotify.Identity.Api;
 
 namespace Woozle.API.Features.Identity.Spotify;
 

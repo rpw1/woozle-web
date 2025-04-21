@@ -3,7 +3,7 @@ using Woozle.API.Spotify.Models;
 
 namespace Woozle.API.Spotify.Content.Models;
 
-public sealed class SpotifyAlbumModel : SpotifyBaseModel
+public class SpotifySimplifiedAlbumModel : SpotifyBaseModel
 {
 	// Not a big fan of this solution. I need a new class or to have a private field to change this.
 	// Not crazy about either right now. Planning on cirlcing back later once I get a good idea of the flow of this work.

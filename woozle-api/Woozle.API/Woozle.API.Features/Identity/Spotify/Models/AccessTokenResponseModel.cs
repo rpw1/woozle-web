@@ -1,3 +1,4 @@
+
 namespace Woozle.API.Features.Identity.Spotify.Models;
 
 public sealed class AccessTokenResponseModel
@@ -11,4 +12,9 @@ public sealed class AccessTokenResponseModel
 	public required string Scope { get; set; }
 
 	public required string TokenType { get; set; }
+
+	internal AccessTokenResponseModel? GetScope()
+	{
+		throw new NotImplementedException();
+	}
 }

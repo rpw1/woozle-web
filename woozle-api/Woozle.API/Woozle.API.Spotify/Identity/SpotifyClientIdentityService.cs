@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Options;
+using Woozle.API.Spotify.Content.Api;
 using Woozle.API.Spotify.Identity.Api;
 
 namespace Woozle.API.Spotify.Identity;
