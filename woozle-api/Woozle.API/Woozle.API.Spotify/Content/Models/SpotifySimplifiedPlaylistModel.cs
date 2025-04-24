@@ -16,4 +16,7 @@ public sealed class SpotifySimplifiedPlaylistModel : SpotifyBaseModel
 
 	[JsonPropertyName("public")]
 	public bool? Public { get; set; }
+
+	[JsonPropertyName("images")]
+	public required ICollection<SpotifyImageModel> Images { get; set; }
 }

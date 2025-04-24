@@ -8,7 +8,7 @@ public class SpotifyBaseModel
 	public required string Id { get; set; }
 
 	[JsonPropertyName("type")]
-	public string Type { private get; set; } = "track";
+	public required string Type { private get; set; }
 
 	public SpotifyModelType ContentType => Type switch
 	{

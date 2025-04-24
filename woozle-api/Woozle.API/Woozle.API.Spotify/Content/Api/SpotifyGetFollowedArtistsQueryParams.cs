@@ -8,8 +8,8 @@ public sealed class SpotifyGetFollowedArtistsQueryParams
 	public string Type { get; } = "artist";
 
 	[AliasAs("after")]
-	public string? After { get; set; }
+	public string? After { get; set; } = null;
 
 	[AliasAs("limit")]
-	public int? Limit { get; set; }
+	public int Limit { get; set; } = SpotifyConstants.ApiResultLimit;
 }
