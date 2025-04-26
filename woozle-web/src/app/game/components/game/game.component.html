@@ -1,8 +1,12 @@
 <div class="container">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a [routerLink]="['/contents/select']">Contents</a></li>
-      <li class="breadcrumb-item active" aria-current="page">{{ (content$ | async)?.name }}</li>
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/contents/select']">Contents</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        {{ selectedContentName() }}
+      </li>
     </ol>
   </nav>
 
@@ -26,9 +30,21 @@
     <div class="row">
       <div class="col text-center">
         @if (isPlayingMusic$ | async) {
-          <button type="button" class="btn btn-danger w-25" (click)="togglePlayerOff()">Stop</button>
+        <button
+          type="button"
+          class="btn btn-danger w-25"
+          (click)="togglePlayerOff()"
+        >
+          Stop
+        </button>
         } @else {
-          <button type="button" class="btn btn-primary w-25" (click)="togglePlayerOn()">Play</button>
+        <button
+          type="button"
+          class="btn btn-primary w-25"
+          (click)="togglePlayerOn()"
+        >
+          Play
+        </button>
         }
       </div>
     </div>

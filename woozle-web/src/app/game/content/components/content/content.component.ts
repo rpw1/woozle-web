@@ -1,19 +1,18 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
-  Input,
-  Output,
+  input,
+  output,
 } from '@angular/core';
-import { SpotifyContent } from '../../state/models/spotify-content';
+import { GoodContent } from '../../state/models/good-content';
 
 @Component({
   selector: 'app-content',
   imports: [],
   templateUrl: './content.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContentComponent {
-  @Input({ required: true }) content!: SpotifyContent;
-  @Output() selectedContent = new EventEmitter<SpotifyContent>();
+  content = input.required<GoodContent>();
+  selectedContent = output<GoodContent>();
 }

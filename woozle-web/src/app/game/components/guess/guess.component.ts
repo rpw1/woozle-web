@@ -6,7 +6,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
-import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import {
   debounceTime,
@@ -18,22 +17,21 @@ import {
   startWith,
 } from 'rxjs';
 import { v4 } from 'uuid';
+import { TracksStore } from '../../content/state/tracks.state';
 import { Guess } from '../../models/guess';
 import { GuessType } from '../../models/guess-type';
 import { GameActions } from '../../state/actions/game.actions';
 import { Game } from '../../state/models/game.model';
-import { Content } from '../../content/state/models/content';
-import { selectGameContent } from '../../content/state/selectors/content.selector';
 
 @Component({
   selector: 'app-guess',
   imports: [ReactiveFormsModule, CommonModule, NgbTypeaheadModule],
   templateUrl: './guess.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GuessComponent {
   private readonly gameStore = inject(Store<Game>);
-  private readonly contentStore = inject(Store<Content>);
+  private readonly tracksStore = inject(TracksStore);
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly SKIP_GUESS_TEXT = 'SKIPPED';
   readonly GuessType = GuessType;
@@ -42,13 +40,14 @@ export class GuessComponent {
     input.pipe(
       debounceTime(250),
       distinctUntilChanged(),
-      concatLatestFrom(() => this.contentStore.select(selectGameContent)),
-      map(([search, playlist]) => {
-        return playlist.tracks
-          .map(track => `${track.song} - ${track.artist}`)
+      map((search) => {
+        return this.tracksStore
+          .tracks()
+          .map((track) => `${track.name} - ${track.artist}`)
           .filter((track) =>
             track.toLocaleLowerCase().includes(search.toLocaleLowerCase())
-          ).slice(0, 15);
+          )
+          .slice(0, 15);
       })
     );
 

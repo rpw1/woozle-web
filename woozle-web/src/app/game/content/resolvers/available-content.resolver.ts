@@ -1,12 +1,13 @@
-import { ResolveFn } from '@angular/router';
-import { Content } from '../state/models/content';
-import { Store } from '@ngrx/store';
 import { inject } from '@angular/core';
-import { ContentActions } from '../state/actions/content.actions';
+import { ResolveFn } from '@angular/router';
+import { ContentsStore } from '../state/contents.state';
 
-export const availableContentResolver: ResolveFn<boolean> = (route, state) => {
-  const contentStore = inject(Store<Content>);
-  contentStore.dispatch(ContentActions.loadContent());
-  contentStore.dispatch(ContentActions.resetAvailableContentFilters());
+export const availableContentResolver: ResolveFn<boolean> = async (
+  route,
+  state
+) => {
+  const contentsStore = inject(ContentsStore);
+  await contentsStore.loadContent();
+  contentsStore.resetFilters();
   return true;
 };

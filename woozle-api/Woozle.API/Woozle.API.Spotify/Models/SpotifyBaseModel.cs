@@ -8,7 +8,7 @@ public class SpotifyBaseModel
 	public required string Id { get; set; }
 
 	[JsonPropertyName("type")]
-	public string Type { private get; set; } = "track";
+	public required string Type { private get; set; }
 
 	public SpotifyModelType ContentType => Type switch
 	{
@@ -20,18 +20,9 @@ public class SpotifyBaseModel
 		_ => throw new InvalidOperationException($"Content type of ${Type} is currently not defined in SpotifyContentType.")
 	};
 
-	[JsonPropertyName("external_urls")]
-	public ICollection<SpotifyExternalUrlModel> ExternalUrls { get; set; } = [];
-
 	[JsonPropertyName("href")]
 	public required string Href { get; set; }
 
 	[JsonPropertyName("uri")]
 	public required string Uri { get; set; }
-}
-
-public sealed class SpotifyExternalUrlModel
-{
-	[JsonPropertyName("spotify")]
-	public required string Spotify { get; set; }
 }

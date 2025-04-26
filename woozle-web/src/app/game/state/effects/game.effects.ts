@@ -35,7 +35,7 @@ export class GameEffects {
       concatMap(async ([action, gameState]) => {
         if (
           action.guess.song?.toLocaleLowerCase() ===
-          `${gameState.solution.song} - ${gameState.solution.artist}`.toLocaleLowerCase()
+          `${gameState.solution.name} - ${gameState.solution.artist}`.toLocaleLowerCase()
         ) {
           await this.solutionModalService.open();
           return GameActions.updateGameState({
@@ -76,7 +76,7 @@ export class GameEffects {
       concatLatestFrom(() => this.gameStore.select(selectGameState)),
       exhaustMap(async ([_, gameState]) => {
         await firstValueFrom(
-          this.spotifyService.playPlayer(gameState.solution.songUri),
+          this.spotifyService.playPlayer(gameState.solution.trackUri),
           { defaultValue: false }
         );
         this.playerService.setPlayerActiveElement();

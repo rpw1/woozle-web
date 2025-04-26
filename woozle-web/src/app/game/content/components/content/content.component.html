@@ -1,13 +1,17 @@
-<div class="card">
-  <img [src]="content.image?.url ?? ''" [width]="300"
-    [alt]="content.description ?? content.name" title="content image" class="img-thumbnail" />
-  <div class="card-body">
-    <h5 class="card-title">{{content.name}}</h5>
-    @if(content.description) {
-      <p class="card-text">{{content.description}}</p>
-    }
-    <button class="btn btn-primary" type="submit" (click)="this.selectedContent.emit(content)">
-      Select Content
-    </button>
+@let contentDetails = content();
+@if(contentDetails) {
+  <div class="card">
+    <img [src]="contentDetails.image.url" [width]="contentDetails.image.width ?? 300"
+      [alt]="contentDetails.description ?? contentDetails.name" title="content image" class="img-thumbnail" />
+    <div class="card-body">
+      <h5 class="card-title">{{contentDetails.name}}</h5>
+      @if(contentDetails.description) {
+        <p class="card-text">{{contentDetails.description}}</p>
+      }
+      <button class="btn btn-primary" type="submit" (click)="this.selectedContent.emit(contentDetails)">
+        Select Content
+      </button>
+    </div>
   </div>
-</div>
+}
+

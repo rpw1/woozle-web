@@ -17,15 +17,13 @@ export const initialState: Game = {
   numberOfGuesses: 0,
   isPlayingMusic: false,
   solution: {
-    song: '',
+    id: '',
+    name: '',
     artist: '',
-    album: '',
-    songUri: '',
+    trackUri: '',
     image: {
-      url: '',
-      height: 0,
-      width: 0,
-    },
+      url: ''
+    }
   },
   solutions: [],
   solutionIndex: 0,

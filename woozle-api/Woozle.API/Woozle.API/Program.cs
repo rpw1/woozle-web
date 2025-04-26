@@ -4,6 +4,7 @@ using Woozle.API.Spotify;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddCors(options =>
 {
@@ -17,8 +18,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddOpenApi();
 
-builder.Services.RegisterFeatureServices();
 builder.Services.RegisterSpotifyServices(builder.Configuration);
+builder.Services.RegisterFeatureServices();
 
 var app = builder.Build();
 

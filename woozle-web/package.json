@@ -30,6 +30,7 @@
     "@ng-bootstrap/ng-bootstrap": "^18.0.0",
     "@ngrx/effects": "^19.0.1",
     "@ngrx/operators": "^19.0.1",
+    "@ngrx/signals": "^19.1.0",
     "@ngrx/store": "^19.0.1",
     "@ngrx/store-devtools": "^19.0.1",
     "@types/spotify-api": "^0.0.25",

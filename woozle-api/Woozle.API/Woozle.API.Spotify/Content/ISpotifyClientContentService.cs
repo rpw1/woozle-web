@@ -1,16 +1,21 @@
 using Woozle.API.Spotify.Content.Api;
+using Woozle.API.Spotify.Models;
 
 namespace Woozle.API.Spotify.Content;
 
 public interface ISpotifyClientContentService
 {
-	Task<SpotifyGetSavedAlbumsResponseModel?> GetSpotifyAlbumnTracksAsync(string albumId, int limit, int offset, CancellationToken cancellationToken);
+	Task<SpotifyGetArtistAlbumsResponseModel?> GetSpotifyArtistsAlbumnsAsync(string artistId, CancellationToken cancellationToken, SpotifyLimitQueryParams? queryParams = null);
 
-	Task<SpotifyGetSavedAlbumsResponseModel?> GetSpotifySavedAlbumsAsync(int limit, int offset, CancellationToken cancellationToken);
+	Task<SpotifyGetAlbumResponseModel?> GetSpotifyAlbumnAsync(string albumId, CancellationToken cancellationToken);
 
-	Task<SpotifyGetFollowedArtistsResponseModel?> GetSpotifyFollowedArtistsAsync(SpotifyGetFollowedArtistsQueryParams queryParams, CancellationToken cancellationToken);
+	Task<SpotifyGetAlbumTracksResponseModel?> GetSpotifyAlbumnTracksAsync(string albumId, CancellationToken cancellationToken, SpotifyLimitQueryParams? queryParams = null);
 
-	Task<SpotifyGetUserPlaylistsRequest?> GetSpotifyUserPlaylistsAsync(int limit, int offset, CancellationToken cancellationToken);
+	Task<SpotifyGetSavedAlbumsResponseModel?> GetSpotifySavedAlbumsAsync(CancellationToken cancellationToken, SpotifyLimitQueryParams? queryParams = null);
 
-	Task<SpotifyGetPlaylistTracksResponseModel?> GetSpotifyPlaylistTracksAsync(string playlistId, int limit, int offset, CancellationToken cancellationToken);
+	Task<SpotifyGetFollowedArtistsResponseModel?> GetSpotifyFollowedArtistsAsync(CancellationToken cancellationToken, SpotifyGetFollowedArtistsQueryParams? queryParams = null);
+
+	Task<SpotifyGetUserPlaylistsResponseModel?> GetSpotifyUserPlaylistsAsync(CancellationToken cancellationToken, SpotifyLimitQueryParams? queryParams = null);
+
+	Task<SpotifyGetPlaylistTracksResponseModel?> GetSpotifyPlaylistTracksAsync(string playlistId, CancellationToken cancellationToken, SpotifyLimitQueryParams? queryParams = null);
 }

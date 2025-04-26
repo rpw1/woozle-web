@@ -8,7 +8,7 @@ import {
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { filter, Observable, take } from 'rxjs';
-import { Track } from '../../content/state/models/track';
+import { GoodTrack } from '../../content/state/models/good-content';
 import { GameState } from '../../state/models/game-state.model';
 import { Game } from '../../state/models/game.model';
 import {
@@ -29,7 +29,7 @@ export class SolutionModalComponent implements OnInit {
   readonly endingGameState$ = this.gameStore
     .select(selectCurrentGameState)
     .pipe(filter((x) => x !== GameState.ACTIVE));
-  solution$: Observable<Track> | undefined;
+  solution$: Observable<GoodTrack> | undefined;
 
   ngOnInit(): void {
     this.solution$ = this.gameStore.select(selectSolution).pipe(take(1));

@@ -18,7 +18,7 @@ public sealed class SpotifyTrackModel : SpotifyBaseModel
 	public bool Explicit { get; set; }
 
 	[JsonPropertyName("is_playable")]
-	public required bool IsPlayable { get; set; }
+	public bool IsPlayable { get; set; } = true;
 
 	[JsonPropertyName("name")]
 	public required string Name { get; set; }

@@ -11,7 +11,7 @@ export class SettingsService {
   private readonly httpClient = inject(HttpClient);
   
   private readonly settingsPath = environment.production ? '/assets/settings.json' : '/assets/settings.local.json';
-  settings!: Signal<Settings>;
+  settings?: Signal<Settings>;
 
   async loadSettings(): Promise<void> {
     const loadedSettings = await firstValueFrom(this.httpClient.get<Settings>(this.settingsPath));
@@ -19,6 +19,6 @@ export class SettingsService {
   }
 }
 
-export function initApp(settingsService: SettingsService) {
+export const initApp = (settingsService: SettingsService) => {
   return async () => await settingsService.loadSettings();
 }

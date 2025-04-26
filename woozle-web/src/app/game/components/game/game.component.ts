@@ -8,8 +8,7 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Content } from '../../content/state/models/content';
-import { selectGameContent } from '../../content/state/selectors/content.selector';
+import { TracksStore } from '../../content/state/tracks.state';
 import { GameActions } from '../../state/actions/game.actions';
 import { Game } from '../../state/models/game.model';
 import { selectIsPlayingMusic } from '../../state/selectors/game.selector';
@@ -31,9 +30,9 @@ import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
 })
 export class GameComponent implements OnInit, OnDestroy {
   private readonly gameStore = inject(Store<Game>);
-  private readonly contentStore = inject(Store<Content>);
+  private readonly tracksStore = inject(TracksStore);
   readonly isPlayingMusic$ = this.gameStore.select(selectIsPlayingMusic);
-  readonly content$ = this.contentStore.select(selectGameContent);
+  readonly selectedContentName = this.tracksStore.contentName;
 
   ngOnInit(): void {
     this.gameStore.dispatch(GameActions.reset());

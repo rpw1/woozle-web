@@ -1,8 +1,11 @@
 import { inject } from '@angular/core';
 import { RedirectCommand, ResolveFn, Router } from '@angular/router';
-import { SpotifyIdentityService } from '../user/services/spotify-identity.service';
+import { SpotifyIdentityService } from '../shared/services/spotify-identity.service';
 
-export const authCallbackResolver: ResolveFn<RedirectCommand> = async (route, _) => {
+export const authCallbackResolver: ResolveFn<RedirectCommand> = async (
+  route,
+  _
+) => {
   const router = inject(Router);
   const spotifyIdentityService = inject(SpotifyIdentityService);
   const error = route.queryParams['error'];
@@ -11,7 +14,9 @@ export const authCallbackResolver: ResolveFn<RedirectCommand> = async (route, _)
     return new RedirectCommand(router.parseUrl('/forbidden'));
   }
 
-  const isAuthenticated = spotifyIdentityService.requestAccessToken(route.queryParams['code']);
+  const isAuthenticated = spotifyIdentityService.requestAccessToken(
+    route.queryParams['code']
+  );
 
   if (!isAuthenticated) {
     return new RedirectCommand(router.parseUrl('/forbidden'));

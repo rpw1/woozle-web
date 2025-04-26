@@ -1,4 +1,5 @@
 using Woozle.API.Spotify.Content.Api;
+using Woozle.API.Spotify.Models;
 
 namespace Woozle.API.Spotify.Content;
 
@@ -12,37 +13,57 @@ public sealed class SpotifyClientContentService : ISpotifyClientContentService
 		_spotifyContentApi = spotifyContentApi ?? throw new ArgumentNullException(nameof(spotifyContentApi));
 	}
 
-	public async Task<SpotifyGetSavedAlbumsResponseModel?> GetSpotifyAlbumnTracksAsync(string albumId, int limit, int offset, CancellationToken cancellationToken)
+	public async Task<SpotifyGetArtistAlbumsResponseModel?> GetSpotifyArtistsAlbumnsAsync(string artistId, CancellationToken cancellationToken, SpotifyLimitQueryParams? queryParams = null)
 	{
-		var response = await _spotifyContentApi.GetAlbumTracksAsync(albumId, limit, offset, cancellationToken);
+		queryParams ??= new();
+		var response = await _spotifyContentApi.GetArtistAlbumsAsync(artistId, queryParams, cancellationToken);
 
 		return response.Content;
 	}
 
-	public async Task<SpotifyGetSavedAlbumsResponseModel?> GetSpotifySavedAlbumsAsync(int limit, int offset, CancellationToken cancellationToken)
+	public async Task<SpotifyGetAlbumResponseModel?> GetSpotifyAlbumnAsync(string albumId, CancellationToken cancellationToken)
 	{
-		var response = await _spotifyContentApi.GetSavedAlbumsAsync(limit, offset, cancellationToken);
+		var response = await _spotifyContentApi.GetAlbumAsync(albumId, cancellationToken);
 
 		return response.Content;
 	}
 
-	public async Task<SpotifyGetFollowedArtistsResponseModel?> GetSpotifyFollowedArtistsAsync(SpotifyGetFollowedArtistsQueryParams queryParams, CancellationToken cancellationToken)
+	public async Task<SpotifyGetAlbumTracksResponseModel?> GetSpotifyAlbumnTracksAsync(string albumId, CancellationToken cancellationToken, SpotifyLimitQueryParams? queryParams = null)
 	{
+		queryParams ??= new();
+		var response = await _spotifyContentApi.GetAlbumTracksAsync(albumId, queryParams, cancellationToken);
+
+		return response.Content;
+	}
+
+	public async Task<SpotifyGetSavedAlbumsResponseModel?> GetSpotifySavedAlbumsAsync(CancellationToken cancellationToken, SpotifyLimitQueryParams? queryParams = null)
+	{
+		queryParams ??= new();
+		var response = await _spotifyContentApi.GetSavedAlbumsAsync(queryParams, cancellationToken);
+
+		return response.Content;
+	}
+
+	public async Task<SpotifyGetFollowedArtistsResponseModel?> GetSpotifyFollowedArtistsAsync(CancellationToken cancellationToken, SpotifyGetFollowedArtistsQueryParams? queryParams = null)
+	{
+		queryParams ??= new();
 		var response = await _spotifyContentApi.GetFollowedArtistsAsync(queryParams, cancellationToken);
 
 		return response.Content;
 	}
 
-	public async Task<SpotifyGetUserPlaylistsRequest?> GetSpotifyUserPlaylistsAsync(int limit, int offset, CancellationToken cancellationToken)
+	public async Task<SpotifyGetUserPlaylistsResponseModel?> GetSpotifyUserPlaylistsAsync(CancellationToken cancellationToken, SpotifyLimitQueryParams? queryParams = null)
 	{
-		var response = await _spotifyContentApi.GetUserPlaylistsAsync(limit, offset, cancellationToken);
+		queryParams ??= new();
+		var response = await _spotifyContentApi.GetUserPlaylistsAsync(queryParams, cancellationToken);
 
 		return response.Content;
 	}
 
-	public async Task<SpotifyGetPlaylistTracksResponseModel?> GetSpotifyPlaylistTracksAsync(string playlistId, int limit, int offset, CancellationToken cancellationToken)
+	public async Task<SpotifyGetPlaylistTracksResponseModel?> GetSpotifyPlaylistTracksAsync(string playlistId, CancellationToken cancellationToken, SpotifyLimitQueryParams? queryParams = null)
 	{
-		var response = await _spotifyContentApi.GetPlaylistTracksAsync(playlistId, limit, offset, cancellationToken);
+		queryParams ??= new();
+		var response = await _spotifyContentApi.GetPlaylistTracksAsync(playlistId, queryParams, cancellationToken);
 
 		return response.Content;
 	}

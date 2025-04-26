@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { SettingsService } from '../../shared/services/settings.service';
+import { SettingsService } from './settings.service';
 import { AccessTokenRequest } from '../models/access-token-request';
 import { AccessTokenResponse } from '../models/access-token-response';
 import { RefreshTokenRequest } from '../models/refresh-token-request';
@@ -12,8 +12,8 @@ import { RefreshTokenRequest } from '../models/refresh-token-request';
 export class SpotifyIdentityService {
   private readonly spotifyBaseUrl = 'https://accounts.spotify.com';
   private readonly httpClient = inject(HttpClient);
-  private readonly $settings = inject(SettingsService).settings;
-  private get redirectUri() { return this.$settings().baseUrl + '/auth/callback'; };
+  private readonly settings = inject(SettingsService).settings!;
+  private get redirectUri() { return this.settings().baseUrl + '/auth/callback'; };
 
   async authorize(): Promise<boolean> {
     const scopes = [
@@ -32,7 +32,7 @@ export class SpotifyIdentityService {
 
     const params =  {
       response_type: 'code',
-      client_id: this.$settings().spotifyClientId,
+      client_id: this.settings().spotifyClientId,
       scope,
       redirect_uri: this.redirectUri,
     }
@@ -43,7 +43,7 @@ export class SpotifyIdentityService {
   }
 
   async refreshAccessToken(request: RefreshTokenRequest): Promise<boolean> {
-    const refreshAccessToken$ = this.httpClient.post<AccessTokenResponse>(`${this.$settings().woozleApiBaseUrl}/api/spotify/identity/refreshToken`, request);
+    const refreshAccessToken$ = this.httpClient.post<AccessTokenResponse>(`${this.settings().woozleApiBaseUrl}/api/spotify/identity/refreshToken`, request);
     const response = await firstValueFrom(refreshAccessToken$, { defaultValue: undefined });
     if (!response) {
       return false;
@@ -63,7 +63,7 @@ export class SpotifyIdentityService {
       redirectUri: this.redirectUri
     }
 
-    const requestAccessToken$ = this.httpClient.post<AccessTokenResponse>(`${this.$settings().woozleApiBaseUrl}/api/spotify/identity/accessToken`, request);
+    const requestAccessToken$ = this.httpClient.post<AccessTokenResponse>(`${this.settings().woozleApiBaseUrl}/api/spotify/identity/accessToken`, request);
     const response = await firstValueFrom(requestAccessToken$, { defaultValue: undefined });
 
     if (!response) {

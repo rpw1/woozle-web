@@ -11,8 +11,4 @@
     <ProjectReference Include="..\Woozle.API.Spotify\Woozle.API.Spotify.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Content\" />
-  </ItemGroup>
-
 </Project>

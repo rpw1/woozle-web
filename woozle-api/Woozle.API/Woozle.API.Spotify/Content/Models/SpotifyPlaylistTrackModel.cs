@@ -13,5 +13,5 @@ public sealed class SpotifyPlaylistTrackModel
 
 	//track = track or episode. Really could use a union type right now
 	[JsonPropertyName("track")]
-	public required SpotifyBaseModel Track { get; set; }
+	public required SpotifyTrackModel Track { get; set; }
 }
