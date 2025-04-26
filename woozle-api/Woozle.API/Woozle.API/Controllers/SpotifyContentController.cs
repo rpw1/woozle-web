@@ -41,7 +41,7 @@ public sealed class SpotifyContentController : ControllerBase
 		var tracks = contentType switch
 		{
 			ContentType.Album => await _spotifyContentService.GetAlbumnTracksAsync(id, cancellationToken),
-			ContentType.Artist => throw new NotImplementedException(),
+			ContentType.Artist => await _spotifyContentService.GetArtistTracksAsync(id, cancellationToken),
 			ContentType.Playlist => await _spotifyContentService.GetPlaylistTracksAsync(id, cancellationToken),
 			_ => throw new NotImplementedException()
 		};

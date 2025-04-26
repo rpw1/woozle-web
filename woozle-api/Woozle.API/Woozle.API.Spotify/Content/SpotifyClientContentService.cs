@@ -13,6 +13,14 @@ public sealed class SpotifyClientContentService : ISpotifyClientContentService
 		_spotifyContentApi = spotifyContentApi ?? throw new ArgumentNullException(nameof(spotifyContentApi));
 	}
 
+	public async Task<SpotifyGetArtistAlbumsResponseModel?> GetSpotifyArtistsAlbumnsAsync(string artistId, CancellationToken cancellationToken, SpotifyLimitQueryParams? queryParams = null)
+	{
+		queryParams ??= new();
+		var response = await _spotifyContentApi.GetArtistAlbumsAsync(artistId, queryParams, cancellationToken);
+
+		return response.Content;
+	}
+
 	public async Task<SpotifyGetAlbumResponseModel?> GetSpotifyAlbumnAsync(string albumId, CancellationToken cancellationToken)
 	{
 		var response = await _spotifyContentApi.GetAlbumAsync(albumId, cancellationToken);

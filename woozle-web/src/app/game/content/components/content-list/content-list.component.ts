@@ -31,8 +31,8 @@ export class ContentListComponent {
   private readonly tracksStore = inject(TracksStore);
   private readonly router = inject(Router);
   private readonly gameStore = inject(Store<Game>);
-  readonly availableAlbums = this.contentsStore.artists;
-  readonly availableArtists = this.contentsStore.albums;
+  readonly availableAlbums = this.contentsStore.albums;
+  readonly availableArtists = this.contentsStore.artists;
   readonly availablePlaylists = this.contentsStore.playlists;
 
   readonly contentSearchForm = this.formBuilder.group({

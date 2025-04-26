@@ -17,12 +17,12 @@ export const authGuard: CanActivateFn = async (
     return spotifyIdentityService.authorize();
   }
 
-  const isAuthenticated = await spotifyIdentityService.refreshAccessToken({
-    refreshToken: refreshToken,
-  });
-  if (!isAuthenticated) {
-    return spotifyIdentityService.authorize();
-  }
+  // const isAuthenticated = await spotifyIdentityService.refreshAccessToken({
+  //   refreshToken: refreshToken,
+  // });
+  // if (!isAuthenticated) {
+  //   return spotifyIdentityService.authorize();
+  // }
 
   return Promise.resolve(true);
 };

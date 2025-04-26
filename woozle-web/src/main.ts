@@ -13,8 +13,6 @@ import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { appRoutes } from './app/app-routes';
 import { AppComponent } from './app/app.component';
-import { ContentEffects } from './app/game/content/state/effects/content.effects';
-import { ContentReducer } from './app/game/content/state/reducers/content.reducer';
 import { GameEffects } from './app/game/state/effects/game.effects';
 import { ProgressBarQueueEffects } from './app/game/state/effects/progress-bar-queue.effects';
 import { GameReducer } from './app/game/state/reducers/game.reducer';
@@ -35,11 +33,10 @@ bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(appRoutes),
     provideStore({
-      content: ContentReducer,
       game: GameReducer,
       progressBarQueue: QueueStateReducer,
     }),
-    provideEffects([ContentEffects, GameEffects, ProgressBarQueueEffects]),
+    provideEffects([GameEffects, ProgressBarQueueEffects]),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),
@@ -57,6 +54,6 @@ bootstrapApplication(AppComponent, {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
     }),
-    TracksStore
+    TracksStore,
   ],
 }).catch((e) => console.error(e));

@@ -8,15 +8,13 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Content } from '../../content/state/models/content';
-import { selectGameContent } from '../../content/state/selectors/content.selector';
+import { TracksStore } from '../../content/state/tracks.state';
 import { GameActions } from '../../state/actions/game.actions';
 import { Game } from '../../state/models/game.model';
 import { selectIsPlayingMusic } from '../../state/selectors/game.selector';
 import { GuessListComponent } from '../guess-list/guess-list.component';
 import { GuessComponent } from '../guess/guess.component';
 import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
-import { TracksStore } from '../../content/state/tracks.state';
 
 @Component({
   selector: 'app-game',

@@ -16,6 +16,37 @@ public sealed class SpotifyContentService : ISpotifyContentService
 		_spotifyClientContentService = spotifyClientContentService ?? throw new ArgumentNullException(nameof(spotifyClientContentService));
 	}
 
+	public async Task<List<TrackModel>> GetArtistTracksAsync(string artistId, CancellationToken cancellationToken)
+	{
+		var response = await _spotifyClientContentService.GetSpotifyArtistsAlbumnsAsync(artistId, cancellationToken);
+
+		if (response is null)
+		{
+			return [];
+		}
+
+		List<string> albumIds = [..response.Items.Select(x => x.Id)];
+		var expandFunction = (int offset) => _spotifyClientContentService.GetSpotifyArtistsAlbumnsAsync(artistId, cancellationToken, new(offset));
+
+		await foreach (var request in expandFunction.Expand(response.Total, SpotifyConstants.ApiResultLimit))
+		{
+			var result = (await request)
+				?.Items
+				.Select(albums => albums.Id)
+				?? [];
+
+			albumIds.AddRange(result);
+		}
+
+		List<TrackModel> tracks = [];
+		await foreach (var request in Task.WhenEach(albumIds.Select(id => GetAlbumnTracksAsync(id, cancellationToken))))
+		{
+			tracks.AddRange(await request);
+		}
+
+		return tracks;
+	}
+
 	public async Task<List<TrackModel>> GetAlbumnTracksAsync(string albumId, CancellationToken cancellationToken)
 	{
 		var album = await _spotifyClientContentService.GetSpotifyAlbumnAsync(albumId, cancellationToken);

@@ -8,14 +8,13 @@ import {
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { filter, Observable, take } from 'rxjs';
-import { Track } from '../../content/state/models/track';
+import { GoodTrack } from '../../content/state/models/good-content';
 import { GameState } from '../../state/models/game-state.model';
 import { Game } from '../../state/models/game.model';
 import {
   selectCurrentGameState,
   selectSolution,
 } from '../../state/selectors/game.selector';
-import { GoodTrack } from '../../content/state/models/good-content';
 
 @Component({
   selector: 'app-solution-modal',

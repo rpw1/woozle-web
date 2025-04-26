@@ -4,6 +4,8 @@ namespace Woozle.API.Features.Content;
 
 public interface ISpotifyContentService
 {
+	Task<List<TrackModel>> GetArtistTracksAsync(string artistId, CancellationToken cancellationToken);
+
 	Task<List<TrackModel>> GetAlbumnTracksAsync(string albumId, CancellationToken cancellationToken);
 
 	Task<List<ContentModel>> GetSavedAlbumsAsync(CancellationToken cancellationToken);

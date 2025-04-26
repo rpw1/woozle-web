@@ -5,6 +5,13 @@ namespace Woozle.API.Spotify.Content.Api;
 
 public interface ISpotifyContentApi
 {
+	[Get("/artists/{id}/albums")]
+	[Headers(SpotifyConstants.AuthorizationHeader)]
+	Task<IApiResponse<SpotifyGetArtistAlbumsResponseModel>> GetArtistAlbumsAsync(
+		[AliasAs("id")] string artistId,
+		[Query] SpotifyLimitQueryParams queryParams,
+		CancellationToken cancellationToken);
+
 	[Get("/albums/{id}")]
 	[Headers(SpotifyConstants.AuthorizationHeader)]
 	Task<IApiResponse<SpotifyGetAlbumResponseModel>> GetAlbumAsync(
