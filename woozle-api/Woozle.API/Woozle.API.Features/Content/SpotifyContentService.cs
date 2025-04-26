@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Woozle.API.Features.Content.Extensions;
 using Woozle.API.Features.Content.Models;
 using Woozle.API.Spotify;
@@ -8,7 +7,7 @@ using Woozle.API.Spotify.Content.Api;
 namespace Woozle.API.Features.Content;
 
 [ServiceRegistration(ServiceLifeTimeRegistrationType.Scoped)]
-public sealed class SpotifyContentService
+public sealed class SpotifyContentService : ISpotifyContentService
 {
 	private readonly ISpotifyClientContentService _spotifyClientContentService;
 
@@ -40,8 +39,13 @@ public sealed class SpotifyContentService
 
 		await foreach (var request in expandFunction.Expand(response.Total, SpotifyConstants.ApiResultLimit))
 		{
-			var result = await request;
-			tracks.AddRange(result?.Items.Select(track => track.ToDto(albumImage)) ?? []);
+			var result = (await request)
+				?.Items
+				.Where(track => track.IsPlayable)
+				.Select(track => track.ToDto(albumImage))
+				?? [];
+
+			tracks.AddRange(result);
 		}
 
 		return tracks;
@@ -62,8 +66,12 @@ public sealed class SpotifyContentService
 
 		await foreach (var request in expandFunction.Expand(response.Total, SpotifyConstants.ApiResultLimit))
 		{
-			var result = await request;
-			albums.AddRange(result?.Items.Select(album => album.ToDto()) ?? []);
+			var result = (await request)
+				?.Items
+				.Select(album => album.ToDto())
+				?? [];
+
+			albums.AddRange(result);
 		}
 
 		return albums;
@@ -103,8 +111,12 @@ public sealed class SpotifyContentService
 
 		await foreach (var request in expandFunction.Expand(response.Total, SpotifyConstants.ApiResultLimit))
 		{
-			var result = await request;
-			playlists.AddRange(result?.Items.Select(playlist => playlist.ToDto()) ?? []);
+			var result = (await request)
+				?.Items
+				.Select(playlist => playlist.ToDto())
+				?? [];
+
+			playlists.AddRange(result);
 		}
 
 		return playlists;
@@ -125,8 +137,14 @@ public sealed class SpotifyContentService
 
 		await foreach (var request in expandFunction.Expand(response.Total, SpotifyConstants.ApiResultLimit))
 		{
-			var result = await request;
-			tracks.AddRange(result?.Items.Where(item => item.Track is not null).Select(track => track.ToDto()) ?? []);
+			var result = (await request)
+				?.Items
+				.Where(item => item.Track is not null
+					&& item.Track.IsPlayable)
+				.Select(track => track.ToDto())
+				?? [];
+
+			tracks.AddRange(result);
 		}
 
 		return tracks;

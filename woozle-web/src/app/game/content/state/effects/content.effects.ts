@@ -29,23 +29,4 @@ export class ContentEffects {
       map((tracks) => ContentActions.setGameContentSuccess({ tracks: tracks }))
     )
   );
-
-  readonly setGameContentSuccess$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(
-        ContentActions.setGameContentSuccess,
-      ),
-      switchMap(async (action) => {
-        let tracks = [...action.tracks];
-        for (let i = tracks.length - 1; i >= 0; i--) {
-          const randomIndex = Math.floor(Math.random() * (i + 1));
-          const temp = tracks[i];
-          tracks[i] = tracks[randomIndex];
-          tracks[randomIndex] = temp;
-        }
-
-        return GameActions.setGameSolutions({ solutions: tracks });
-      })
-    )
-  );
 }

@@ -1,7 +1,13 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { enableProdMode, isDevMode, inject, provideAppInitializer } from '@angular/core';
+import {
+  enableProdMode,
+  inject,
+  isDevMode,
+  provideAppInitializer,
+} from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
+import { provideServiceWorker } from '@angular/service-worker';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
@@ -14,9 +20,12 @@ import { ProgressBarQueueEffects } from './app/game/state/effects/progress-bar-q
 import { GameReducer } from './app/game/state/reducers/game.reducer';
 import { QueueStateReducer } from './app/game/state/reducers/progress-bar-queue.reducer';
 import { spotifyAuthInterceptor } from './app/shared/interceptors/spotify-auth.interceptor';
-import { initApp, SettingsService } from './app/shared/services/settings.service';
+import {
+  initApp,
+  SettingsService,
+} from './app/shared/services/settings.service';
 import { environment } from './environments/environment';
-import { provideServiceWorker } from '@angular/service-worker';
+import { TracksStore } from './app/game/content/state/tracks.state';
 
 if (environment.production) {
   enableProdMode();
@@ -28,32 +37,26 @@ bootstrapApplication(AppComponent, {
     provideStore({
       content: ContentReducer,
       game: GameReducer,
-      progressBarQueue: QueueStateReducer
+      progressBarQueue: QueueStateReducer,
     }),
-    provideEffects([
-      ContentEffects,
-      GameEffects,
-      ProgressBarQueueEffects
-    ]),
+    provideEffects([ContentEffects, GameEffects, ProgressBarQueueEffects]),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),
       autoPause: false,
       trace: true,
       traceLimit: 75,
-      connectInZone: true
+      connectInZone: true,
     }),
-    provideHttpClient(
-      withInterceptors([spotifyAuthInterceptor])
-    ),
-    SettingsService,
-    provideAppInitializer(() => {
-      const initializerFn = (initApp)(inject(SettingsService));
-      return initializerFn();
-    }), 
+    provideAppInitializer(async () => {
+      const initializerFn = initApp(inject(SettingsService));
+      return await initializerFn();
+    }),
+    provideHttpClient(withInterceptors([spotifyAuthInterceptor])),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
-      registrationStrategy: 'registerWhenStable:30000'
-    })
-]
-}).catch(e => console.error(e));
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
+    TracksStore
+  ],
+}).catch((e) => console.error(e));

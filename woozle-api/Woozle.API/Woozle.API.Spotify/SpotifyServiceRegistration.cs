@@ -12,6 +12,7 @@ public static class SpotifyServiceRegistration
 	public static IServiceCollection RegisterSpotifyServices(this IServiceCollection services, IConfiguration configuration)
 	{
 		services.Configure<SpotifySettings>(configuration.GetSection(nameof(SpotifySettings)));
+		services.AddScoped<SpotifyAuthorizationHandler>();
 
 		services.AddRefitClient<ISpotifyIdentityApi>()
 			.ConfigureHttpClient(client => 

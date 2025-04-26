@@ -8,5 +8,7 @@ public sealed class ContentModel
 
 	public required string Name { get; set; }
 
+	public string? Description { get; set; }
+
 	public required ImageModel Image { get; set; }
 }

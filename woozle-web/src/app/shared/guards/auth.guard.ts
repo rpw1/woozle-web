@@ -1,8 +1,15 @@
 import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivateFn,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { SpotifyIdentityService } from '../services/spotify-identity.service';
 
-export const authGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+export const authGuard: CanActivateFn = async (
+  route: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot
+) => {
   const accessToken = localStorage.getItem('access_token');
   const refreshToken = localStorage.getItem('refresh_token');
   const spotifyIdentityService = inject(SpotifyIdentityService);
@@ -10,7 +17,9 @@ export const authGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, st
     return spotifyIdentityService.authorize();
   }
 
-  const isAuthenticated = await spotifyIdentityService.refreshAccessToken({ refreshToken: refreshToken });
+  const isAuthenticated = await spotifyIdentityService.refreshAccessToken({
+    refreshToken: refreshToken,
+  });
   if (!isAuthenticated) {
     return spotifyIdentityService.authorize();
   }

@@ -7,37 +7,33 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
-import { ContentActions } from '../../state/actions/content.actions';
-import { Content } from '../../state/models/content';
-import { SpotifyContent } from '../../state/models/spotify-content';
 import {
-  selectAvailableAlbums,
-  selectAvailableArtists,
-  selectAvailablePlaylists,
-} from '../../state/selectors/content.selector';
+  ContentsStore,
+  GoodContentFilters,
+  GoodContentFilterType,
+} from '../../state/contents.state';
+import { GoodContent } from '../../state/models/good-content';
 import { ContentComponent } from '../content/content.component';
+import { TracksStore } from '../../state/tracks.state';
+import { GameActions } from '../../../state/actions/game.actions';
+import { Store } from '@ngrx/store';
+import { Game } from '../../../state/models/game.model';
 
 @Component({
   selector: 'app-content-list',
-  imports: [
-    CommonModule,
-    ContentComponent,
-    NgbNavModule,
-    ReactiveFormsModule,
-  ],
+  imports: [CommonModule, ContentComponent, NgbNavModule, ReactiveFormsModule],
   templateUrl: './content-list.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContentListComponent {
   private readonly formBuilder = inject(NonNullableFormBuilder);
-  private readonly contentStore = inject(Store<Content>);
+  private readonly contentsStore = inject(ContentsStore);
+  private readonly tracksStore = inject(TracksStore);
   private readonly router = inject(Router);
-  readonly availableAlbums$ = this.contentStore.select(selectAvailableAlbums);
-  readonly availableArtists$ = this.contentStore.select(selectAvailableArtists);
-  readonly availablePlaylists$ = this.contentStore.select(
-    selectAvailablePlaylists
-  );
+  private readonly gameStore = inject(Store<Game>);
+  readonly availableAlbums = this.contentsStore.artists;
+  readonly availableArtists = this.contentsStore.albums;
+  readonly availablePlaylists = this.contentsStore.playlists;
 
   readonly contentSearchForm = this.formBuilder.group({
     contentSearchInput: ['', [Validators.maxLength(500)]],
@@ -47,17 +43,21 @@ export class ContentListComponent {
   }
 
   search() {
-    this.contentStore.dispatch(
-      ContentActions.searchAvailableContent({
-        filters: { name: this.contentSearchInput?.value ?? '' },
-      })
-    );
+    const filters: GoodContentFilters = {
+      filterType: GoodContentFilterType.Recent,
+      name: this.contentSearchInput?.value,
+    };
+    this.contentsStore.updateFilters(filters);
   }
 
-  setContent(content: SpotifyContent) {
-    this.contentStore.dispatch(
-      ContentActions.setGameContent({ content: content })
+  async setContent(content: GoodContent) {
+    await this.tracksStore.loadTracks(content);
+    this.gameStore.dispatch(
+      GameActions.setGameSolutions({
+        solutions: this.tracksStore.randomTracks(),
+      })
     );
+
     void this.router.navigate(['/game']);
   }
 }

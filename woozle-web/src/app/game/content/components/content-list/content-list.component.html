@@ -4,10 +4,13 @@
       <button ngbNavLink type="button">Playlists</button>
       <ng-template ngbNavContent>
         <div class="row row-cols-1 row-cols-md-1 row-cols-lg-4 mt-3 gy-5">
-          @for(content of availablePlaylists$ | async; track content.id) {
-            <div class="col">
-              <app-content [content]="content" (selectedContent)="setContent($event)" />
-            </div>
+          @for(content of availablePlaylists(); track content.id) {
+          <div class="col">
+            <app-content
+              [content]="content"
+              (selectedContent)="setContent($event)"
+            />
+          </div>
           }
         </div>
       </ng-template>
@@ -16,10 +19,13 @@
       <button ngbNavLink type="button">Artists</button>
       <ng-template ngbNavContent>
         <div class="row row-cols-1 row-cols-md-1 row-cols-lg-4 mt-3 gy-5">
-          @for(content of availableArtists$ | async; track content.id) {
-            <div class="col">
-              <app-content [content]="content" (selectedContent)="setContent($event)" />
-            </div>
+          @for(content of availableArtists(); track content.id) {
+          <div class="col">
+            <app-content
+              [content]="content"
+              (selectedContent)="setContent($event)"
+            />
+          </div>
           }
         </div>
       </ng-template>
@@ -28,10 +34,13 @@
       <button ngbNavLink type="button">Albums</button>
       <ng-template ngbNavContent>
         <div class="row row-cols-1 row-cols-md-1 row-cols-lg-4 mt-3 gy-5">
-          @for(content of availableAlbums$ | async; track content.id) {
-            <div class="col">
-              <app-content [content]="content" (selectedContent)="setContent($event)" />
-            </div>
+          @for(content of availableAlbums(); track content.id) {
+          <div class="col">
+            <app-content
+              [content]="content"
+              (selectedContent)="setContent($event)"
+            />
+          </div>
           }
         </div>
       </ng-template>
@@ -39,13 +48,18 @@
   </ul>
   <form [formGroup]="contentSearchForm" (ngSubmit)="search()">
     <div class="input-group mt-4">
-      <input id="contentSearchInput" type="text" class="form-control"
-        placeholder="Enter content name" formControlName="contentSearchInput" />
-      <button  class="btn btn-outline-secondary"type="submit">Search</button>
+      <input
+        id="contentSearchInput"
+        type="text"
+        class="form-control"
+        placeholder="Enter content name"
+        formControlName="contentSearchInput"
+      />
+      <button class="btn btn-outline-secondary" type="submit">Search</button>
     </div>
     <div class="invalid-feedback ms-3 d-block">
       @if (contentSearchInput?.hasError('maxlength')) {
-        <p>*Content search too long.</p>
+      <p>*Content search too long.</p>
       }
     </div>
   </form>

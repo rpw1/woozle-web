@@ -18,8 +18,9 @@ public static class ContentMappingExtensions
 		{
 			Id = model.Id,
 			Name = model.Name,
+			Artist = string.Join(", ", model.Artists.Select(x => x.Name)),
+			TrackUri = model.Uri,
 			Explicit = model.Explicit,
-			IsPlayable = model.IsPlayable,
 			Image = image
 		};
 
@@ -47,6 +48,7 @@ public static class ContentMappingExtensions
 			Id = model.Id,
 			ContentType = ContentType.Playlist,
 			Name = model.Name,
+			Description = model.Description,
 			Image = model.Images.First().ToDto()
 		};
 
@@ -55,8 +57,9 @@ public static class ContentMappingExtensions
 		{
 			Id = model.Track.Id,
 			Name = model.Track.Name,
+			Artist = string.Join(", ", model.Track.Artists.Select(x => x.Name)),
+			TrackUri = model.Track.Uri,
 			Explicit = model.Track.Explicit,
-			IsPlayable = model.Track.IsPlayable,
 			Image = model.Track.Album.Images.First().ToDto()
 		};
 };

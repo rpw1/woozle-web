@@ -13,7 +13,6 @@ export class PlayerService {
   playerActive$ = this.playerActiveSubject.asObservable();
 
   async loadPlayer(): Promise<void> {
-    console.log(this.player)
     if (!this.player) {
       const accessToken = localStorage.getItem('access_token') ?? '';
       await this.initPlaybackSDK(accessToken, 0.5);

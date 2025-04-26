@@ -15,6 +15,7 @@ import {
   selectCurrentGameState,
   selectSolution,
 } from '../../state/selectors/game.selector';
+import { GoodTrack } from '../../content/state/models/good-content';
 
 @Component({
   selector: 'app-solution-modal',
@@ -29,7 +30,7 @@ export class SolutionModalComponent implements OnInit {
   readonly endingGameState$ = this.gameStore
     .select(selectCurrentGameState)
     .pipe(filter((x) => x !== GameState.ACTIVE));
-  solution$: Observable<Track> | undefined;
+  solution$: Observable<GoodTrack> | undefined;
 
   ngOnInit(): void {
     this.solution$ = this.gameStore.select(selectSolution).pipe(take(1));

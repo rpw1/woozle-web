@@ -5,38 +5,38 @@ namespace Woozle.API.Spotify.Content.Api;
 
 public interface ISpotifyContentApi
 {
-	[Post("/albums/{id}")]
+	[Get("/albums/{id}")]
 	[Headers(SpotifyConstants.AuthorizationHeader)]
 	Task<IApiResponse<SpotifyGetAlbumResponseModel>> GetAlbumAsync(
 		[AliasAs("id")] string albumId,
 		CancellationToken cancellationToken);
 
-	[Post("/albums/{id}/tracks")]
+	[Get("/albums/{id}/tracks")]
 	[Headers(SpotifyConstants.AuthorizationHeader)]
 	Task<IApiResponse<SpotifyGetAlbumTracksResponseModel>> GetAlbumTracksAsync(
 		[AliasAs("id")] string albumId,
 		[Query] SpotifyLimitQueryParams queryParams,
 		CancellationToken cancellationToken);
 
-	[Post("/me/albums")]
+	[Get("/me/albums")]
 	[Headers(SpotifyConstants.AuthorizationHeader)]
 	Task<IApiResponse<SpotifyGetSavedAlbumsResponseModel>> GetSavedAlbumsAsync(
 		[Query] SpotifyLimitQueryParams queryParams,
 		CancellationToken cancellationToken);
 
-	[Post("/me/following")]
+	[Get("/me/following")]
 	[Headers(SpotifyConstants.AuthorizationHeader)]
 	Task<IApiResponse<SpotifyGetFollowedArtistsResponseModel>> GetFollowedArtistsAsync(
 		[Query] SpotifyGetFollowedArtistsQueryParams queryParams,
 		CancellationToken cancellationToken);
 
-	[Post("/me/playlists")]
+	[Get("/me/playlists")]
 	[Headers(SpotifyConstants.AuthorizationHeader)]
 	Task<IApiResponse<SpotifyGetUserPlaylistsResponseModel>> GetUserPlaylistsAsync(
 		[Query] SpotifyLimitQueryParams queryParams,
 		CancellationToken cancellationToken);
 
-	[Post("/playlists/{id}/tracks")]
+	[Get("/playlists/{id}/tracks")]
 	[Headers(SpotifyConstants.AuthorizationHeader)]
 	Task<IApiResponse<SpotifyGetPlaylistTracksResponseModel>> GetPlaylistTracksAsync(
 		[AliasAs("id")] string playlistId,

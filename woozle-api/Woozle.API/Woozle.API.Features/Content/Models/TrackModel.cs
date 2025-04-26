@@ -6,9 +6,11 @@ public sealed class TrackModel
 
 	public bool? Explicit { get; set; }
 
-	public required bool IsPlayable { get; set; }
-
 	public required string Name { get; set; }
+
+	public required string Artist { get; set; }
+
+	public required string TrackUri { get; set; }
 
 	public required ImageModel Image { get; set; }
 }

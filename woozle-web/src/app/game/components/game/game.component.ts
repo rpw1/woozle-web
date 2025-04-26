@@ -16,6 +16,7 @@ import { selectIsPlayingMusic } from '../../state/selectors/game.selector';
 import { GuessListComponent } from '../guess-list/guess-list.component';
 import { GuessComponent } from '../guess/guess.component';
 import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
+import { TracksStore } from '../../content/state/tracks.state';
 
 @Component({
   selector: 'app-game',
@@ -31,9 +32,9 @@ import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
 })
 export class GameComponent implements OnInit, OnDestroy {
   private readonly gameStore = inject(Store<Game>);
-  private readonly contentStore = inject(Store<Content>);
+  private readonly tracksStore = inject(TracksStore);
   readonly isPlayingMusic$ = this.gameStore.select(selectIsPlayingMusic);
-  readonly content$ = this.contentStore.select(selectGameContent);
+  readonly selectedContentName = this.tracksStore.contentName;
 
   ngOnInit(): void {
     this.gameStore.dispatch(GameActions.reset());
