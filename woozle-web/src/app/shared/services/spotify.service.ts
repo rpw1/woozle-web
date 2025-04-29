@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, EMPTY, Observable } from 'rxjs';
-import { SpotifyPlaylistItemsResponse } from '../models/spotify-playlist-items-response';
 
 @Injectable({
   providedIn: 'root',

@@ -1,13 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { map, withLatestFrom } from 'rxjs';
+import { map } from 'rxjs';
 import { ProgressBarTimerService } from '../../services/progress-bar-timer.service';
-import { Game } from '../../state/models/game.model';
-import { ProgressBarQueue } from '../../state/models/progress-bar-queue.model';
+import { GameStore } from '../../state/game.state';
 import { TaskStateType } from '../../state/models/queue-state-type.model';
-import { selectNumberOfGuesses } from '../../state/selectors/game.selector';
-import { selectQueueState } from '../../state/selectors/progress-bar-queue.selector';
+import { ProgressBarQueueStore } from '../../state/progress-bar-queue.state';
 
 @Component({
   selector: 'app-progress-segment',
@@ -20,21 +17,20 @@ import { selectQueueState } from '../../state/selectors/progress-bar-queue.selec
 export class ProgressSegmentComponent {
   @Input({required: true}) segmentIndex!: number;
 
-  private readonly gameStore = inject(Store<Game>);
-  private readonly progressBarQueueStore = inject(Store<ProgressBarQueue>);
+  private readonly gameStore = inject(GameStore);
+  private readonly progressBarQueueStore = inject(ProgressBarQueueStore);
   private readonly progressBarTimerService = inject(ProgressBarTimerService);
-  readonly numberOfGuesses$ = this.gameStore.select(selectNumberOfGuesses);
+  readonly numberOfGuesses = this.gameStore.numberOfGuesses;
 
   readonly progressWidth$ = this.progressBarTimerService.progressBarSegmentPercentage$.pipe(
-    withLatestFrom(this.progressBarQueueStore.select(selectQueueState)),
-    map(([percent, state]) => {
-      if (state.activeItemState === TaskStateType.RESET) {
+    map(percent => {
+      if (this.progressBarQueueStore.activeItemState() === TaskStateType.RESET) {
         return 0;
       }
 
-      if (this.segmentIndex === state.successiveTasksRan) {
+      if (this.segmentIndex === this.progressBarQueueStore.successiveTasksRan()) {
         return percent;
-      } else if (this.segmentIndex < state.successiveTasksRan) {
+      } else if (this.segmentIndex < this.progressBarQueueStore.successiveTasksRan()) {
         return 100;
       } else {
         return 0;

@@ -6,15 +6,9 @@ import {
   OnInit,
 } from '@angular/core';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
-import { filter, Observable, take } from 'rxjs';
-import { GameState } from '../../state/models/game-state.model';
-import { Game } from '../../state/models/game.model';
-import {
-  selectCurrentGameState,
-  selectSolution,
-} from '../../state/selectors/game.selector';
 import { Track } from '../../content/state/models/track';
+import { GameStore } from '../../state/game.state';
+import { GameState } from '../../state/models/game-state.model';
 
 @Component({
   selector: 'app-solution-modal',
@@ -24,16 +18,14 @@ import { Track } from '../../content/state/models/track';
 })
 export class SolutionModalComponent implements OnInit {
   private readonly activeModal = inject(NgbActiveModal);
-  private readonly gameStore = inject(Store<Game>);
+  private readonly gameStore = inject(GameStore);
   readonly GameState = GameState;
-  readonly endingGameState$ = this.gameStore
-    .select(selectCurrentGameState)
-    .pipe(filter((x) => x !== GameState.ACTIVE));
+  readonly currentGameState = this.gameStore.currentGameState;
     
-  solution$: Observable<Track> | undefined;
+  solution: Track | undefined;
 
   ngOnInit(): void {
-    this.solution$ = this.gameStore.select(selectSolution).pipe(take(1));
+    this.solution = this.gameStore.solution();
   }
 
   closeModal() {

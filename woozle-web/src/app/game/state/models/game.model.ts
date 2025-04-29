@@ -10,5 +10,4 @@ export interface Game {
   solution: Track;
   solutions: Track[];
   solutionIndex: number;
-  deviceId?: number;
 }

@@ -17,6 +17,7 @@ import { SolutionModalService } from '../services/solution-modal.service';
 import { Guess } from '../models/guess';
 import { firstValueFrom } from 'rxjs';
 import { ProgressBarQueueStore } from './progress-bar-queue.state';
+import { Track } from '../content/state/models/track';
 
 const maximumGuesses = GameConstants.SECONDS_ARRAY.length;
 const initialState: Game = {
@@ -38,7 +39,6 @@ const initialState: Game = {
   },
   solutions: [],
   solutionIndex: 0,
-  deviceId: undefined,
 };
 
 export const GameStore = signalStore(
@@ -83,11 +83,15 @@ export const GameStore = signalStore(
         progressBarQueueStore.queueTasks(1);
       },
       async updateGameState(gameState: GameState): Promise<void> {
-        await solutionModalService.open();
         patchState(store, { currentGameState: gameState });
 
-        if (store.currentGameState() === GameState.WON || store.currentGameState() === GameState.LOSS) {
+        if (
+          store.currentGameState() === GameState.WON ||
+          store.currentGameState() === GameState.LOSS
+        ) {
           this.togglePlayerOn();
+          await solutionModalService.open();
+          this.reset();
         }
       },
       async togglePlayerOn(): Promise<void> {
@@ -97,7 +101,40 @@ export const GameStore = signalStore(
           { defaultValue: false }
         );
         playerService.setPlayerActiveElement();
-        progressBarQueueStore.queueTasks(store.numberOfGuesses());
+        progressBarQueueStore.queueTasks(store.numberOfGuesses() + 1);
+      },
+      async togglePlayerOff(): Promise<void> {
+        patchState(store, { isPlayingMusic: false });
+        await firstValueFrom(spotifyService.pausePlayer(), {
+          defaultValue: false,
+        });
+      },
+      setGameSolution(): void {
+        if (store.solutions().length === 0) {
+          return;
+        }
+
+        if (store.solutionIndex() === store.solutions().length) {
+          patchState(store, { solutionIndex: 0 });
+        }
+
+        patchState(store, {
+          solution: store.solutions()[store.solutionIndex()],
+          solutionIndex: store.solutionIndex() + 1,
+        });
+      },
+      setGameSolutions(solutions: Track[]): void {
+        patchState(store, { solutions: [...solutions] });
+        this.setGameSolution();
+      },
+      reset(): void {
+        patchState(store, {
+          ...initialState,
+          solutions: store.solutions(),
+          solutionIndex: store.solutionIndex(),
+        });
+        this.setGameSolution();
+        progressBarQueueStore.resetTasks();
       },
     })
   )

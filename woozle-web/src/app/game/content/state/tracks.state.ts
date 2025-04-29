@@ -30,7 +30,7 @@ const initialState: TrackState = {
 
 export const TracksStore = signalStore(
   withState(initialState),
-  withComputed(({ tracks, contentName, contentId }) => ({
+  withComputed(({ tracks }) => ({
     randomTracks: computed(() => {
       for (let i = tracks().length - 1; i >= 0; i--) {
         const randomIndex = Math.floor(Math.random() * (i + 1));
@@ -40,8 +40,6 @@ export const TracksStore = signalStore(
       }
       return tracks();
     }),
-    contentName: computed(() => contentName?.()),
-    contentId: computed(() => contentId?.()),
   })),
   withMethods((store, contentService = inject(ContentService)) => ({
     async loadTracks(content: Content): Promise<void> {

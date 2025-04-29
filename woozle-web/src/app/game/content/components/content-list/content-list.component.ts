@@ -7,17 +7,15 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { GameStore } from '../../../state/game.state';
 import {
-  ContentsStore,
   ContentFilters,
   ContentFilterType,
+  ContentsStore,
 } from '../../state/contents.state';
 import { Content } from '../../state/models/content';
-import { ContentComponent } from '../content/content.component';
 import { TracksStore } from '../../state/tracks.state';
-import { GameActions } from '../../../state/actions/game.actions';
-import { Store } from '@ngrx/store';
-import { Game } from '../../../state/models/game.model';
+import { ContentComponent } from '../content/content.component';
 
 @Component({
   selector: 'app-content-list',
@@ -30,7 +28,7 @@ export class ContentListComponent {
   private readonly contentsStore = inject(ContentsStore);
   private readonly tracksStore = inject(TracksStore);
   private readonly router = inject(Router);
-  private readonly gameStore = inject(Store<Game>);
+  private readonly gameStore = inject(GameStore);
   readonly availableAlbums = this.contentsStore.albums;
   readonly availableArtists = this.contentsStore.artists;
   readonly availablePlaylists = this.contentsStore.playlists;
@@ -52,12 +50,7 @@ export class ContentListComponent {
 
   async setContent(content: Content) {
     await this.tracksStore.loadTracks(content);
-    this.gameStore.dispatch(
-      GameActions.setGameSolutions({
-        solutions: this.tracksStore.randomTracks(),
-      })
-    );
-
+    this.gameStore.setGameSolutions(this.tracksStore.randomTracks());
     void this.router.navigate(['/game']);
   }
 }

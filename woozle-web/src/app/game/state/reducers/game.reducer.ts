@@ -27,7 +27,6 @@ export const initialState: Game = {
   },
   solutions: [],
   solutionIndex: 0,
-  deviceId: undefined,
 };
 
 export const GameReducer = createReducer<Game>(
@@ -50,7 +49,6 @@ export const GameReducer = createReducer<Game>(
   }),
   on(GameActions.reset, (state) => ({
     ...initialState,
-    deviceId: state.deviceId,
     solutions: state.solutions,
     solutionIndex: state.solutionIndex,
   })),

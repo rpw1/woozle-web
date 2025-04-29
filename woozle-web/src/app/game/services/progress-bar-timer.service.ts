@@ -1,54 +1,66 @@
 import { Injectable, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { EMPTY, concatMap, filter, map, of, takeUntil, tap, timer, withLatestFrom } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { EMPTY, concatMap, filter, map, of, takeUntil, tap, timer } from 'rxjs';
 import { Constants } from '../models/constants';
 import { GameConstants } from '../models/game-constants';
-import { ProgressBarQueueActions } from '../state/actions/progress-bar-queue.actions';
-import { ProgressBarQueue } from '../state/models/progress-bar-queue.model';
 import { TaskStateType } from '../state/models/queue-state-type.model';
-import { selectActiveItemState, selectSuccessiveTasksRan } from '../state/selectors/progress-bar-queue.selector';
+import { ProgressBarQueueStore } from '../state/progress-bar-queue.state';
+import { GameStore } from '../state/game.state';
 
 @Injectable()
 export class ProgressBarTimerService {
-
-  private readonly progressBarQueueStore = inject(Store<ProgressBarQueue>);
+  private readonly progressBarQueueStore = inject(ProgressBarQueueStore);
+  private readonly gameStore = inject(GameStore);
 
   private timeElapsed = 0;
-  
+
   private readonly timer$ = timer(0, 50).pipe(
-    withLatestFrom(this.progressBarQueueStore.select(selectSuccessiveTasksRan)),
-    map(([_, successiveTasksRan]) => {
-      this.timeElapsed += 1
-      const decimalPercent = (this.timeElapsed * 50) / (GameConstants.SECONDS_ARRAY[successiveTasksRan] * 1000);
+    map(() => {
+      this.timeElapsed += 1;
+      const decimalPercent =
+        (this.timeElapsed * 50) /
+        (GameConstants.SECONDS_ARRAY[
+          this.progressBarQueueStore.successiveTasksRan()
+        ] *
+          1000);
       return decimalPercent * Constants.PERCENTAGE_CONVERSION;
     }),
     tap((percent) => {
-      if ((percent) > Constants.PERCENTAGE_CONVERSION) {
-        this.progressBarQueueStore.dispatch(ProgressBarQueueActions.completeTask())
+      if (percent > Constants.PERCENTAGE_CONVERSION) {
+        this.progressBarQueueStore.completeTask();
+        if (this.progressBarQueueStore.queuedTasks() === 0) {
+          this.gameStore.togglePlayerOff();
+        }
       }
     }),
-    takeUntil(this.progressBarQueueStore
-      .select(selectActiveItemState).pipe(filter(state => state === TaskStateType.COMPLETED)))
-  )
+    takeUntil(
+      toObservable(this.progressBarQueueStore.activeItemState).pipe(
+        filter((state) => state === TaskStateType.COMPLETED)
+      )
+    )
+  );
 
-  readonly progressBarSegmentPercentage$ = this.progressBarQueueStore
-    .select(selectActiveItemState)
-    .pipe(
-      concatMap(task => {
-        switch (task) {
-          case undefined: {
-            return EMPTY;
-          }
-          case TaskStateType.RUNNING: {
-            return this.timer$;
-          }
-          case TaskStateType.COMPLETED: {
-            this.timeElapsed = 0;
-            return EMPTY;
-          }
-          case TaskStateType.RESET: {
-            return of(0);
-          }
+  readonly progressBarSegmentPercentage$ = toObservable(
+    this.progressBarQueueStore.activeItemState
+  ).pipe(
+    concatMap((task) => {
+      console.log(task);
+      switch (task) {
+        case undefined: {
+          return EMPTY;
         }
-    }))
+        case TaskStateType.RUNNING: {
+          return this.timer$;
+        }
+        case TaskStateType.COMPLETED: {
+          this.timeElapsed = 0;
+          return EMPTY;
+        }
+        case TaskStateType.RESET: {
+          this.timeElapsed = 0;
+          return of(0);
+        }
+      }
+    })
+  );
 }

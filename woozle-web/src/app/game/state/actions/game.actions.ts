@@ -1,7 +1,7 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { Track } from '../../content/state/models/content';
 import { Guess } from '../../models/guess';
 import { GameState } from '../models/game-state.model';
+import { Track } from '../../content/state/models/track';
 
 export const GameActions = createActionGroup({
   source: 'Game State',

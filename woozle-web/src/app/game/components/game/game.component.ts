@@ -15,6 +15,7 @@ import { selectIsPlayingMusic } from '../../state/selectors/game.selector';
 import { GuessListComponent } from '../guess-list/guess-list.component';
 import { GuessComponent } from '../guess/guess.component';
 import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
+import { GameStore } from '../../state/game.state';
 
 @Component({
   selector: 'app-game',
@@ -29,24 +30,24 @@ import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameComponent implements OnInit, OnDestroy {
-  private readonly gameStore = inject(Store<Game>);
+  private readonly gameStore = inject(GameStore);
   private readonly tracksStore = inject(TracksStore);
-  readonly isPlayingMusic$ = this.gameStore.select(selectIsPlayingMusic);
+  readonly isPlayingMusic = this.gameStore.isPlayingMusic;
   readonly selectedContentName = this.tracksStore.contentName;
 
   ngOnInit(): void {
-    this.gameStore.dispatch(GameActions.reset());
+    this.gameStore.reset();
   }
 
   ngOnDestroy(): void {
-    this.gameStore.dispatch(GameActions.togglePlayerOff());
+    this.gameStore.togglePlayerOff();
   }
 
   togglePlayerOn(): void {
-    this.gameStore.dispatch(GameActions.togglePlayerOn());
+    this.gameStore.togglePlayerOn();
   }
 
   togglePlayerOff(): void {
-    this.gameStore.dispatch(GameActions.togglePlayerOff());
+    this.gameStore.togglePlayerOff();
   }
 }
