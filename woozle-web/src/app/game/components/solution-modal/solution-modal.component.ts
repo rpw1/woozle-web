@@ -8,19 +8,19 @@ import {
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { filter, Observable, take } from 'rxjs';
-import { GoodTrack } from '../../content/state/models/good-content';
 import { GameState } from '../../state/models/game-state.model';
 import { Game } from '../../state/models/game.model';
 import {
   selectCurrentGameState,
   selectSolution,
 } from '../../state/selectors/game.selector';
+import { Track } from '../../content/state/models/track';
 
 @Component({
   selector: 'app-solution-modal',
   imports: [CommonModule, NgbModule],
   templateUrl: './solution-modal.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SolutionModalComponent implements OnInit {
   private readonly activeModal = inject(NgbActiveModal);
@@ -29,7 +29,8 @@ export class SolutionModalComponent implements OnInit {
   readonly endingGameState$ = this.gameStore
     .select(selectCurrentGameState)
     .pipe(filter((x) => x !== GameState.ACTIVE));
-  solution$: Observable<GoodTrack> | undefined;
+    
+  solution$: Observable<Track> | undefined;
 
   ngOnInit(): void {
     this.solution$ = this.gameStore.select(selectSolution).pipe(take(1));

@@ -1,4 +1,4 @@
-import { GoodTrack } from '../../content/state/models/good-content';
+import { Track } from '../../content/state/models/track';
 import { Guess } from '../../models/guess';
 import { GameState } from './game-state.model';
 
@@ -7,8 +7,8 @@ export interface Game {
   numberOfGuesses: number;
   isPlayingMusic: boolean;
   currentGameState: GameState;
-  solution: GoodTrack;
-  solutions: GoodTrack[];
+  solution: Track;
+  solutions: Track[];
   solutionIndex: number;
   deviceId?: number;
 }

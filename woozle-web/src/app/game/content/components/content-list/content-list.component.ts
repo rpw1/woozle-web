@@ -9,10 +9,10 @@ import { Router } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import {
   ContentsStore,
-  GoodContentFilters,
-  GoodContentFilterType,
+  ContentFilters,
+  ContentFilterType,
 } from '../../state/contents.state';
-import { GoodContent } from '../../state/models/good-content';
+import { Content } from '../../state/models/content';
 import { ContentComponent } from '../content/content.component';
 import { TracksStore } from '../../state/tracks.state';
 import { GameActions } from '../../../state/actions/game.actions';
@@ -43,14 +43,14 @@ export class ContentListComponent {
   }
 
   search() {
-    const filters: GoodContentFilters = {
-      filterType: GoodContentFilterType.Recent,
+    const filters: ContentFilters = {
+      filterType: ContentFilterType.Recent,
       name: this.contentSearchInput?.value,
     };
     this.contentsStore.updateFilters(filters);
   }
 
-  async setContent(content: GoodContent) {
+  async setContent(content: Content) {
     await this.tracksStore.loadTracks(content);
     this.gameStore.dispatch(
       GameActions.setGameSolutions({

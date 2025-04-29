@@ -9,17 +9,18 @@ import {
 import { firstValueFrom } from 'rxjs';
 import { ContentService } from '../services/content.service';
 import { ContentType } from './models/content-type';
-import { GoodContent, GoodTrack } from './models/good-content';
+import { Content } from './models/content';
+import { Track } from './models/track';
 
-export type GoodTrackState = {
-  tracks: GoodTrack[];
+export type TrackState = {
+  tracks: Track[];
   contentId: string;
   contentType: ContentType;
   contentName: string;
   isLoading: boolean;
 };
 
-const initialState: GoodTrackState = {
+const initialState: TrackState = {
   tracks: [],
   contentId: '',
   contentType: ContentType.Playlist,
@@ -43,9 +44,7 @@ export const TracksStore = signalStore(
     contentId: computed(() => contentId?.()),
   })),
   withMethods((store, contentService = inject(ContentService)) => ({
-    async loadTracks(
-      content: GoodContent
-    ): Promise<void> {
+    async loadTracks(content: Content): Promise<void> {
       patchState(store, { isLoading: true });
       const tracks = await firstValueFrom(
         contentService.getTracks(content.id, content.contentType)

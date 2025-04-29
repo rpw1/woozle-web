@@ -8,31 +8,31 @@ import {
 } from '@ngrx/signals';
 import { firstValueFrom } from 'rxjs';
 import { ContentService } from '../services/content.service';
-import { GoodContent } from './models/good-content';
+import { Content } from './models/content';
 import { ContentType } from './models/content-type';
 
-export enum GoodContentFilterType {
+export enum ContentFilterType {
   Ascending,
   Descending,
   Recent,
 }
 
-export type GoodContentFilters = {
-  filterType: GoodContentFilterType;
+export type ContentFilters = {
+  filterType: ContentFilterType;
   name?: string;
 };
 
-export type GoodContentState = {
-  contents: GoodContent[];
+export type ContentState = {
+  contents: Content[];
   isLoading: boolean;
-  filters: GoodContentFilters;
+  filters: ContentFilters;
 };
 
-const initialState: GoodContentState = {
+const initialState: ContentState = {
   contents: [],
   isLoading: false,
   filters: {
-    filterType: GoodContentFilterType.Recent,
+    filterType: ContentFilterType.Recent,
   },
 };
 
@@ -58,7 +58,7 @@ export const ContentsStore = signalStore(
     resetFilters(): void {
       patchState(store, () => ({ filters: { ...initialState.filters } }));
     },
-    updateFilters(filters: GoodContentFilters): void {
+    updateFilters(filters: ContentFilters): void {
       patchState(store, () => ({ filters: filters }));
     },
   }))
@@ -66,8 +66,8 @@ export const ContentsStore = signalStore(
 
 const getAvailableContent = (
   contentType: ContentType,
-  contents: Signal<GoodContent[]>,
-  filters: Signal<GoodContentFilters>
+  contents: Signal<Content[]>,
+  filters: Signal<ContentFilters>
 ) => {
   const availableContents = contents().filter(
     (content) =>
@@ -79,9 +79,9 @@ const getAvailableContent = (
   );
 
   switch (filters().filterType) {
-    case GoodContentFilterType.Ascending:
+    case ContentFilterType.Ascending:
       return availableContents.sort((a, b) => a.name.localeCompare(b.name));
-    case GoodContentFilterType.Descending:
+    case ContentFilterType.Descending:
       return availableContents.sort(
         (a, b) => a.name.localeCompare(b.name) * -1
       );

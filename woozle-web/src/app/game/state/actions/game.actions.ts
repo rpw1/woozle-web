@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { GoodTrack } from '../../content/state/models/good-content';
+import { Track } from '../../content/state/models/content';
 import { Guess } from '../../models/guess';
 import { GameState } from '../models/game-state.model';
 
@@ -16,6 +16,6 @@ export const GameActions = createActionGroup({
     togglePlayerOffSuccess: emptyProps(),
 
     setGameSolution: emptyProps(),
-    setGameSolutions: props<{ solutions: GoodTrack[] }>(),
+    setGameSolutions: props<{ solutions: Track[] }>(),
   },
 });
