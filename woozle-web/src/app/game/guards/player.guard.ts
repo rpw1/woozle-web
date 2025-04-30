@@ -4,8 +4,9 @@ import { mergeMap, of } from 'rxjs';
 import { PlayerService } from '../services/player.service';
 
 export const playerGuard: CanActivateFn = (route, state) => {
-  const playerService = inject(PlayerService);
-  return of(playerService.loadPlayer()).pipe(
-    mergeMap(() => playerService.playerActive$)
-  );
+  return true;
+  // const playerService = inject(PlayerService);
+  // return of(playerService.loadPlayer()).pipe(
+  //   mergeMap(() => playerService.playerActive$)
+  // );
 };

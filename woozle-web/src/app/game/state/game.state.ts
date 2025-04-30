@@ -96,18 +96,20 @@ export const GameStore = signalStore(
       },
       async togglePlayerOn(): Promise<void> {
         patchState(store, { isPlayingMusic: true });
-        await firstValueFrom(
-          spotifyService.playPlayer(store.solution().trackUri),
-          { defaultValue: false }
-        );
-        playerService.setPlayerActiveElement();
+        // await firstValueFrom(
+        //   spotifyService.playPlayer(store.solution().trackUri),
+        //   { defaultValue: false }
+        // );
+        // playerService.setPlayerActiveElement();
+        console.log('play music')
         progressBarQueueStore.queueTasks(store.numberOfGuesses() + 1);
       },
       async togglePlayerOff(): Promise<void> {
         patchState(store, { isPlayingMusic: false });
-        await firstValueFrom(spotifyService.pausePlayer(), {
-          defaultValue: false,
-        });
+        // await firstValueFrom(spotifyService.pausePlayer(), {
+        //   defaultValue: false,
+        // });
+        console.log('pause music')
       },
       setGameSolution(): void {
         if (store.solutions().length === 0) {

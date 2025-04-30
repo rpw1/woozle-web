@@ -18,9 +18,11 @@ export const ProgressBarQueueStore = signalStore(
       });
 
       if (store.queuedTasks() > 0) {
+        console.log('a new task has been started');
         this.startTask();
       } else {
         this.resetTasks();
+        console.log('reset city');
       }
     },
     queueTasks(tasks: number): void {
@@ -34,6 +36,7 @@ export const ProgressBarQueueStore = signalStore(
       this.startTask();
     },
     resetTasks(): void {
+      console.log('reset city');
       patchState(store, {
         ...initialState,
         activeItemState: TaskStateType.RESET,

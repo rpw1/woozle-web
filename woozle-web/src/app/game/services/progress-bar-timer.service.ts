@@ -29,13 +29,14 @@ export class ProgressBarTimerService {
       if (percent > Constants.PERCENTAGE_CONVERSION) {
         this.progressBarQueueStore.completeTask();
         if (this.progressBarQueueStore.queuedTasks() === 0) {
+          console.log('the queue service be doing it')
           this.gameStore.togglePlayerOff();
         }
       }
     }),
     takeUntil(
       toObservable(this.progressBarQueueStore.activeItemState).pipe(
-        filter((state) => state === TaskStateType.COMPLETED)
+        filter((state) => state === TaskStateType.COMPLETED || state === TaskStateType.RESET)
       )
     )
   );
