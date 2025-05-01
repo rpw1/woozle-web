@@ -3,12 +3,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  OnInit,
+  Signal
 } from '@angular/core';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Track } from '../../content/state/models/track';
-import { GameStore } from '../../state/game.state';
 import { GameState } from '../../state/models/game-state.model';
+import { SolutionStateService } from '../../state/solution-state.service';
 
 @Component({
   selector: 'app-solution-modal',
@@ -16,17 +16,12 @@ import { GameState } from '../../state/models/game-state.model';
   templateUrl: './solution-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SolutionModalComponent implements OnInit {
+export class SolutionModalComponent {
   private readonly activeModal = inject(NgbActiveModal);
-  private readonly gameStore = inject(GameStore);
+  private readonly solutionStateService = inject(SolutionStateService);
   readonly GameState = GameState;
-  readonly currentGameState = this.gameStore.currentGameState;
     
-  solution: Track | undefined;
-
-  ngOnInit(): void {
-    this.solution = this.gameStore.solution();
-  }
+  solution: Signal<Track> = this.solutionStateService.solution;
 
   closeModal() {
     this.activeModal.close(true);

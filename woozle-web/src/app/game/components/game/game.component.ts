@@ -12,6 +12,7 @@ import { GameStore } from '../../state/game.state';
 import { GuessListComponent } from '../guess-list/guess-list.component';
 import { GuessComponent } from '../guess/guess.component';
 import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
+import { PlayerService } from '../../services/player.service';
 
 @Component({
   selector: 'app-game',
@@ -27,8 +28,9 @@ import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
 })
 export class GameComponent implements OnInit, OnDestroy {
   private readonly gameStore = inject(GameStore);
+  private readonly playerService = inject(PlayerService);
   private readonly tracksStore = inject(TracksStore);
-  readonly isPlayingMusic = this.gameStore.isPlayingMusic;
+  readonly isPlayingMusic = this.playerService.isPlayingMusic;
   readonly selectedContentName = this.tracksStore.contentName;
 
   ngOnInit(): void {
@@ -36,14 +38,14 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.gameStore.togglePlayerOff();
+    this.gameStore.pauseMusic();
   }
 
   togglePlayerOn(): void {
-    this.gameStore.togglePlayerOn();
+    this.gameStore.playMusic();
   }
 
   togglePlayerOff(): void {
-    this.gameStore.togglePlayerOff();
+    this.gameStore.pauseMusic();
   }
 }

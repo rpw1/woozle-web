@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { GameStore } from '../../../state/game.state';
+import { SolutionStateService } from '../../../state/solution-state.service';
 import {
   ContentFilters,
   ContentFilterType,
@@ -28,7 +28,7 @@ export class ContentListComponent {
   private readonly contentsStore = inject(ContentsStore);
   private readonly tracksStore = inject(TracksStore);
   private readonly router = inject(Router);
-  private readonly gameStore = inject(GameStore);
+  private readonly solutionStateService = inject(SolutionStateService);
   readonly availableAlbums = this.contentsStore.albums;
   readonly availableArtists = this.contentsStore.artists;
   readonly availablePlaylists = this.contentsStore.playlists;
@@ -50,7 +50,7 @@ export class ContentListComponent {
 
   async setContent(content: Content) {
     await this.tracksStore.loadTracks(content);
-    this.gameStore.setGameSolutions(this.tracksStore.randomTracks());
+    this.solutionStateService.setGameSolutions(this.tracksStore.randomTracks());
     void this.router.navigate(['/game']);
   }
 }

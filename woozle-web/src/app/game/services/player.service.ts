@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { SpotifyService } from '../../shared/services/spotify.service';
 import { firstValueFrom, ReplaySubject, Subject } from 'rxjs';
 
@@ -12,6 +12,8 @@ export class PlayerService {
   private playerActiveSubject = new ReplaySubject<boolean>(1);
   playerActive$ = this.playerActiveSubject.asObservable();
 
+  isPlayingMusic = signal(false);
+
   async loadPlayer(): Promise<void> {
     if (!this.player) {
       const accessToken = localStorage.getItem('access_token') ?? '';
@@ -22,12 +24,15 @@ export class PlayerService {
     this.playerActiveSubject.next(true);
   }
 
-  // This is needed for the music to play on iOS devices
-  // Not removing this file because I can't test on mobile until I push my changes
-  setPlayerActiveElement() {
-    if (this.player) {
-      this.player.activateElement();
-    }
+  async togglePlayerOn(trackUri: string): Promise<void> {
+    this.setPlayerActiveElement();
+    await firstValueFrom(this.spotifyService.playPlayer(trackUri), { defaultValue: false });
+    this.isPlayingMusic.set(true);
+  }
+
+  async togglePlayerOff(): Promise<void> {
+    await firstValueFrom(this.spotifyService.pausePlayer(), { defaultValue: false });
+    this.isPlayingMusic.set(false);
   }
 
   private async initPlaybackSDK(token: string, volume: number) {
@@ -73,6 +78,14 @@ export class PlayerService {
     });
 
     await player.connect();
+  }
+
+  // This is needed for the music to play on iOS devices
+  // Not removing this file because I can't test on mobile until I push my changes
+  private setPlayerActiveElement() {
+    if (this.player) {
+      this.player.activateElement();
+    }
   }
 
   private waitForSpotifyWebPlaybackSDKToLoad(): Promise<any> {

@@ -1,23 +1,21 @@
-import { v4 } from 'uuid';
-import { GameConstants } from '../models/game-constants';
-import { Game } from './models/game.model';
-import { GuessType } from '../models/guess-type';
-import { GameState } from './models/game-state.model';
+import { inject } from '@angular/core';
 import {
   patchState,
   signalStore,
-  withComputed,
   withMethods,
-  withState,
+  withState
 } from '@ngrx/signals';
-import { computed, inject } from '@angular/core';
-import { SpotifyService } from '../../shared/services/spotify.service';
-import { PlayerService } from '../services/player.service';
-import { SolutionModalService } from '../services/solution-modal.service';
+import { v4 } from 'uuid';
+import { GameConstants } from '../models/game-constants';
 import { Guess } from '../models/guess';
-import { firstValueFrom } from 'rxjs';
-import { ProgressBarQueueStore } from './progress-bar-queue.state';
-import { Track } from '../content/state/models/track';
+import { GuessType } from '../models/guess-type';
+import { GameState } from './models/game-state.model';
+import { Game } from './models/game.model';
+import { ProgressBarStateService } from './progress-bar-state.service';
+import { SolutionStateService } from './solution-state.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SolutionModalComponent } from '../components/solution-modal/solution-modal.component';
+import { PlayerService } from '../services/player.service';
 
 const maximumGuesses = GameConstants.SECONDS_ARRAY.length;
 const initialState: Game = {
@@ -27,35 +25,16 @@ const initialState: Game = {
   })),
   currentGameState: GameState.ACTIVE,
   numberOfGuesses: 0,
-  isPlayingMusic: false,
-  solution: {
-    id: '',
-    name: '',
-    artist: '',
-    trackUri: '',
-    image: {
-      url: '',
-    },
-  },
-  solutions: [],
-  solutionIndex: 0,
 };
 
 export const GameStore = signalStore(
   withState(initialState),
-  withComputed(({ solution }) => ({
-    solutionName: computed(() =>
-      `${solution().name} - ${solution().artist}`.toLocaleLowerCase()
-    ),
-  })),
-  withMethods(
-    (
-      store,
-      spotifyService = inject(SpotifyService),
-      playerService = inject(PlayerService),
-      solutionModalService = inject(SolutionModalService),
-      progressBarQueueStore = inject(ProgressBarQueueStore)
-    ) => ({
+  withMethods((store, 
+    progressBarStateService = inject(ProgressBarStateService), 
+    solutionStateService = inject(SolutionStateService),
+    modalService = inject(NgbModal),
+    playerService = inject(PlayerService)
+  ) => ({
       async addGuess(guess: Guess): Promise<void> {
         patchState(store, {
           guesses: [
@@ -66,77 +45,43 @@ export const GameStore = signalStore(
           numberOfGuesses: store.numberOfGuesses() + 1,
         });
 
-        if (guess.song?.toLocaleLowerCase() === store.solutionName()) {
+        if (guess.song?.toLocaleLowerCase() === solutionStateService.solutionName()) {
           await this.updateGameState(GameState.WON);
           return;
         }
 
-        if (store.numberOfGuesses() === maximumGuesses) {
+        if (store.numberOfGuesses() >= maximumGuesses) {
           await this.updateGameState(GameState.LOSS);
           return;
         }
 
-        if (!store.isPlayingMusic()) {
-          await this.togglePlayerOn();
-        }
-
-        progressBarQueueStore.queueTasks(1);
+        await this.playMusic();
       },
-      async updateGameState(gameState: GameState): Promise<void> {
-        patchState(store, { currentGameState: gameState });
-
-        if (
-          store.currentGameState() === GameState.WON ||
-          store.currentGameState() === GameState.LOSS
-        ) {
-          this.togglePlayerOn();
-          await solutionModalService.open();
-          this.reset();
-        }
-      },
-      async togglePlayerOn(): Promise<void> {
-        patchState(store, { isPlayingMusic: true });
-        // await firstValueFrom(
-        //   spotifyService.playPlayer(store.solution().trackUri),
-        //   { defaultValue: false }
-        // );
-        // playerService.setPlayerActiveElement();
-        console.log('play music')
-        progressBarQueueStore.queueTasks(store.numberOfGuesses() + 1);
-      },
-      async togglePlayerOff(): Promise<void> {
-        patchState(store, { isPlayingMusic: false });
-        // await firstValueFrom(spotifyService.pausePlayer(), {
-        //   defaultValue: false,
-        // });
-        console.log('pause music')
-      },
-      setGameSolution(): void {
-        if (store.solutions().length === 0) {
+      async playMusic() {
+        if (playerService.isPlayingMusic()) {
+          await progressBarStateService.queueTasks(1);
           return;
         }
 
-        if (store.solutionIndex() === store.solutions().length) {
-          patchState(store, { solutionIndex: 0 });
-        }
+        await progressBarStateService.queueTasks(store.numberOfGuesses() + 1);
+      },
+      async pauseMusic() {
+        await progressBarStateService.resetTasks();
+      },
+      async updateGameState(gameState: GameState): Promise<void> {
+        patchState(store, { currentGameState: gameState, numberOfGuesses: maximumGuesses });
 
-        patchState(store, {
-          solution: store.solutions()[store.solutionIndex()],
-          solutionIndex: store.solutionIndex() + 1,
-        });
+        if (store.currentGameState() === GameState.WON || store.currentGameState() === GameState.LOSS) {
+          await this.playMusic();
+          const modalRef = modalService.open(SolutionModalComponent);
+          await modalRef.result;
+          await this.reset();
+        }
       },
-      setGameSolutions(solutions: Track[]): void {
-        patchState(store, { solutions: [...solutions] });
-        this.setGameSolution();
-      },
-      reset(): void {
-        patchState(store, {
-          ...initialState,
-          solutions: store.solutions(),
-          solutionIndex: store.solutionIndex(),
-        });
-        this.setGameSolution();
-        progressBarQueueStore.resetTasks();
+      async reset(): Promise<void> {
+        patchState(store, { ...initialState });
+        solutionStateService.incrementSolution();
+        await progressBarStateService.resetTasks();
       },
     })
   )
