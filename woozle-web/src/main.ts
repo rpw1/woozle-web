@@ -4,6 +4,7 @@ import {
   inject,
   isDevMode,
   provideAppInitializer,
+  provideExperimentalZonelessChangeDetection
 } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
@@ -11,14 +12,13 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { appRoutes } from './app/app-routes';
 import { AppComponent } from './app/app.component';
 import { TracksStore } from './app/game/content/state/tracks.state';
+import { httpResponseInterceptor } from './app/shared/interceptors/http-response.interceptor';
 import { spotifyAuthInterceptor } from './app/shared/interceptors/spotify-auth.interceptor';
 import {
   initApp,
   SettingsService,
 } from './app/shared/services/settings.service';
 import { environment } from './environments/environment';
-import { httpResponseInterceptor } from './app/shared/interceptors/http-response.interceptor';
-import { SpotifyIdentityService } from './app/shared/services/spotify-identity.service';
 
 if (environment.production) {
   enableProdMode();
@@ -26,6 +26,7 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [
+    provideExperimentalZonelessChangeDetection(),
     provideRouter(appRoutes),
     provideAppInitializer(async () => {
       const initializerFn = initApp(inject(SettingsService));
