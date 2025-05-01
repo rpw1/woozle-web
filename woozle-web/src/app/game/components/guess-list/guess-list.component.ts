@@ -1,9 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { GuessType } from '../../models/guess-type';
-import { Game } from '../../state/models/game.model';
-import { selectGuesses } from '../../state/selectors/game.selector';
+import { GameStore } from '../../state/game.state';
 
 @Component({
   selector: 'app-guess-list',
@@ -18,6 +16,6 @@ export class GuessListComponent {
 
   guessType = GuessType;
 
-  private readonly gameStore = inject(Store<Game>);
-  readonly guesses$ = this.gameStore.select(selectGuesses);
+  private readonly gameStore = inject(GameStore);
+  readonly guesses = this.gameStore.guesses;
 }

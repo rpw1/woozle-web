@@ -7,17 +7,15 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { SolutionStateService } from '../../../state/solution-state.service';
 import {
+  ContentFilters,
+  ContentFilterType,
   ContentsStore,
-  GoodContentFilters,
-  GoodContentFilterType,
 } from '../../state/contents.state';
-import { GoodContent } from '../../state/models/good-content';
-import { ContentComponent } from '../content/content.component';
+import { Content } from '../../state/models/content';
 import { TracksStore } from '../../state/tracks.state';
-import { GameActions } from '../../../state/actions/game.actions';
-import { Store } from '@ngrx/store';
-import { Game } from '../../../state/models/game.model';
+import { ContentComponent } from '../content/content.component';
 
 @Component({
   selector: 'app-content-list',
@@ -30,7 +28,7 @@ export class ContentListComponent {
   private readonly contentsStore = inject(ContentsStore);
   private readonly tracksStore = inject(TracksStore);
   private readonly router = inject(Router);
-  private readonly gameStore = inject(Store<Game>);
+  private readonly solutionStateService = inject(SolutionStateService);
   readonly availableAlbums = this.contentsStore.albums;
   readonly availableArtists = this.contentsStore.artists;
   readonly availablePlaylists = this.contentsStore.playlists;
@@ -43,21 +41,16 @@ export class ContentListComponent {
   }
 
   search() {
-    const filters: GoodContentFilters = {
-      filterType: GoodContentFilterType.Recent,
+    const filters: ContentFilters = {
+      filterType: ContentFilterType.Recent,
       name: this.contentSearchInput?.value,
     };
     this.contentsStore.updateFilters(filters);
   }
 
-  async setContent(content: GoodContent) {
+  async setContent(content: Content) {
     await this.tracksStore.loadTracks(content);
-    this.gameStore.dispatch(
-      GameActions.setGameSolutions({
-        solutions: this.tracksStore.randomTracks(),
-      })
-    );
-
+    this.solutionStateService.setGameSolutions(this.tracksStore.randomTracks());
     void this.router.navigate(['/game']);
   }
 }

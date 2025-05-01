@@ -4,7 +4,7 @@ import {
   input,
   output,
 } from '@angular/core';
-import { GoodContent } from '../../state/models/good-content';
+import { Content } from '../../state/models/content';
 
 @Component({
   selector: 'app-content',
@@ -13,6 +13,6 @@ import { GoodContent } from '../../state/models/good-content';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContentComponent {
-  content = input.required<GoodContent>();
-  selectedContent = output<GoodContent>();
+  content = input.required<Content>();
+  selectedContent = output<Content>();
 }

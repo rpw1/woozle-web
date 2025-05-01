@@ -3,37 +3,25 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  OnInit,
+  Signal
 } from '@angular/core';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
-import { filter, Observable, take } from 'rxjs';
-import { GoodTrack } from '../../content/state/models/good-content';
+import { Track } from '../../content/state/models/track';
 import { GameState } from '../../state/models/game-state.model';
-import { Game } from '../../state/models/game.model';
-import {
-  selectCurrentGameState,
-  selectSolution,
-} from '../../state/selectors/game.selector';
+import { SolutionStateService } from '../../state/solution-state.service';
 
 @Component({
   selector: 'app-solution-modal',
   imports: [CommonModule, NgbModule],
   templateUrl: './solution-modal.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SolutionModalComponent implements OnInit {
+export class SolutionModalComponent {
   private readonly activeModal = inject(NgbActiveModal);
-  private readonly gameStore = inject(Store<Game>);
+  private readonly solutionStateService = inject(SolutionStateService);
   readonly GameState = GameState;
-  readonly endingGameState$ = this.gameStore
-    .select(selectCurrentGameState)
-    .pipe(filter((x) => x !== GameState.ACTIVE));
-  solution$: Observable<GoodTrack> | undefined;
-
-  ngOnInit(): void {
-    this.solution$ = this.gameStore.select(selectSolution).pipe(take(1));
-  }
+    
+  solution: Signal<Track> = this.solutionStateService.solution;
 
   closeModal() {
     this.activeModal.close(true);

@@ -6,7 +6,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
 import {
   debounceTime,
   defer,
@@ -20,8 +19,7 @@ import { v4 } from 'uuid';
 import { TracksStore } from '../../content/state/tracks.state';
 import { Guess } from '../../models/guess';
 import { GuessType } from '../../models/guess-type';
-import { GameActions } from '../../state/actions/game.actions';
-import { Game } from '../../state/models/game.model';
+import { GameStore } from '../../state/game.state';
 
 @Component({
   selector: 'app-guess',
@@ -30,7 +28,7 @@ import { Game } from '../../state/models/game.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GuessComponent {
-  private readonly gameStore = inject(Store<Game>);
+  private readonly gameStore = inject(GameStore);
   private readonly tracksStore = inject(TracksStore);
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly SKIP_GUESS_TEXT = 'SKIPPED';
@@ -80,7 +78,7 @@ export class GuessComponent {
         song: this.currentGuess?.value.trim(),
       };
     }
-    this.gameStore.dispatch(GameActions.addGuess({ guess }));
+    this.gameStore.addGuess(guess);
     this.guessForm.reset();
   }
 }
