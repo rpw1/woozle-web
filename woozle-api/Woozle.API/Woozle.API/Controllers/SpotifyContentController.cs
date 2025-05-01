@@ -16,6 +16,7 @@ public sealed class SpotifyContentController : ControllerBase
 		_spotifyContentService = spotifyContentService ?? throw new ArgumentNullException(nameof(spotifyContentService));
 	}
 
+	[ApiExceptionFilter]
 	[Authorization]
 	[HttpGet]
 	public async Task<IActionResult> GetContentAsync(CancellationToken cancellationToken)
@@ -34,6 +35,7 @@ public sealed class SpotifyContentController : ControllerBase
 		return Ok(contents);
 	}
 
+	[ApiExceptionFilter]
 	[Authorization]
 	[HttpGet("{id}/tracks")]
 	public async Task<IActionResult> GetTracksAsync(string id, [FromQuery] ContentType contentType,  CancellationToken cancellationToken)

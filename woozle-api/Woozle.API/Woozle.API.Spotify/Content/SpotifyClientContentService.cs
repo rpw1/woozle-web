@@ -1,4 +1,5 @@
 using Woozle.API.Spotify.Content.Api;
+using Woozle.API.Spotify.Extensions;
 using Woozle.API.Spotify.Models;
 
 namespace Woozle.API.Spotify.Content;
@@ -18,6 +19,7 @@ public sealed class SpotifyClientContentService : ISpotifyClientContentService
 		queryParams ??= new();
 		var response = await _spotifyContentApi.GetArtistAlbumsAsync(artistId, queryParams, cancellationToken);
 
+		response.ValidateAndThrow();
 		return response.Content;
 	}
 
@@ -25,6 +27,7 @@ public sealed class SpotifyClientContentService : ISpotifyClientContentService
 	{
 		var response = await _spotifyContentApi.GetAlbumAsync(albumId, cancellationToken);
 
+		response.ValidateAndThrow();
 		return response.Content;
 	}
 
@@ -33,6 +36,7 @@ public sealed class SpotifyClientContentService : ISpotifyClientContentService
 		queryParams ??= new();
 		var response = await _spotifyContentApi.GetAlbumTracksAsync(albumId, queryParams, cancellationToken);
 
+		response.ValidateAndThrow();
 		return response.Content;
 	}
 
@@ -41,6 +45,7 @@ public sealed class SpotifyClientContentService : ISpotifyClientContentService
 		queryParams ??= new();
 		var response = await _spotifyContentApi.GetSavedAlbumsAsync(queryParams, cancellationToken);
 
+		response.ValidateAndThrow();
 		return response.Content;
 	}
 
@@ -49,6 +54,7 @@ public sealed class SpotifyClientContentService : ISpotifyClientContentService
 		queryParams ??= new();
 		var response = await _spotifyContentApi.GetFollowedArtistsAsync(queryParams, cancellationToken);
 
+		response.ValidateAndThrow();
 		return response.Content;
 	}
 
@@ -57,6 +63,7 @@ public sealed class SpotifyClientContentService : ISpotifyClientContentService
 		queryParams ??= new();
 		var response = await _spotifyContentApi.GetUserPlaylistsAsync(queryParams, cancellationToken);
 
+		response.ValidateAndThrow();
 		return response.Content;
 	}
 
@@ -65,6 +72,7 @@ public sealed class SpotifyClientContentService : ISpotifyClientContentService
 		queryParams ??= new();
 		var response = await _spotifyContentApi.GetPlaylistTracksAsync(playlistId, queryParams, cancellationToken);
 
+		response.ValidateAndThrow();
 		return response.Content;
 	}
 }
