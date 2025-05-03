@@ -1,10 +1,10 @@
 <div class="my-4">
   <nav>
     <ul ngbNav class="nav-tabs" [activeId]="activeTab$ | async">
-      <li ngbNavItem="/home">
+      <li [ngbNavItem]="NavItemType.Home">
         <a ngbNavLink [routerLink]="['/home']">Home</a>
       </li>
-      <li ngbNavItem="/woozle">
+      <li [ngbNavItem]="NavItemType.Woozle">
         <a ngbNavLink [routerLink]="['/woozle']">Woozle</a>
       </li>
     </ul>

@@ -25,7 +25,7 @@ export const httpResponseInterceptor: HttpInterceptorFn = (req, next) => {
             });
 
             if (isAuthenticated) {
-              toastService.showSuccess('Successfully authenticated, please try again.');
+              toastService.showSuccess('Successfully authenticated');
             } else {
               localStorage.removeItem('access_token');
               localStorage.removeItem('refresh_token');
