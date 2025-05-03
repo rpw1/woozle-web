@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom, ReplaySubject, Subject } from 'rxjs';
 import { SpotifyService } from './spotify.service';
+import { ForbiddenErrorsService } from '../../shared/services/forbidden-error.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,7 @@ import { SpotifyService } from './spotify.service';
 export class PlayerService {
   private player: any | undefined;
   private spotifyService = inject(SpotifyService);
+  private forbiddenErrorsService = inject(ForbiddenErrorsService);
   
   private playerActiveSubject = new ReplaySubject<boolean>(1);
   playerActive$ = this.playerActiveSubject.asObservable();
@@ -47,17 +49,16 @@ export class PlayerService {
     this.player = player;
 
     player.addListener('initialization_error', ({ message }: { message: string }) => {
-      console.error(message);
       this.playerActiveSubject.next(false)
     });
 
     player.addListener('authentication_error', ({ message }: { message: string }) => {
-      console.error(message);
+      this.forbiddenErrorsService.addErrors(message);
       this.playerActiveSubject.next(false)
     });
 
     player.addListener('account_error', ({ message }: { message: string }) => {
-      alert(`You account has to have Spotify Premium for playing music ${message}`);
+      this.forbiddenErrorsService.addErrors(`You account has to have Spotify Premium for playing music ${message}`);
       this.playerActiveSubject.next(false)
     });
 
@@ -67,13 +68,11 @@ export class PlayerService {
     });
 
     player.addListener('ready', async ({ device_id }: { device_id: string }) => {
-      console.log('[Angular Spotify] Ready with Device ID', device_id);
       await firstValueFrom(this.spotifyService.transferPlayback(device_id));
       this.playerActiveSubject.next(true)
     });
 
     player.addListener('not_ready', ({ device_id }: { device_id: string }) => {
-      console.log('[Angular Spotify] Device ID has gone offline', device_id);
       this.playerActiveSubject.next(false)
     });
 

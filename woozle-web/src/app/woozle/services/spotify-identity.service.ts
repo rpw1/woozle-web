@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { SettingsService } from '../../shared/services/settings.service';
 import { AccessTokenRequest } from '../models/access-token-request';
 import { AccessTokenResponse } from '../models/access-token-response';
 import { RefreshTokenRequest } from '../models/refresh-token-request';
-import { SettingsService } from '../../shared/services/settings.service';
 
 @Injectable({
   providedIn: 'root'

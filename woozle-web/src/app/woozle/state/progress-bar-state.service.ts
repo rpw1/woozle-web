@@ -19,8 +19,8 @@ const initialState: ProgressBarQueue = {
   providedIn: 'root'
 })
 export class ProgressBarStateService { 
-  private activeTaskState = new ReplaySubject<TaskStateType>(1);
-  activeTaskState$ = this.activeTaskState.asObservable();
+  private activeTaskStateSubject = new ReplaySubject<TaskStateType>(1);
+  activeTaskState$ = this.activeTaskStateSubject.asObservable();
   activeTaskStateSignal = toSignal(this.activeTaskState$);
 
   queueState = signal<ProgressBarQueue>({ ...initialState });
@@ -30,7 +30,7 @@ export class ProgressBarStateService {
 
   async completeTask(): Promise<void> {
     this.queueState.update(state => ({...state, successiveTasksRan: state.successiveTasksRan + 1}));
-    this.activeTaskState.next(TaskStateType.COMPLETED);
+    this.activeTaskStateSubject.next(TaskStateType.COMPLETED);
     if (this.queueState().tasksInQueue > 0) {
       this.startTask();
     } else {
@@ -48,7 +48,7 @@ export class ProgressBarStateService {
 
   async resetTasks(): Promise<void>  {
     this.queueState.set({ ...initialState });
-    this.activeTaskState.next(TaskStateType.RESET);
+    this.activeTaskStateSubject.next(TaskStateType.RESET);
     if (this.playerService.isPlayingMusic()) {
       await this.playerService.togglePlayerOff();
     }
@@ -59,6 +59,6 @@ export class ProgressBarStateService {
       await this.playerService.togglePlayerOn(this.solutionStateService.solution().trackUri);
     }
     this.queueState.update(state => ({...state, tasksInQueue: state.tasksInQueue - 1}));
-    this.activeTaskState.next(TaskStateType.RUNNING);
+    this.activeTaskStateSubject.next(TaskStateType.RUNNING);
   }
 }

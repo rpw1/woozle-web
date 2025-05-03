@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoadingSpinnerService {
-  private readonly loading = new BehaviorSubject<boolean>(false);
-  readonly loading$ = this.loading.asObservable();
+  private readonly loadingSubject = new BehaviorSubject<boolean>(false);
+  readonly loading$ = this.loadingSubject.asObservable();
 
   startLoading() {
-    this.loading.next(true);
+    this.loadingSubject.next(true);
   }
 
   stopLoading() {
-    this.loading.next(false);
+    this.loadingSubject.next(false);
   }
 }
