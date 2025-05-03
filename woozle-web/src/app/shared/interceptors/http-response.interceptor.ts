@@ -2,8 +2,8 @@ import { HttpErrorResponse, HttpInterceptorFn, HttpStatusCode } from '@angular/c
 import { inject, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError } from 'rxjs';
-import { SpotifyIdentityService } from '../services/spotify-identity.service';
 import { ToastService } from '../services/toast.service';
+import { SpotifyIdentityService } from '../../woozle/services/spotify-identity.service';
 
 export const httpResponseInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
@@ -31,7 +31,7 @@ export const httpResponseInterceptor: HttpInterceptorFn = (req, next) => {
               localStorage.removeItem('refresh_token');
             }
 
-            void router.navigate(['/home']);
+            void router.navigate(['/woozle']);
             break;
         }
       }

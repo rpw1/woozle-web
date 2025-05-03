@@ -1,7 +1,7 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { SpotifyService } from '../services/spotify.service';
 import { inject } from '@angular/core';
 import { SettingsService } from '../services/settings.service';
+import { SpotifyService } from '../../woozle/services/spotify.service';
 
 export const spotifyAuthInterceptor: HttpInterceptorFn = (req, next) => {
   if (req.url.includes(SpotifyService.SPOTIFY_BASE_URL)) {

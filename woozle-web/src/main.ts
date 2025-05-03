@@ -11,7 +11,6 @@ import { provideRouter } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
 import { appRoutes } from './app/app-routes';
 import { AppComponent } from './app/app.component';
-import { TracksStore } from './app/game/content/state/tracks.state';
 import { httpResponseInterceptor } from './app/shared/interceptors/http-response.interceptor';
 import { spotifyAuthInterceptor } from './app/shared/interceptors/spotify-auth.interceptor';
 import {
@@ -37,6 +36,5 @@ bootstrapApplication(AppComponent, {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
     }),
-    TracksStore,
   ],
 }).catch((e) => console.error(e));
