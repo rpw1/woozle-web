@@ -1,10 +1,11 @@
 import { Routes } from '@angular/router';
-import { ContentsStore } from './game/content/state/contents.state';
 import { homeRoutes } from './home/home-routes';
-import { authCallbackResolver } from './resolvers/auth-callback.resolver';
 import { ForbiddenComponent } from './shared/components/forbidden/forbidden.component';
-import { authGuard } from './shared/guards/auth.guard';
-import { TracksStore } from './game/content/state/tracks.state';
+import { GameStore } from './woozle/state/game.state';
+import { authCallbackResolver } from './woozle/resolvers/auth-callback.resolver';
+import { authGuard } from './woozle/guards/auth.guard';
+import { ContentsStore } from './woozle/state/contents.state';
+import { TracksStore } from './woozle/state/tracks.state';
 
 export const appRoutes: Routes = [
   {
@@ -17,18 +18,6 @@ export const appRoutes: Routes = [
     loadChildren: () => homeRoutes,
   },
   {
-    path: 'game',
-    canActivateChild: [authGuard],
-    loadChildren: () => import('./game/game-routes').then((x) => x.gameRoutes),
-  },
-  {
-    path: 'contents',
-    canActivateChild: [authGuard],
-    loadChildren: () =>
-      import('./game/content/content-routes').then((x) => x.contentRoutes),
-    providers: [ContentsStore],
-  },
-  {
     path: 'auth/callback',
     resolve: { data: authCallbackResolver },
     loadComponent: () => ForbiddenComponent,
@@ -37,4 +26,10 @@ export const appRoutes: Routes = [
     path: 'forbidden',
     loadComponent: () => ForbiddenComponent,
   },
+  {
+    path: 'woozle',
+    canActivateChild: [authGuard],
+    loadChildren: () => import('./woozle/woozle-routes').then((x) => x.woozleRoutes),
+    providers: [ContentsStore, TracksStore, GameStore],
+  }
 ];

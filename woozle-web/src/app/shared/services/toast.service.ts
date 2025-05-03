@@ -7,9 +7,9 @@ import { v4 } from 'uuid';
   providedIn: 'root'
 })
 export class ToastService {
-  private _toasts: Toast[] = [];
-  private readonly toasts = new Subject<Toast[]>();
-  readonly toasts$ = this.toasts.asObservable();
+  private toasts: Toast[] = [];
+  private readonly toastsSubject = new Subject<Toast[]>();
+  readonly toasts$ = this.toastsSubject.asObservable();
   private readonly delay = 5000;
 
   showSuccess(message: string) {
@@ -20,8 +20,8 @@ export class ToastService {
       delay: this.delay
     }
 
-    this._toasts.push(toast);
-    this.toasts.next(this._toasts);
+    this.toasts.push(toast);
+    this.toastsSubject.next(this.toasts);
   }
 
   showError(message: string) {
@@ -32,12 +32,12 @@ export class ToastService {
       delay: this.delay
     }
 
-    this._toasts.push(toast);
-    this.toasts.next(this._toasts);
+    this.toasts.push(toast);
+    this.toastsSubject.next(this.toasts);
   }
 
   remove(id: string) {
-    this._toasts = this._toasts.filter(x => x.id !== id);
-    this.toasts.next(this._toasts);
+    this.toasts = this.toasts.filter(x => x.id !== id);
+    this.toastsSubject.next(this.toasts);
   }
 }

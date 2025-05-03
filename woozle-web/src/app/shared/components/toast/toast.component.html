@@ -1,8 +1,8 @@
 @for (toast of (toasts$ | async); track toast.id) {
   <ngb-toast
-    [autohide]="true",
-    [delay]="toast.delay",
-    [className]="toast.classes",
+    [autohide]="true"
+    [delay]="toast.delay"
+    [class]="toast.classes"
     (hidden)="removeToast(toast.id)">
     {{toast.message}}
   </ngb-toast>
