@@ -17,7 +17,6 @@ export type TrackState = {
   contentId: string;
   contentType: ContentType;
   contentName: string;
-  isLoading: boolean;
 };
 
 const initialState: TrackState = {
@@ -25,7 +24,6 @@ const initialState: TrackState = {
   contentId: '',
   contentType: ContentType.Playlist,
   contentName: '',
-  isLoading: false,
 };
 
 export const TracksStore = signalStore(
@@ -41,15 +39,14 @@ export const TracksStore = signalStore(
       return tracks();
     }),
   })),
-  withMethods((store, contentService = inject(ContentService)) => ({
+  withMethods((store, 
+    contentService = inject(ContentService)) => ({
     async loadTracks(content: Content): Promise<void> {
-      patchState(store, { isLoading: true });
       const tracks = await firstValueFrom(
         contentService.getTracks(content.id, content.contentType)
       );
       patchState(store, {
         tracks,
-        isLoading: false,
         contentId: content.id,
         contentType: content.contentType,
         contentName: content.name,

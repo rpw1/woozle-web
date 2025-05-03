@@ -49,7 +49,6 @@ export class ProgressBarStateService {
   async resetTasks(): Promise<void>  {
     this.queueState.set({ ...initialState });
     this.activeTaskState.next(TaskStateType.RESET);
-    console.log(this.playerService.isPlayingMusic());
     if (this.playerService.isPlayingMusic()) {
       await this.playerService.togglePlayerOff();
     }

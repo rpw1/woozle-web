@@ -18,6 +18,7 @@ import {
   SettingsService,
 } from './app/shared/services/settings.service';
 import { environment } from './environments/environment';
+import { loadingSpinnerInterceptor } from './app/shared/interceptors/loading-spinner.interceptor';
 
 if (environment.production) {
   enableProdMode();
@@ -31,7 +32,11 @@ bootstrapApplication(AppComponent, {
       const initializerFn = initApp(inject(SettingsService));
       return await initializerFn();
     }),
-    provideHttpClient(withInterceptors([spotifyAuthInterceptor, httpResponseInterceptor])),
+    provideHttpClient(withInterceptors([
+      loadingSpinnerInterceptor,
+      spotifyAuthInterceptor, 
+      httpResponseInterceptor
+    ])),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
