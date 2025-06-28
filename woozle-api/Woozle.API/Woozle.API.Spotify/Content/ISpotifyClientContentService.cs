@@ -5,7 +5,7 @@ namespace Woozle.API.Spotify.Content;
 
 public interface ISpotifyClientContentService
 {
-	Task<SpotifyGetArtistAlbumsResponseModel?> GetSpotifyArtistsAlbumnsAsync(string artistId, CancellationToken cancellationToken, SpotifyLimitQueryParams? queryParams = null);
+	Task<SpotifyGetArtistAlbumsResponseModel?> GetSpotifyArtistsAlbumnsAsync(string artistId, CancellationToken cancellationToken, SpotifyArtistAlbumsQueryParams? queryParams = null);
 
 	Task<SpotifyGetAlbumResponseModel?> GetSpotifyAlbumnAsync(string albumId, CancellationToken cancellationToken);
 
