@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -20,9 +20,8 @@ import { TracksStore } from '../../state/tracks.state';
     GuessListComponent,
     GuessComponent,
     ProgressBarComponent,
-    CommonModule,
-    RouterLink,
-  ],
+    RouterLink
+],
   templateUrl: './game.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
