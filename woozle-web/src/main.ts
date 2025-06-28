@@ -4,7 +4,7 @@ import {
   inject,
   isDevMode,
   provideAppInitializer,
-  provideExperimentalZonelessChangeDetection
+  provideZonelessChangeDetection,
 } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
@@ -26,7 +26,7 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideExperimentalZonelessChangeDetection(),
+    provideZonelessChangeDetection(),
     provideRouter(appRoutes),
     provideAppInitializer(async () => {
       const initializerFn = initApp(inject(SettingsService));
