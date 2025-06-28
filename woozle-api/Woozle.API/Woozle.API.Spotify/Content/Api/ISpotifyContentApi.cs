@@ -9,7 +9,7 @@ public interface ISpotifyContentApi
 	[Headers(SpotifyConstants.AuthorizationHeader)]
 	Task<IApiResponse<SpotifyGetArtistAlbumsResponseModel>> GetArtistAlbumsAsync(
 		[AliasAs("id")] string artistId,
-		[Query] SpotifyLimitQueryParams queryParams,
+		[Query] SpotifyArtistAlbumsQueryParams queryParams,
 		CancellationToken cancellationToken);
 
 	[Get("/albums/{id}")]
