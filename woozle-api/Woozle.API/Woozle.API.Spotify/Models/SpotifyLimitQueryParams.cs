@@ -2,7 +2,7 @@ using Refit;
 
 namespace Woozle.API.Spotify.Models;
 
-public sealed class SpotifyLimitQueryParams
+public class SpotifyLimitQueryParams
 {
 	public SpotifyLimitQueryParams(int offset = 0)
 	{
