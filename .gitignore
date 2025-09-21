@@ -1,19 +1,16 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 # Local Secrets
-ssl/
-*.pem
-*.crt
-appsettings.*.json
+settings.local.json
 
 # Compiled output
-woozle-web/dist
-woozle-web/tmp
-woozle-web/out-tsc
-woozle-web/bazel-out
+dist
+tmp
+out-tsc
+bazel-out
 TESTS-*.xml
 
 # Node
-woozle-web/node_modules
+/node_modules
 npm-debug.log
 yarn-error.log
 
@@ -27,80 +24,19 @@ yarn-error.log
 *.sublime-workspace
 
 # Visual Studio Code
-woozle-web/.vscode
-woozle-web/.vscode/*
-woozle-web/!.vscode/settings.json
-woozle-web/!.vscode/tasks.json
-woozle-web/!.vscode/launch.json
-woozle-web/!.vscode/extensions.json
-woozle-web/.history/*
-
-# Visual Studio
-**/.vs/
-
-# User-specific files
-*.suo
-*.user
-*.sln.docstates
-
-# Build results
-**/[Dd]ebug/
-**/[Rr]elease/
-**/x64/
-**/[Bb]in/
-**/[Oo]bj/
-
-*_i.c
-*_p.c
-*.ilk
-*.meta
-*.obj
-*.pch
-*.pdb
-*.pgc
-*.pgd
-*.rsp
-*.sbr
-*.tlb
-*.tli
-*.tlh
-*.tmp
-*.tmp_proj
-*.log
-*.vspscc
-*.vssscc
-.builds
-*.pidb
-*.scc
-
-# Others
-*.Cache
-ClientBin/
-[Ss]tyle[Cc]op.*
-~$*
-*~
-*.dbmdl
-*.[Pp]ublish.xml
-*.pfx
-*.publishsettings
-modulesbin/
-tempbin/
-
-
-# NuGet Packages
-*.nupkg
-# The packages folder can be ignored because of Package Restore
-**/packages/*
+.vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
 
 # Miscellaneous
-woozle-web/.angular/cache
+.angular/cache/
 .sass-cache/
 /connect.lock
-woozle-web/coverage
+coverage
 /libpeerconnection.log
 testem.log
 /typings
-
-# System files
-.DS_Store
-Thumbs.db
