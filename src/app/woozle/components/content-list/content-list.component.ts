@@ -16,7 +16,6 @@ import { TracksStore } from '../../state/tracks.state';
 import { ContentComponent } from '../content/content.component';
 import { SolutionStateService } from '../../state/solution-state.service';
 import { Content } from '../../models/content';
-import { LoadingSpinnerService } from '../../../shared/services/loading-spinner.service';
 
 @Component({
   selector: 'app-content-list',
@@ -30,7 +29,6 @@ export class ContentListComponent {
   private readonly tracksStore = inject(TracksStore);
   private readonly router = inject(Router);
   private readonly solutionStateService = inject(SolutionStateService);
-  private readonly loadingSpinnerService = inject(LoadingSpinnerService);
   
   readonly availableAlbums = this.contentsStore.albums;
   readonly availableArtists = this.contentsStore.artists;
@@ -52,7 +50,6 @@ export class ContentListComponent {
   }
 
   async setContent(content: Content) {
-    this.loadingSpinnerService.startLoading();
     await this.tracksStore.loadTracks(content);
     this.solutionStateService.setGameSolutions(this.tracksStore.randomTracks());
     void this.router.navigate(['/woozle/play']);

@@ -10,7 +10,6 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { appRoutes } from './app/app-routes';
 import { AppComponent } from './app/app.component';
 import { httpResponseInterceptor } from './app/shared/interceptors/http-response.interceptor';
-import { loadingSpinnerInterceptor } from './app/shared/interceptors/loading-spinner.interceptor';
 import { spotifyAuthInterceptor } from './app/shared/interceptors/spotify-auth.interceptor';
 import { environment } from './environments/environment';
 
@@ -23,7 +22,6 @@ bootstrapApplication(AppComponent, {
     provideZonelessChangeDetection(),
     provideRouter(appRoutes),
     provideHttpClient(withInterceptors([
-      loadingSpinnerInterceptor,
       spotifyAuthInterceptor, 
       httpResponseInterceptor
     ])),
