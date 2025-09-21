@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { GameCalculationService } from '../../services/game-calculation.service';
 import { ProgressSegmentComponent } from '../progress-segment/progress-segment.component';
@@ -6,9 +6,8 @@ import { ProgressSegmentComponent } from '../progress-segment/progress-segment.c
 @Component({
   selector: 'app-progress-bar',
   imports: [
-    CommonModule,
     ProgressSegmentComponent
-  ],
+],
   templateUrl: './progress-bar.component.html',
   styleUrls: ['./progress-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

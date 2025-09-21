@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -12,7 +12,7 @@ import { Track } from '../../models/track';
 
 @Component({
   selector: 'app-solution-modal',
-  imports: [CommonModule, NgbModule],
+  imports: [NgbModule],
   templateUrl: './solution-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

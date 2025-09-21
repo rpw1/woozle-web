@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   NonNullableFormBuilder,
@@ -20,7 +20,7 @@ import { LoadingSpinnerService } from '../../../shared/services/loading-spinner.
 
 @Component({
   selector: 'app-content-list',
-  imports: [CommonModule, ContentComponent, NgbNavModule, ReactiveFormsModule],
+  imports: [ContentComponent, NgbNavModule, ReactiveFormsModule],
   templateUrl: './content-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
